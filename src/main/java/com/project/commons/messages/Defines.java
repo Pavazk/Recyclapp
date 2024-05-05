@@ -1,10 +1,11 @@
-package com.project.recyclapp.commons.messages;
+package com.project.commons.messages;
 
 import lombok.Getter;
 
 @Getter
 public enum Defines {
     EXT_UFPS("@ufpso.edu.co");
+
 
     private final String message;
 
