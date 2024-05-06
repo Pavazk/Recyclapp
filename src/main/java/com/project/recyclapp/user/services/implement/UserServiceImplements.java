@@ -3,7 +3,6 @@ package com.project.recyclapp.user.services.implement;
 import com.project.commons.exceptions.CustomException;
 import com.project.commons.messages.ErrorMessage;
 import com.project.recyclapp.user.models.User;
-import com.project.recyclapp.user.repository.DocumentTypeRepository;
 import com.project.recyclapp.user.repository.UserRepository;
 import com.project.recyclapp.user.repository.UserTypeRepository;
 import com.project.recyclapp.user.services.interfaces.UserService;
@@ -22,8 +21,6 @@ public class UserServiceImplements implements UserService {
     private UserRepository userRepository;
     @Autowired
     private UserTypeRepository userTypeRepository;
-    @Autowired
-    private DocumentTypeRepository documentTypeRepository;
 
     @Override
     public User createUser(User user) {
@@ -41,12 +38,6 @@ public class UserServiceImplements implements UserService {
         }
         if (userTypeRepository.findById(user.getUserType().getId()).isEmpty()) {
             throw new CustomException(ErrorMessage.USER_TYPE_NO_EXISTS.getMessage());
-        }
-        if (user.getDocumentType() == null || user.getDocumentType().getId() == null){
-            throw new CustomException("Tipo de documento no valido");
-        }
-        if (documentTypeRepository.findById(user.getDocumentType().getId()).isEmpty()) {
-            throw new CustomException(ErrorMessage.DOCUMENT_TYPE_NO_EXISTS.getMessage());
         }
         return userRepository.save(user);
     }
@@ -71,17 +62,11 @@ public class UserServiceImplements implements UserService {
         if (userTypeRepository.findById(newUser.getUserType().getId()).isEmpty()) {
             throw new CustomException(ErrorMessage.USER_TYPE_NO_EXISTS.getMessage());
         }
-        if (documentTypeRepository.findById(newUser.getDocumentType().getId()).isEmpty()) {
-            throw new CustomException(ErrorMessage.DOCUMENT_TYPE_NO_EXISTS.getMessage());
-        }
         Optional<User> userOptional = userRepository.findById(email);
         if (userOptional.isEmpty()) {
             throw new CustomException(ErrorMessage.USER_NO_EXISTS.getMessage());
         }
         User userToUpdate = userOptional.get();
-        if (isNotNullOrEmptyWithTrim(newUser.getPhone())) {
-            userToUpdate.setPhone(newUser.getPhone());
-        }
         if (isNotNullOrEmptyWithTrim(newUser.getPassword())) {
             userToUpdate.setPassword(newUser.getPassword());
         }

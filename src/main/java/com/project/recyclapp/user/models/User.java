@@ -25,17 +25,9 @@ public class User {
     @JoinColumn(name = "user_type")
     private UserType userType;
 
-    @Size(max = 100)
-    @Column(name = "first_name", length = 100)
-    private String firstName;
-
-    @Size(max = 100)
-    @Column(name = "last_name", length = 100)
-    private String lastName;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "document_type")
-    private DocumentType documentType;
+    @Size(max = 150)
+    @Column(length = 150)
+    private String name;
 
     @Size(max = 12)
     @Column(length = 12)
@@ -44,9 +36,5 @@ public class User {
     @Size(max = 64)
     @Column(length = 64)
     private String password;
-
-    @Size(max = 12)
-    @Column(length = 12)
-    private String phone;
 
 }
