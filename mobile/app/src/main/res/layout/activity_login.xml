@@ -94,12 +94,6 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.9" />
 
-
-
-    <!-- CARGANDO -->
-
-    <!-- ICONO -->
-
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/cargando"
         android:layout_height="200dp"
@@ -113,8 +107,6 @@
         app:lottie_loop="true"
         app:lottie_rawRes="@raw/loading"/>
 
-    <!-- INICIO SESION -->
-
     <ImageView
         android:id="@+id/iv_icon"
         android:layout_width="0dp"
@@ -126,6 +118,19 @@
         app:srcCompat="@drawable/recycling" />
 
     <TextView
+        android:id="@+id/tv_sub_titulo"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:fontFamily="@font/poppins_bold"
+        android:gravity="center_vertical"
+        android:text="Subtitulo"
+        android:textColor="#666666"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toTopOf="@+id/lineHorizontalCenterTop3"
+        app:layout_constraintEnd_toStartOf="@+id/lineVerticalRight"
+        app:layout_constraintStart_toStartOf="@+id/lineVerticalLeft" />
+
+    <TextView
         android:id="@+id/tv_titulo"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
@@ -135,7 +140,6 @@
         android:textColor="#000"
         android:textSize="25sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/lineHorizontalCenterTop3"
         app:layout_constraintEnd_toStartOf="@+id/lineVerticalRight"
         app:layout_constraintStart_toStartOf="@+id/lineVerticalLeft"
         app:layout_constraintTop_toTopOf="@+id/lineHorizontalCenterTop2" />
@@ -151,83 +155,162 @@
         app:layout_constraintStart_toStartOf="@+id/lineVerticalLeft">
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tf_campo1"
+            android:id="@+id/tf_name"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:fontFamily="@font/poppins_regular"
-            android:hint="name"
             android:textCursorDrawable="@drawable/cursor_style"
             app:hintTextColor="#8E9094"
             style="@style/TextInputLayoutShape">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_campo1"
+                android:id="@+id/et_name"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fontFamily="@font/poppins_regular"
                 android:textColor="#8E9094"
+                android:maxLength="100"
+                android:inputType="textAutoComplete"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
                 android:textCursorDrawable="@drawable/cursor_style" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tf_campo2"
+            android:id="@+id/tf_code"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:fontFamily="@font/poppins_regular"
-            android:hint="code"
             android:textCursorDrawable="@drawable/cursor_style"
             app:hintTextColor="#8E9094"
             style="@style/TextInputLayoutShape">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_campo2"
+                android:id="@+id/et_code"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fontFamily="@font/poppins_regular"
                 android:textColor="#8E9094"
+                android:digits="0123456789"
+                android:maxLength="6"
+                android:inputType="number"
                 android:textCursorDrawable="@drawable/cursor_style" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tf_campo3"
+            android:id="@+id/tf_identification"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:fontFamily="@font/poppins_regular"
-            android:hint="identification"
             android:textCursorDrawable="@drawable/cursor_style"
             app:hintTextColor="#8E9094"
             style="@style/TextInputLayoutShape">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_campo3"
+                android:id="@+id/et_identification"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fontFamily="@font/poppins_regular"
                 android:textColor="#8E9094"
+                android:digits="0123456789"
+                android:maxLength="13"
+                android:inputType="number"
                 android:textCursorDrawable="@drawable/cursor_style" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tf_campo4"
+            android:id="@+id/tf_email"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:fontFamily="@font/poppins_regular"
-            android:hint="email"
             android:textCursorDrawable="@drawable/cursor_style"
             app:hintTextColor="#8E9094"
             style="@style/TextInputLayoutShape">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_campo4"
+                android:id="@+id/et_email"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fontFamily="@font/poppins_regular"
                 android:textColor="#8E9094"
+                android:inputType="textEmailAddress"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890@."
+                android:textCursorDrawable="@drawable/cursor_style" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tf_old_password"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:fontFamily="@font/poppins_regular"
+            android:textCursorDrawable="@drawable/cursor_style"
+            app:hintTextColor="#8E9094"
+            style="@style/TextInputLayoutShape">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_old_password"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/poppins_regular"
+                android:textColor="#8E9094"
+                android:inputType="textPassword"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%&amp;"
+                android:textCursorDrawable="@drawable/cursor_style" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tf_new_password"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:fontFamily="@font/poppins_regular"
+            android:textCursorDrawable="@drawable/cursor_style"
+            app:hintTextColor="#8E9094"
+            style="@style/TextInputLayoutShape">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_new_password"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/poppins_regular"
+                android:textColor="#8E9094"
+                android:inputType="textPassword"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%&amp;"
+                android:textCursorDrawable="@drawable/cursor_style" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tf_repeat_new_password"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:fontFamily="@font/poppins_regular"
+            android:textCursorDrawable="@drawable/cursor_style"
+            app:hintTextColor="#8E9094"
+            style="@style/TextInputLayoutShape">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_repeat_new_password"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/poppins_regular"
+                android:textColor="#8E9094"
+                android:inputType="textPassword"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%&amp;"
                 android:textCursorDrawable="@drawable/cursor_style" />
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
-    <!-- BOTÓN IP -->
+    <TextView
+        android:id="@+id/tv_footer"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:fontFamily="@font/poppins_light"
+        android:gravity="center_vertical"
+        android:text="Footer"
+        android:textColor="#666666"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toTopOf="@+id/lineHorizontalCenterBottom3"
+        app:layout_constraintEnd_toStartOf="@+id/lineVerticalRight"
+        app:layout_constraintStart_toStartOf="@+id/lineVerticalLeft" />
+
     <com.google.android.material.button.MaterialButtonToggleGroup
         android:id="@+id/group_button"
         android:layout_width="0dp"

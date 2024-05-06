@@ -7,28 +7,26 @@ import static com.example.isana.multiusos.Control.saveValuePreference;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.text.method.DigitsKeyListener;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.Toast;
 
-import com.airbnb.lottie.LottieAnimationView;
 import com.example.isana.databinding.ActivityLoginBinding;
 import com.example.isana.menus.Home;
 import com.example.isana.multiusos.Control;
 import com.example.isana.R;
 import com.example.isana.interfaces.APIService;
 import com.example.isana.multiusos.Person;
-import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 
+import java.lang.reflect.Type;
 import java.util.Arrays;
 
 import okhttp3.ConnectionSpec;
@@ -42,202 +40,206 @@ import okhttp3.OkHttpClient;
 
 public class Login extends AppCompatActivity {
 
-    private Retrofit retrofit;
+    public static final String  URL = "http://10.122.244.125:9999/";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ActivityLoginBinding binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        init(binding);
-        mostrarLogin(binding);
+        showLogin(binding);
+        onClick(binding);
+        rules(binding);
     }
-    private void init(ActivityLoginBinding binding) {
 
-
-
-        binding.usuario.setText(Control.Recuperar(this, "Credenciales", "user"));
-        binding.btnLogin.setOnClickListener(view -> {
-            if(String.valueOf(binding.usuario.getText()).isEmpty() || String.valueOf(binding.usuario.getText()) == null){
-                Control.ToastFallo(Login.this, Control.title_toast_fallo, "Ingrese los campos");
-            }else{
-                if(String.valueOf(binding.clave.getText()).isEmpty() || String.valueOf(binding.clave.getText()) == null){
-                    Control.ToastFallo(Login.this, Control.title_toast_fallo, "Ingrese los campos");
-                }else{
-                    Ingresar(binding);
+    private void registerUser(ActivityLoginBinding binding) {
+        String name = binding.etName.getText().toString();
+        String code = binding.etCode.getText().toString();
+        String identification = binding.etIdentification.getText().toString();
+        String email = binding.etEmail.getText().toString();
+        User user = new User(email, code, name, identification);
+        try {
+            APIService service = Control.getRetrofit(URL).create(APIService.class);
+            Call<User> answerCall = service.registerUser(user);
+            answerCall.enqueue(new Callback<User>() {
+                @Override
+                public void onResponse(Call<User> call, Response<User> response) {
+                    showLogin(binding);
+                    Toast.makeText(Login.this, "RESPONDIÓ", Toast.LENGTH_SHORT).show();
+                    Log.e("RETROFIT", "onResponse: " + response);
                 }
-            }
-        });
-        binding.port.setText(getValuePreference(getApplicationContext(), "port"));
-        binding.ip.setText(getValuePreference(getApplicationContext(), "ip"));
-        binding.btnIp.setOnClickListener(view -> {
-            if(binding.ip.getText().toString().isEmpty() || binding.ip.getText().toString().length()<6){
-                if(binding.port.getText().toString().isEmpty() || binding.port.getText().toString().length()!=4){
-                    Control.ToastFallo(Login.this, Control.title_toast_fallo, "Ingrese los campos");
-                }else{
-                    Control.ToastFallo(Login.this, Control.title_toast_fallo, "Ingrese IP");
+                @Override
+                public void onFailure(Call<User> call, Throwable t) {
+                    showLogin(binding);
+                    Toast.makeText(Login.this, "FALLÓ", Toast.LENGTH_SHORT).show();
                 }
-            }else{
-                if(binding.port.getText().toString().isEmpty() || binding.port.getText().toString().length()!=4){
-                    Control.ToastFallo(Login.this, Control.title_toast_fallo, "Ingrese el puerto");
-                }else{
-                    saveValuePreference(getApplicationContext(), "ip", binding.ip.getText().toString());
-                    saveValuePreference(getApplicationContext(), "port", binding.port.getText().toString());
-                    binding.ip.setText(getValuePreference(getApplicationContext(), "ip"));
-                    binding.port.setText(getValuePreference(getApplicationContext(), "port"));
-                    Control.ToastExito(Login.this, Control.title_toast_exito, "Se guardó la ip");
-                    mostrarLogin(binding);
-                }
+            });
 
-            }
-        });
-        binding.settings.setOnClickListener(view -> {
-            if(binding.tvLogin.getVisibility()==View.VISIBLE){
-                mostrar(binding);
-            }else{
-                mostrarLogin(binding);
-            }
-        });
-
-    }
-    public void Ingresar(ActivityLoginBinding binding){
-        MostrarCargar(binding);
-        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(loggingInterceptor)
-                .connectionSpecs(Arrays.asList(
-                        ConnectionSpec.CLEARTEXT,
-                        ConnectionSpec.MODERN_TLS,
-                        ConnectionSpec.COMPATIBLE_TLS))
-                .build();
-        try{
-            retrofit = new Retrofit.Builder()
-                    .baseUrl(IP(this))
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .client(client)
-                    .build();
-            GetLogin(new EnvioLogin(String.valueOf(binding.usuario.getText()), SHA256(String.valueOf(binding.clave.getText()))), binding);
-        }catch (Exception e){
-            Control.ToastFallo(this, Control.title_toast_fallo, "Ingrese IP/Puerto");
+        } catch (Exception e) {
+            showLogin(binding);
+            Toast.makeText(this, "No se pudo conectar con el servidor", Toast.LENGTH_SHORT).show();
         }
     }
 
-    public void GetLogin(EnvioLogin envioLogin, ActivityLoginBinding binding) {
-        APIService service = retrofit.create(APIService.class);
-        Call<RespuestaLogin> answerCall = service.obtenerRespuestaLogin(envioLogin);
-        answerCall.enqueue(new Callback<RespuestaLogin>() {
-            @Override
-            public void onResponse(Call<RespuestaLogin> call, Response<RespuestaLogin> response) {
-                if (response.isSuccessful()) {
-                    RespuestaLogin respuestaLogin = response.body();
-                    Log.e("Código de respuesta", String.valueOf(response.body()));
-                    switch(respuestaLogin.getCodigo()){
-                        case "00":
-                            Person.setRol(respuestaLogin.getRol());
-                            Person.setUser(envioLogin.getUser());
-                            Control.Guardar(Login.this,"Credenciales", "user" ,Person.getUser());
-                            Control.ToastExito(Login.this, Control.title_toast_exito, respuestaLogin.getEstado());
-                            Control.Intent(Login.this, Home.class);
-                            break;
-                        case "01":
-                            Control.ToastFallo(Login.this, Control.title_toast_fallo, respuestaLogin.getEstado());
-                            break;
-                        case "02":
-                            Control.ToastFallo(Login.this, Control.title_toast_fallo, "Credenciales incorrectas");
-                            break;
-                        default:
-                            Control.ToastFallo(Login.this, Control.title_toast_fallo,"Usuario no identificado");
-                            break;
-                    }
-                } else {
-                    Control.ToastFallo(Login.this, Control.title_toast_fallo, "Algo salió mal");
-                    Log.e("Código de respuesta", String.valueOf(response.code()));
+    private void loginUser(ActivityLoginBinding binding) {
+        String email = binding.etEmail.getText().toString();
+        String password = binding.etOldPassword.getText().toString();
+        UserLogin user = new UserLogin(email, password);
+        try {
+            APIService service = Control.getRetrofit(URL).create(APIService.class);
+            Call<User> answerCall = service.loginUser(user);
+            answerCall.enqueue(new Callback<User>() {
+                @Override
+                public void onResponse(Call<User> call, Response<User> response) {
+                    showLogin(binding);
+                    Toast.makeText(Login.this, "RESPONDIÓ", Toast.LENGTH_SHORT).show();
+                    Log.e("RETROFIT", "onResponse: " + response);
                 }
-                mostrarLogin(binding);
-            }
-            @Override
-            public void onFailure(Call<RespuestaLogin> call, Throwable t) {
-                Log.e("API", String.valueOf(t));
-                Control.ToastFallo(Login.this, Control.title_toast_fallo,"Error API");
-                mostrarLogin(binding);
-            }
-        });
+                @Override
+                public void onFailure(Call<User> call, Throwable t) {
+                    showLogin(binding);
+                    Toast.makeText(Login.this, "FALLÓ", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        } catch (Exception e) {
+            Toast.makeText(this, "No se pudo conectar con el servidor", Toast.LENGTH_SHORT).show();
+            showLogin(binding);
+        }
     }
+
     @Override
     public void onBackPressed() {}
-    public void mostrar(ActivityLoginBinding binding) {
-        LayoutInflater inflater = this.getLayoutInflater();
-        View layout = inflater.inflate(R.layout.password_modal, this.findViewById(R.id.modal_window_pass));
-        Button cancel = layout.findViewById(R.id.btn_cancel_modal_pass);
-        Button accept = layout.findViewById(R.id.btn_accept_modal_pass);
-        Dialog dialog = new Dialog(this);
-        TextInputEditText textInputEditText = layout.findViewById(R.id.password_modal2);
-        dialog.setContentView(layout);
-        dialog.show();
-        dialog.setCancelable(false);
-        cancel.setOnClickListener(view -> dialog.dismiss());
-        accept.setOnClickListener(view -> {
-            String textoIngresado =textInputEditText.getText().toString();
-            if (!textoIngresado.equals("")) {
-                if (textoIngresado.equals("9876")) {
-                    Control.ToastExito(Login.this, Control.title_toast_exito, "Bienvenido");
-                    mostrarConfig(binding);
-                    dialog.dismiss();
-                } else {
-                    Control.ToastFallo(Login.this, Control.title_toast_fallo, "Contraseña incorrecta");
-                }
-            }else {
-                Control.ToastFallo(Login.this, Control.title_toast_fallo, "Ingrese contraseña");
+    private void rules(ActivityLoginBinding binding) {
+        binding.etName.setSingleLine(true);
+        binding.etCode.setSingleLine(true);
+        binding.etIdentification.setSingleLine(true);
+        binding.etEmail.setSingleLine(true);
+        binding.etOldPassword.setSingleLine(true);
+        binding.etNewPassword.setSingleLine(true);
+        binding.etRepeatNewPassword.setSingleLine(true);
+    }
+    private void onClick(ActivityLoginBinding binding) {
+        binding.tvFooter.setOnClickListener(view -> {
+            switch (binding.tvTitulo.getText().toString()){
+                case "INICIO DE SESIÓN":
+                    showRegister(binding);
+                    break;
+                case "REGISTRO DE USUARIO":
+                    showLogin(binding);
+            }
+        });
+        binding.button.setOnClickListener(view -> {
+            showLoading(binding);
+            switch (binding.tvTitulo.getText().toString()){
+                case "INICIO DE SESIÓN":
+                    loginUser(binding);
+                    break;
+                case "REGISTRO DE USUARIO":
+                    registerUser(binding);
+                    break;
+                case "CAMBIAR CONTRASEÑA":
+                    //todo: crear metodo para cambiar contraseña
+                    break;
             }
         });
     }
-
-
-
-    public void mostrarConfig(ActivityLoginBinding binding){
-        binding.tvLogin.setVisibility(View.GONE);
-        binding.btnIp.setVisibility(View.GONE);
-        binding.tfUsuario.setVisibility(View.GONE);
-        binding.tfClave.setVisibility(View.GONE);
-        binding.gBtnLogin.setVisibility(View.GONE);
-        binding.settings.setVisibility(View.VISIBLE);
-        binding.ivIcon.setVisibility(View.VISIBLE);
-        binding.cargando.setVisibility(View.GONE);
-        binding.settings.setVisibility(View.GONE);
-        binding.tvIp.setVisibility(View.VISIBLE);
-        binding.tfPort.setVisibility(View.VISIBLE);
-        binding.tfIp.setVisibility(View.VISIBLE);
-        binding.gBtnIp.setVisibility(View.VISIBLE);
-        binding.btnIp.setVisibility(View.VISIBLE);
-
-    }
-    private void mostrarLogin(ActivityLoginBinding binding){
-        binding.tvIp.setVisibility(View.GONE);
-        binding.tfPort.setVisibility(View.GONE);
-        binding.tfIp.setVisibility(View.GONE);
-        binding.gBtnIp.setVisibility(View.GONE);
-        binding.cargando.setVisibility(View.GONE);
-        binding.ivIcon.setVisibility(View.VISIBLE);
-        binding.tvLogin.setVisibility(View.VISIBLE);
-        binding.tfUsuario.setVisibility(View.VISIBLE);
-        binding.tfClave.setVisibility(View.VISIBLE);
-        binding.gBtnLogin.setVisibility(View.VISIBLE);
-        binding.settings.setVisibility(View.VISIBLE);
-        binding.ivIcon.setVisibility(View.VISIBLE);
-    }
-
-    private void MostrarCargar(ActivityLoginBinding binding){
-        binding.tvIp.setVisibility(View.GONE);
-        binding.tfPort.setVisibility(View.GONE);
-        binding.tfIp.setVisibility(View.GONE);
-        binding.gBtnIp.setVisibility(View.GONE);
-        binding.tvLogin.setVisibility(View.GONE);
-        binding.btnIp.setVisibility(View.GONE);
-        binding.tfUsuario.setVisibility(View.GONE);
-        binding.tfClave.setVisibility(View.GONE);
-        binding.gBtnLogin.setVisibility(View.GONE);
-        binding.settings.setVisibility(View.GONE);
-        binding.ivIcon.setVisibility(View.GONE);
+    private void showLoading(ActivityLoginBinding binding) {
         binding.cargando.setVisibility(View.VISIBLE);
+        binding.ivIcon.setVisibility(View.GONE);
+        binding.tvTitulo.setVisibility(View.GONE);
+        binding.tvSubTitulo.setVisibility(View.GONE);
+        binding.linearLayout.setVisibility(View.GONE);
+        binding.tvFooter.setVisibility(View.GONE);
+        binding.button.setVisibility(View.GONE);
+    }
+    private void showLogin(ActivityLoginBinding binding){
+        binding.cargando.setVisibility(View.GONE);
+        binding.ivIcon.setVisibility(View.VISIBLE);
+        binding.tvTitulo.setVisibility(View.VISIBLE);
+        binding.tvSubTitulo.setVisibility(View.GONE);
+
+        binding.linearLayout.setVisibility(View.VISIBLE);
+
+        binding.tfName.setVisibility(View.GONE);
+        binding.tfCode.setVisibility(View.GONE);
+        binding.tfIdentification.setVisibility(View.GONE);
+
+        binding.tfEmail.setVisibility(View.VISIBLE);
+        binding.tfOldPassword.setVisibility(View.VISIBLE);
+
+        binding.tfNewPassword.setVisibility(View.GONE);
+        binding.tfRepeatNewPassword.setVisibility(View.GONE);
+
+        binding.tvFooter.setVisibility(View.VISIBLE);
+        binding.button.setVisibility(View.VISIBLE);
+
+        setTextLogin(binding);
+    }
+    private void showRegister(ActivityLoginBinding binding){
+        binding.cargando.setVisibility(View.GONE);
+        binding.ivIcon.setVisibility(View.VISIBLE);
+        binding.tvTitulo.setVisibility(View.VISIBLE);
+        binding.tvSubTitulo.setVisibility(View.GONE);
+
+        binding.linearLayout.setVisibility(View.VISIBLE);
+        binding.tfName.setVisibility(View.VISIBLE);
+        binding.tfCode.setVisibility(View.VISIBLE);
+        binding.tfIdentification.setVisibility(View.VISIBLE);
+        binding.tfEmail.setVisibility(View.VISIBLE);
+
+        binding.tfOldPassword.setVisibility(View.GONE);
+        binding.tfNewPassword.setVisibility(View.GONE);
+        binding.tfRepeatNewPassword.setVisibility(View.GONE);
+
+        binding.tvFooter.setVisibility(View.VISIBLE);
+        binding.button.setVisibility(View.VISIBLE);
+
+        setTextRegister(binding);
+    }
+    private void showChangePassword(ActivityLoginBinding binding){
+        binding.cargando.setVisibility(View.GONE);
+        binding.ivIcon.setVisibility(View.VISIBLE);
+        binding.tvTitulo.setVisibility(View.VISIBLE);
+        binding.tvSubTitulo.setVisibility(View.VISIBLE);
+
+        binding.linearLayout.setVisibility(View.VISIBLE);
+        binding.tfName.setVisibility(View.GONE);
+        binding.tfCode.setVisibility(View.GONE);
+        binding.tfIdentification.setVisibility(View.GONE);
+        binding.tfEmail.setVisibility(View.VISIBLE);
+
+        binding.tfOldPassword.setVisibility(View.VISIBLE);
+        binding.tfNewPassword.setVisibility(View.VISIBLE);
+        binding.tfRepeatNewPassword.setVisibility(View.VISIBLE);
+
+        binding.tvFooter.setVisibility(View.VISIBLE);
+        binding.button.setVisibility(View.VISIBLE);
+
+        setTextChangePassword(binding);
+    }
+    private void setTextLogin(ActivityLoginBinding binding){
+        binding.tvTitulo.setText("INICIO DE SESIÓN");
+        binding.tfEmail.setHint("Ingrese su email");
+        binding.tfOldPassword.setHint("Ingrese su contraseña");
+        binding.tvFooter.setText("Si no tiene un usuario haga clic aquí");
+        binding.button.setText("Ingresar");
+    }
+    private void setTextRegister(ActivityLoginBinding binding){
+        binding.tvTitulo.setText("REGISTRO DE USUARIO");
+        binding.tfName.setHint("Ingrese su nombre");
+        binding.tfCode.setHint("Ingrese su código");
+        binding.tfIdentification.setHint("Ingrese su número de identificación");
+        binding.tfEmail.setHint("Ingrese su email");
+        binding.tvFooter.setText("Si ya tiene un usuario haga clic aquí");
+        binding.button.setText("Registrarse");
+    }
+    private void setTextChangePassword(ActivityLoginBinding binding){
+        binding.tvTitulo.setText("CAMBIAR CONTRASEÑA");
+        binding.tvSubTitulo.setText("Fue enviada la contraseña a su email");
+        binding.tfEmail.setHint("Ingrese su email");
+        binding.tfOldPassword.setHint("Contraseña enviada por email");
+        binding.tfNewPassword.setHint("Ingrese su nueva contraseña");
+        binding.tfRepeatNewPassword.setHint("Repita su nueva contraseña");
+        binding.button.setText("Cambiar contraseña");
     }
 }
