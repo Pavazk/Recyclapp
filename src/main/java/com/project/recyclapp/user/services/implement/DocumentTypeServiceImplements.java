@@ -49,7 +49,7 @@ public class DocumentTypeServiceImplements implements DocumentTypeService {
         if (documentType.isEmpty()) {
             throw new CustomException(ErrorMessage.DOCUMENT_TYPE_NO_EXISTS.getMessage());
         }
-        if (Utils.isNullOrEmptyWithTrim(newDocumentType.getName())){
+        if (Utils.isNotNullOrEmptyWithTrim(newDocumentType.getName())){
             documentType.get().setName(newDocumentType.getName());
         }
         return repository.save(documentType.get());

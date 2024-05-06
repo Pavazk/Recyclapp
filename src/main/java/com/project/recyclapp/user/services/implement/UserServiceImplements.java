@@ -13,8 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-import static com.project.commons.Utils.isNotNullOrEmptyWithTrim;
-import static com.project.commons.Utils.noDataValid;
+import static com.project.commons.Utils.*;
 
 @Service
 public class UserServiceImplements implements UserService {
@@ -37,8 +36,14 @@ public class UserServiceImplements implements UserService {
         if (userRepository.findByCode(user.getCode()).isPresent()) {
             throw new CustomException(ErrorMessage.ALREADY_EXISTS_CODE.getMessage());
         }
+        if (user.getUserType() == null || user.getUserType().getId() == null){
+            throw new CustomException("Tipo de usuario no valido");
+        }
         if (userTypeRepository.findById(user.getUserType().getId()).isEmpty()) {
             throw new CustomException(ErrorMessage.USER_TYPE_NO_EXISTS.getMessage());
+        }
+        if (user.getDocumentType() == null || user.getDocumentType().getId() == null){
+            throw new CustomException("Tipo de documento no valido");
         }
         if (documentTypeRepository.findById(user.getDocumentType().getId()).isEmpty()) {
             throw new CustomException(ErrorMessage.DOCUMENT_TYPE_NO_EXISTS.getMessage());
