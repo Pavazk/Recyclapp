@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="345dp"
+        android:layout_height="76dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <View
+            android:id="@+id/bordeInferior"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="#524D4D" />
+
+        <ImageView
+            android:id="@+id/imgStateInventory"
+            android:layout_width="wrap_content"
+            android:layout_height="12dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="39dp"
+            android:layout_marginBottom="25dp"
+            app:srcCompat="@drawable/green_circle" />
+
+        <TextView
+            android:id="@+id/typeMovement"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="29dp"
+            android:layout_marginBottom="25dp"
+            android:layout_toEndOf="@+id/imgStateInventory"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="TextView"
+            android:textColor="#8E9094"
+            android:textSize="18dp" />
+
+        <ImageButton
+            android:id="@+id/imgbDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="26dp"
+            android:layout_marginEnd="11dp"
+            android:layout_marginBottom="26dp"
+            android:background="@android:color/transparent"
+            app:srcCompat="@drawable/eye_details" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="345dp"
+        android:layout_height="500dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
+        tools:visibility="gone">
+
+    </RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

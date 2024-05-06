@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="TextInputLayoutShape">
+        <item name="boxBackgroundColor">@color/text_input_layout_bacground_color</item>
+        <item name="boxStrokeColor">@color/text_input_layout_border_color_selector</item>
+    </style>
+
+    <style name="DialogStyleLight" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:windowBackground">#FFFFFF</item>
+        <item name="android:textColorPrimary">#000000</item>
+    </style>
+
+</resources>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tf_contra"
+        style="@style/TextInputLayoutShape"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:fontFamily="@font/poppins_regular"
+        android:hint="Clave Técnico"
+        android:textCursorDrawable="@drawable/cursor_style"
+        app:hintTextColor="#8E9094"
+        android:inputType="numberPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_login">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/contra"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="numberPassword"
+            android:digits="1234567890"
+            android:fontFamily="@font/poppins_regular"
+            android:maxLength="4"
+            android:textColor="#8E9094"
+            android:textCursorDrawable="@drawable/cursor_style" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+</LinearLayout>
