@@ -1,4 +1,4 @@
-package com.example.isana.Inventory;
+package com.example.isana.modules.Inventory;
 
 import android.content.Context;
 import android.view.LayoutInflater;

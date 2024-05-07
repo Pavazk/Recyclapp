@@ -1,39 +1,20 @@
-package com.example.isana.InventoryHistory;
+package com.example.isana.modules.InventoryHistory;
 
-import static com.example.isana.multiusos.Control.getValuePreference;
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.Dialog;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
 import com.example.isana.R;
-import com.example.isana.interfaces.APIService;
-import com.example.isana.login.Login;
-import com.example.isana.multiusos.Control;
+import com.example.isana.common.Utils;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import okhttp3.ConnectionSpec;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
@@ -63,7 +44,7 @@ public class InventoryHistory extends AppCompatActivity {
                 .build();
 
         retrofit = new Retrofit.Builder()
-                .baseUrl(Control.IP(this))
+                .baseUrl(Utils.IP(this))
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
@@ -71,7 +52,7 @@ public class InventoryHistory extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerview3);
     }
     public void ApiConnection() {
-        APIService service = retrofit.create(APIService.class);
+        /*APIService service = retrofit.create(APIService.class);
         Call<List<InventoryHistoryAnswer>> inventoryHistoryAnswerCall = service.getAnswerInventoryHistory();
         inventoryHistoryAnswerCall.enqueue(new Callback<List<InventoryHistoryAnswer>>() {
             @Override
@@ -98,17 +79,17 @@ public class InventoryHistory extends AppCompatActivity {
                     Log.e("AnswerInv", "si ta bien: " + response.body());
 
                 } else {
-                    Control.ToastFallo(InventoryHistory.this, Control.title_toast_fallo, "Error plataforma!");
+                    Utils.ToastFallo(InventoryHistory.this, Utils.title_toast_fallo, "Error plataforma!");
                     finish();
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<List<InventoryHistoryAnswer>> call, @NonNull Throwable t) {
-                Control.ToastFallo(InventoryHistory.this, Control.title_toast_fallo, "Error plataforma!");
+                Utils.ToastFallo(InventoryHistory.this, Utils.title_toast_fallo, "Error plataforma!");
                 finish();
             }
-        });
+        });*/
     }
 
 

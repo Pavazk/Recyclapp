@@ -1,33 +1,22 @@
 package com.example.isana.interfaces;
 
-import com.example.isana.Inventory.InventoryAnswer;
-import com.example.isana.InventoryHistory.InventoryHistoryAnswer;
-import com.example.isana.login.EnvioLogin;
-import com.example.isana.login.RespuestaLogin;
-import com.example.isana.login.User;
-import com.example.isana.login.UserLogin;
-
-import java.util.List;
+import com.example.isana.models.User;
+import com.example.isana.models.UserLogin;
+import com.example.isana.models.UserUpdate;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
-import retrofit2.http.GET;
 import retrofit2.http.POST;
 
 public interface APIService {
 
-        @POST("user/register")
-        Call<User> registerUser(@Body User user);
+    @POST("user/register")
+    Call<User> registerUser(@Body User user);
 
-        @POST("user/login")
-        Call<User> loginUser(@Body UserLogin user);
+    @POST("user/login")
+    Call<User> loginUser(@Body UserLogin user);
 
-        @POST("inicio_sesion/")
-        Call<RespuestaLogin> obtenerRespuestaLogin(@Body EnvioLogin envioLogin);
+    @POST("user/update")
+    Call<User> updateUser(@Body UserUpdate user);
 
-        @GET("read_inventory/")
-        Call<List<InventoryAnswer>> getAnswerInventory();
-
-        @GET("inventory_history/")
-        Call<List<InventoryHistoryAnswer>> getAnswerInventoryHistory();
 }

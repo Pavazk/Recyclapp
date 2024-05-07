@@ -17,19 +17,19 @@
         android:theme="@style/Theme.Isana"
         tools:targetApi="31">
         <activity
-            android:name=".Inventory.Inventory"
+            android:name=".modules.Inventory.Inventory"
             android:exported="false" />
         <activity
-            android:name=".menus.Home"
+            android:name=".modules.menus.Home"
             android:exported="false" />
         <activity
-            android:name=".login.Login"
+            android:name=".modules.login.view.MainView"
             android:exported="false" />
         <activity
-            android:name=".InventoryHistory.InventoryHistory"
+            android:name=".modules.InventoryHistory.InventoryHistory"
             android:exported="false" />
         <activity
-            android:name=".inicio.MainActivity"
+            android:name=".modules.init.InitView"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

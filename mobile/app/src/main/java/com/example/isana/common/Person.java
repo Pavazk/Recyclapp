@@ -1,4 +1,4 @@
-package com.example.isana.multiusos;
+package com.example.isana.common;
 
 public class Person {
     private static String user;

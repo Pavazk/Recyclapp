@@ -1,4 +1,4 @@
-package com.example.isana.inicio;
+package com.example.isana.modules.init;
 
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -7,23 +7,23 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.isana.databinding.ActivityMainBinding;
-import com.example.isana.login.Login;
-import com.example.isana.multiusos.Control;
+import com.example.isana.databinding.ActivityInitBinding;
+import com.example.isana.modules.login.view.MainView;
+import com.example.isana.common.Utils;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MainActivity extends AppCompatActivity {
+public class InitView extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
+        ActivityInitBinding binding = ActivityInitBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        init(binding);
+        start(binding);
     }
 
-    private void init(ActivityMainBinding binding) {
+    private void start(ActivityInitBinding binding) {
         binding.splash.setVisibility(View.VISIBLE);
         binding.tvWifi.setVisibility(View.GONE);
         binding.ivWifi.setVisibility(View.GONE);
@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 if (isInternetAvailable()) {
-                    Control.Intent(MainActivity.this, Login.class);
+                    Utils.Intent(InitView.this, MainView.class);
                 } else {
                     cambiarVista(binding);
                 }
@@ -39,11 +39,11 @@ public class MainActivity extends AppCompatActivity {
         }, 2500);
     }
 
-    private void cambiarVista(ActivityMainBinding binding) {
+    private void cambiarVista(ActivityInitBinding binding) {
         binding.splash.setVisibility(View.GONE);
         binding.tvWifi.setVisibility(View.VISIBLE);
         binding.ivWifi.setVisibility(View.VISIBLE);
-        binding.ivWifi.setOnClickListener(view -> init(binding));
+        binding.ivWifi.setOnClickListener(view -> start(binding));
     }
 
     private boolean isInternetAvailable() {

@@ -1,10 +1,9 @@
-package com.example.isana.multiusos;
+package com.example.isana.common;
 
 import static android.content.Context.MODE_PRIVATE;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.LayoutInflater;
@@ -23,7 +22,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class Control {
+public class Utils {
     public static String title_toast_exito = "¡Excelente!";
     public static String title_toast_fallo = "¡Oops!";
     public static void Intent(Activity activity, Class<?> claseLlegada) {
@@ -31,20 +30,16 @@ public class Control {
         activity.finish();
     }
 
-    public static String Recuperar(Activity activity, String name_registro, String campo) {
-        SharedPreferences prefe = activity.getSharedPreferences(name_registro, MODE_PRIVATE);
-        String texto = prefe.getString(campo, "");
-        if (texto.length() != 0) {
-            return texto;
-        }
-        return null;
+    public static String restore(Activity activity, String key) {
+        SharedPreferences preferences = activity.getSharedPreferences("Recyclapp", MODE_PRIVATE);
+        return preferences.getString(key, "");
     }
 
-    public static void Guardar(Activity activity, String name_registro, String campo, String texto) {
-        SharedPreferences preferencias = activity.getSharedPreferences(name_registro, MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferencias.edit();
-        editor.putString(campo, texto);
-        editor.commit();
+    public static void save(Activity activity, String key, String value) {
+        SharedPreferences preferences = activity.getSharedPreferences("Recyclapp", MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(key, value);
+        editor.apply();
     }
 
     public static void ToastExito(Activity activity, String title, String txt) {
@@ -73,19 +68,6 @@ public class Control {
         toast.show();
     }
 
-    public static String getValuePreference(Context context, String value) {
-        SharedPreferences preferences = context.getSharedPreferences("mypref", MODE_PRIVATE);
-        return preferences.getString(value, "");
-    }
-
-    public static void saveValuePreference(Context context, String value, String text) {
-        SharedPreferences settings = context.getSharedPreferences("mypref", MODE_PRIVATE);
-        SharedPreferences.Editor editor;
-        editor = settings.edit();
-        editor.putString(value, text);
-        editor.apply();
-    }
-
     public static Retrofit getRetrofit(String url){
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -104,9 +86,8 @@ public class Control {
                 .build();
     }
 
-    public static String IP(Context context){
-        //return "http://"+getValuePreference(context, "ip")+":"+getValuePreference(context, "port")+"/scriptcase/app/Inventary_eggs/";
-        return "http://"+getValuePreference(context, "ip")+":"+getValuePreference(context, "port")+"/";
+    public static String IP(Activity activity) {
+        return "http://" + restore(activity, "ip") + ":9999/";
     }
     public static String SHA256(String data) {
         try {

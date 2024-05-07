@@ -1,20 +1,13 @@
-package com.example.isana.Inventory;
+package com.example.isana.modules.Inventory;
 
-import static com.example.isana.multiusos.Control.getValuePreference;
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import com.example.isana.R;
-import com.example.isana.interfaces.APIService;
-import com.example.isana.login.Login;
-import com.example.isana.multiusos.Control;
+import com.example.isana.common.Utils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -22,9 +15,6 @@ import java.util.List;
 import okhttp3.ConnectionSpec;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
@@ -56,7 +46,7 @@ public class Inventory extends AppCompatActivity {
                         ConnectionSpec.COMPATIBLE_TLS))
                 .build();
         retrofit = new Retrofit.Builder()
-                .baseUrl(Control.IP(this))
+                .baseUrl(Utils.IP(this))
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
@@ -65,7 +55,7 @@ public class Inventory extends AppCompatActivity {
     }
 
     public void ApiConnection() {
-        APIService service = retrofit.create(APIService.class);
+        /*APIService service = retrofit.create(APIService.class);
         Call<List<InventoryAnswer>> inventoryAnswerCall = service.getAnswerInventory();
         inventoryAnswerCall.enqueue(new Callback<List<InventoryAnswer>>() {
             @Override
@@ -84,7 +74,7 @@ public class Inventory extends AppCompatActivity {
             public void onFailure(@NonNull Call<List<InventoryAnswer>> call, @NonNull Throwable t) {
                 Log.e("AnswerInv", "onFailure: " + t);
             }
-        });
+        });*/
     }
     public void backButton(View view) {
         finish();

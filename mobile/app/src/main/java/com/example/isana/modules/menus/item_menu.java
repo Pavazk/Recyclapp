@@ -1,4 +1,4 @@
-package com.example.isana.menus;
+package com.example.isana.modules.menus;
 
 import android.graphics.drawable.Drawable;
 

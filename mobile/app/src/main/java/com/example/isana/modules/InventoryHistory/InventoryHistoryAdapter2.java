@@ -1,4 +1,4 @@
-package com.example.isana.InventoryHistory;
+package com.example.isana.modules.InventoryHistory;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

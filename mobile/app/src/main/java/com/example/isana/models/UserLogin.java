@@ -1,4 +1,4 @@
-package com.example.isana.login;
+package com.example.isana.models;
 
 public class UserLogin {
     private String email;

@@ -1,4 +1,4 @@
-package com.example.isana.InventoryHistory;
+package com.example.isana.modules.InventoryHistory;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.isana.R;
-import com.example.isana.multiusos.Control;
+import com.example.isana.common.Utils;
 
 import java.util.List;
 
@@ -87,7 +87,7 @@ public class InventoryHistoryAdapter extends RecyclerView.Adapter<InventoryHisto
 
                     DetailsModal(inventoryHistory, howmade, type, price, amount);
                 }catch (Exception e){
-                    Control.ToastFallo(inventoryHistory, Control.title_toast_fallo, "Error plataforma!");
+                    Utils.ToastFallo(inventoryHistory, Utils.title_toast_fallo, "Error plataforma!");
                 }
 
             }

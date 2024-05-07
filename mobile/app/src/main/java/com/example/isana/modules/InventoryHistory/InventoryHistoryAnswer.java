@@ -1,4 +1,4 @@
-package com.example.isana.InventoryHistory;
+package com.example.isana.modules.InventoryHistory;
 
 public class InventoryHistoryAnswer {
     private String date_audit_inv;
