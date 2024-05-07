@@ -12,7 +12,12 @@ public enum ErrorMessage {
     USER_NO_EXISTS("Usuario no existe"),
     //UserType
     USER_TYPE_NO_EXISTS("Tipo de usuario no existe"),
-    USER_TYPE_NO_VALID("Tipo de usuario no valido");
+    USER_TYPE_NO_VALID("Tipo de usuario no valido"),
+    //Bins
+    BIN_NO_EXISTS("Caneca no existe"),
+    //Color
+    COLOR_NO_VALID("Color no valido"),
+    COLOR_NO_EXISTS("Color no existe");
 
     private final String message;
 

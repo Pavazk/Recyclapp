@@ -1,5 +1,6 @@
-package com.project.recyclapp.models;
+package com.project.recyclapp.recycling_bins.material.models;
 
+import com.project.recyclapp.recycling_bins.bins.models.Bin;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -22,6 +23,6 @@ public class Material {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "recycling_bins")
-    private RecyclingBin recyclingBins;
+    private Bin bins;
 
 }

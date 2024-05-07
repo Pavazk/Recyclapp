@@ -1,5 +1,6 @@
-package com.project.recyclapp.models;
+package com.project.recyclapp.recycling_bins.items.models;
 
+import com.project.recyclapp.recycling_bins.material.models.Material;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
