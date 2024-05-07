@@ -1,5 +1,6 @@
 package com.project.recyclapp.recycling_bins.items.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.recyclapp.recycling_bins.material.models.Material;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
@@ -7,26 +8,30 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "items")
 public class Item {
     @Id
-    @ColumnDefault("nextval('items_id_seq'::regclass)")
-    @Column(name = "id", nullable = false)
+    @Column(insertable=false, updatable=false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Size(max = 100)
-    @Column(name = "name", length = 100)
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "material")
+    @ManyToOne
+    @JoinColumn(referencedColumnName = "id")
     private Material material;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "subitem")
+    @ManyToOne
+    @JoinColumn(name = "id")
     private Item subitem;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "subitem")
+    private List<Item> listItems;
 
 }
