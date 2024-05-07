@@ -2,8 +2,10 @@ package com.project.recyclapp.users.services;
 
 import com.project.recyclapp.commons.Utils;
 import com.project.recyclapp.commons.exceptions.CustomException;
+import com.project.recyclapp.commons.messages.Defines;
 import com.project.recyclapp.commons.messages.ErrorMessage;
 import com.project.recyclapp.users.models.User;
+import com.project.recyclapp.users.models.UserType;
 import com.project.recyclapp.users.models.login.UserLogin;
 import com.project.recyclapp.users.repository.UserRepository;
 import com.project.recyclapp.users.repository.UserTypeRepository;
@@ -124,5 +126,11 @@ public class UserServiceImplements implements UserService {
     @Override
     public List<User> getAllUsers() {
         return (List<User>) userRepository.findAll();
+    }
+
+    public List<User> getAllStudents() {
+        UserType userType = new UserType();
+        userType.setName(Defines.ROLE_STUDENT.getMessage());
+        return (List<User>) userRepository.findByUserType(userType);
     }
 }

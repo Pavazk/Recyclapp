@@ -1,11 +1,11 @@
-package com.example.isana.modules.login.view;
+package com.example.isana.modules.main.view;
 
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.isana.databinding.ActivityMainBinding;
-import com.example.isana.modules.login.presenter.MainPresenter;
+import com.example.isana.modules.main.presenter.MainPresenter;
 
 public class MainView extends AppCompatActivity {
 

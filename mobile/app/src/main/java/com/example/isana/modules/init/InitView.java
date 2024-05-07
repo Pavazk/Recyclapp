@@ -8,7 +8,7 @@ import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.isana.databinding.ActivityInitBinding;
-import com.example.isana.modules.login.view.MainView;
+import com.example.isana.modules.main.view.MainView;
 import com.example.isana.common.Utils;
 
 import java.util.Timer;
@@ -40,10 +40,12 @@ public class InitView extends AppCompatActivity {
     }
 
     private void cambiarVista(ActivityInitBinding binding) {
-        binding.splash.setVisibility(View.GONE);
-        binding.tvWifi.setVisibility(View.VISIBLE);
-        binding.ivWifi.setVisibility(View.VISIBLE);
-        binding.ivWifi.setOnClickListener(view -> start(binding));
+        runOnUiThread(() -> {
+            binding.splash.setVisibility(View.GONE);
+            binding.tvWifi.setVisibility(View.VISIBLE);
+            binding.ivWifi.setVisibility(View.VISIBLE);
+            binding.ivWifi.setOnClickListener(view -> start(binding));
+        });
     }
 
     private boolean isInternetAvailable() {

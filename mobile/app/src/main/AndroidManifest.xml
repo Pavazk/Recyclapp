@@ -23,7 +23,7 @@
             android:name=".modules.menus.Home"
             android:exported="false" />
         <activity
-            android:name=".modules.login.view.MainView"
+            android:name=".modules.main.view.MainView"
             android:exported="false" />
         <activity
             android:name=".modules.InventoryHistory.InventoryHistory"

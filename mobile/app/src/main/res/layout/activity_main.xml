@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@mipmap/backgroung"
-    tools:context=".modules.login.view.MainView">
+    tools:context=".modules.main.view.MainView">
 
     <!-- LINEAS HORIZONTALES -->
     <androidx.constraintlayout.widget.Guideline

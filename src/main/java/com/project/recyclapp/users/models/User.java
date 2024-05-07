@@ -34,7 +34,6 @@ public class User {
 
     @Size(max = 64)
     @Column(length = 64)
-    @JsonIgnore
     private String password;
 
 }

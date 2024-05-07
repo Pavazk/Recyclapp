@@ -68,7 +68,7 @@ public class Utils {
         toast.show();
     }
 
-    public static Retrofit getRetrofit(String url){
+    public static Retrofit getRetrofit(Activity activity){
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient client = new OkHttpClient.Builder()
@@ -80,7 +80,7 @@ public class Utils {
                 .build();
 
         return new Retrofit.Builder()
-                .baseUrl(url)
+                .baseUrl(IP(activity))
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build();

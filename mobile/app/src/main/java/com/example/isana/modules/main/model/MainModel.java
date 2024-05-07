@@ -1,4 +1,4 @@
-package com.example.isana.modules.login.model;
+package com.example.isana.modules.main.model;
 
 import android.widget.Toast;
 
@@ -8,8 +8,8 @@ import com.example.isana.modules.menus.Home;
 import com.example.isana.models.User;
 import com.example.isana.models.UserLogin;
 import com.example.isana.models.UserUpdate;
-import com.example.isana.modules.login.presenter.MainPresenter;
-import com.example.isana.modules.login.view.MainView;
+import com.example.isana.modules.main.presenter.MainPresenter;
+import com.example.isana.modules.main.view.MainView;
 import com.example.isana.common.Utils;
 
 import retrofit2.Call;
@@ -19,8 +19,6 @@ import retrofit2.Response;
 public class MainModel {
     private final MainPresenter presenter;
     private final MainView mainView;
-
-    public static final String URL = "http://10.122.244.125:9999/";
 
     public MainModel(MainPresenter presenter, MainView mainView) {
         this.presenter = presenter;
@@ -65,7 +63,7 @@ public class MainModel {
         String email = binding.etEmail.getText().toString();
         User user = new User(email, code, name, identification);
         try {
-            APIService service = Utils.getRetrofit(URL).create(APIService.class);
+            APIService service = Utils.getRetrofit(mainView).create(APIService.class);
             Call<User> answerCall = service.registerUser(user);
             answerCall.enqueue(new Callback<User>() {
                 @Override
@@ -94,7 +92,7 @@ public class MainModel {
         String repeatNewPassword = binding.etRepeatNewPassword.getText().toString();
         UserUpdate user = new UserUpdate(email, oldPassword, newPassword, repeatNewPassword);
         try {
-            APIService service = Utils.getRetrofit(URL).create(APIService.class);
+            APIService service = Utils.getRetrofit(mainView).create(APIService.class);
             Call<User> answerCall = service.updateUser(user);
             answerCall.enqueue(new Callback<User>() {
                 @Override
@@ -119,7 +117,7 @@ public class MainModel {
         String password = binding.etOldPassword.getText().toString();
         UserLogin user = new UserLogin(email, password);
         try {
-            APIService service = Utils.getRetrofit(URL).create(APIService.class);
+            APIService service = Utils.getRetrofit(mainView).create(APIService.class);
             Call<User> answerCall = service.loginUser(user);
             answerCall.enqueue(new Callback<User>() {
                 @Override
@@ -143,5 +141,6 @@ public class MainModel {
     private void saveIp(ActivityMainBinding binding){
         String ip = binding.etIp.getText().toString();
         Utils.save(mainView, "ip", ip);
+        presenter.showLogin(binding);
     }
 }

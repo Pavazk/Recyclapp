@@ -1,10 +1,10 @@
-package com.example.isana.modules.login.presenter;
+package com.example.isana.modules.main.presenter;
 
 import android.view.View;
 
 import com.example.isana.databinding.ActivityMainBinding;
-import com.example.isana.modules.login.model.MainModel;
-import com.example.isana.modules.login.view.MainView;
+import com.example.isana.modules.main.model.MainModel;
+import com.example.isana.modules.main.view.MainView;
 
 public class MainPresenter {
 
@@ -83,7 +83,7 @@ public class MainPresenter {
 
     public void showChangePassword(ActivityMainBinding binding) {
         binding.cargando.setVisibility(View.GONE);
-        binding.ivSettings.setVisibility(View.VISIBLE);
+        binding.ivSettings.setVisibility(View.GONE);
         binding.ivIcon.setVisibility(View.VISIBLE);
         binding.tvTitulo.setVisibility(View.VISIBLE);
         binding.tvSubTitulo.setVisibility(View.VISIBLE);
