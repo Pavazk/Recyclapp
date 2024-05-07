@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_focused="true" android:color="@dimen/focused_top_padding" />
+    <item android:state_hovered="true" android:color="@dimen/hovered_top_padding" />
+    <item android:color="@dimen/default_top_padding" />
+</selector>
