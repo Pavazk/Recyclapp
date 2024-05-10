@@ -4,6 +4,7 @@ import com.project.recyclapp.users.models.User;
 import com.project.recyclapp.users.models.login.UserLogin;
 import com.project.recyclapp.users.services.UserService;
 import com.project.recyclapp.users.models.update.UserUpdate;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,18 +21,18 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<User> registerUser(@RequestBody User user) {
+    public ResponseEntity<User> registerUser(@RequestBody @Valid User user) {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.registerUser(user));
     }
 
     @PostMapping("/update")
-    public ResponseEntity<User> updateUser(@RequestBody UserUpdate user) {
+    public ResponseEntity<User> updateUser(@RequestBody @Valid UserUpdate user) {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(userService.updateUser(user));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<User> loginUser(@RequestBody UserLogin userLogin) {
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(userService.loginUser(userLogin));
+    public ResponseEntity<User> loginUser(@RequestBody @Valid UserLogin user) {
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(userService.loginUser(user));
     }
 
     @GetMapping

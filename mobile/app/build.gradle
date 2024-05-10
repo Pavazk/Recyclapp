@@ -6,7 +6,7 @@ android {
     namespace 'com.example.recyclapp'
     compileSdk 33
     defaultConfig {
-        applicationId "com.example.isana"
+        applicationId "com.example.recyclapp"
         minSdk 24
         targetSdk 33
         versionCode 1

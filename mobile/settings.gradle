@@ -12,5 +12,5 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "Isana"
+rootProject.name = "recyclapp"
 include ':app'

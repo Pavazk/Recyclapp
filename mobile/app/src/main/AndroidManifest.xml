@@ -17,9 +17,6 @@
         android:theme="@style/Theme.Isana"
         tools:targetApi="31">
         <activity
-            android:name=".modules.Maps"
-            android:exported="false" />
-        <activity
             android:name=".modules.Inventory.Inventory"
             android:exported="false" />
         <activity

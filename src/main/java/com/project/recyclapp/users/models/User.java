@@ -2,6 +2,7 @@ package com.project.recyclapp.users.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,24 +17,23 @@ public class User {
     @Column(nullable = false)
     private String email;
 
-    @Size(max = 6)
-    @Column(length = 6)
+    @NotBlank(message = "Por favor ingrese un código")
+    @Size(min =6, max = 6, message = "Por favor ingrese un código valido")
     private String code;
 
     @ManyToOne
     @JoinColumn(referencedColumnName = "id")
     private UserType userType;
 
-    @Size(max = 150)
-    @Column(length = 150)
+    @NotBlank(message = "Por favor ingrese el nombre")
+    @Size(max = 150, message = "Limite de carácteres superado")
     private String name;
 
-    @Size(max = 12)
-    @Column(length = 12)
+    @NotBlank(message = "Por favor ingrese el numero de identificación")
+    @Size(min = 5, max = 12, message = "Por favor ingrese una identificación valida")
     private String identification;
 
     @Size(max = 64)
-    @Column(length = 64)
     private String password;
 
 }

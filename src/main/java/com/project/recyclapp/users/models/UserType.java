@@ -2,6 +2,7 @@ package com.project.recyclapp.users.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -17,8 +18,8 @@ public class UserType {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @NotBlank
     @Size(max = 255)
-    @NotNull
     private String name;
 
     @OneToMany(mappedBy = "userType")
