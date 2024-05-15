@@ -4,11 +4,11 @@ plugins {
 
 android {
     namespace 'com.example.recyclapp'
-    compileSdk 33
+    compileSdk 34
     defaultConfig {
         applicationId "com.example.recyclapp"
         minSdk 24
-        targetSdk 33
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 
@@ -52,5 +52,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-scalars:2.1.0'
 
     implementation 'com.squareup.okhttp3:logging-interceptor:4.9.0'
+
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.4'
 
 }

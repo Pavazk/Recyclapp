@@ -4,6 +4,7 @@ import android.widget.Toast;
 
 import com.example.recyclapp.databinding.ActivityMainBinding;
 import com.example.recyclapp.interfaces.APIService;
+import com.example.recyclapp.models.ResponseFailure;
 import com.example.recyclapp.modules.menus.Home;
 import com.example.recyclapp.models.User;
 import com.example.recyclapp.models.UserLogin;
@@ -11,6 +12,10 @@ import com.example.recyclapp.models.UserUpdate;
 import com.example.recyclapp.modules.main.presenter.MainPresenter;
 import com.example.recyclapp.modules.main.view.MainView;
 import com.example.recyclapp.common.Utils;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.IOException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -68,8 +73,18 @@ public class MainModel {
             answerCall.enqueue(new Callback<User>() {
                 @Override
                 public void onResponse(Call<User> call, Response<User> response) {
-                    presenter.showChangePassword(binding);
-                    Toast.makeText(mainView, "RESPONDIÓ", Toast.LENGTH_SHORT).show();
+                    if (response.isSuccessful()) {
+                        presenter.clearFields(binding);
+                        presenter.showChangePassword(binding);
+                    } else {
+                        try {
+                            presenter.showError(new ObjectMapper().readValue(response.errorBody().string(), ResponseFailure.class), binding);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Toast.makeText(mainView, "Algo salió mal!", Toast.LENGTH_SHORT).show();
+                        }
+                        presenter.showRegister(binding);
+                    }
                 }
 
                 @Override
@@ -97,7 +112,18 @@ public class MainModel {
             answerCall.enqueue(new Callback<User>() {
                 @Override
                 public void onResponse(Call<User> call, Response<User> response) {
-                    Utils.Intent(mainView, Home.class);
+                    if (response.isSuccessful()) {
+                        presenter.clearFields(binding);
+                        Utils.Intent(mainView, Home.class);
+                    } else {
+                        try {
+                            presenter.showError(new ObjectMapper().readValue(response.errorBody().string(), ResponseFailure.class), binding);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        Toast.makeText(mainView, "Por favor valida los campos", Toast.LENGTH_SHORT).show();
+                        presenter.showChangePassword(binding);
+                    }
                 }
 
                 @Override
@@ -122,12 +148,23 @@ public class MainModel {
             answerCall.enqueue(new Callback<User>() {
                 @Override
                 public void onResponse(Call<User> call, Response<User> response) {
-                    presenter.showChangePassword(binding);
+                    if (response.isSuccessful()) {
+                        presenter.clearFields(binding);
+                        presenter.showChangePassword(binding);
+                    } else {
+                        try {
+                            presenter.showError(new ObjectMapper().readValue(response.errorBody().string(), ResponseFailure.class), binding);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        Toast.makeText(mainView, "Por favor valida los campos", Toast.LENGTH_SHORT).show();
+                        presenter.showLogin(binding);
+                    }
                 }
 
                 @Override
                 public void onFailure(Call<User> call, Throwable t) {
-                    Toast.makeText(mainView, "FALLÓ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mainView, "No se pudo conectar con el servidor", Toast.LENGTH_SHORT).show();
                     presenter.showLogin(binding);
                 }
             });
@@ -138,9 +175,11 @@ public class MainModel {
         }
     }
 
-    private void saveIp(ActivityMainBinding binding){
+    private void saveIp(ActivityMainBinding binding) {
         String ip = binding.etIp.getText().toString();
         Utils.save(mainView, "ip", ip);
+        presenter.clearFields(binding);
         presenter.showLogin(binding);
     }
+
 }
