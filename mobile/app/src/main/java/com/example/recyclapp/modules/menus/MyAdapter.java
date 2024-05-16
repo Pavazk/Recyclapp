@@ -37,7 +37,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         item_menu item = mData.get(position);
-        holder.tv_menu.setText(item.getTexto());
+        holder.tv_menu.setText(item.getText());
         Glide.with(holder.img_menu.getContext())
                 .load(item.getImg())
                 .into(holder.img_menu);
@@ -51,9 +51,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         });
     }
 
+    public void updateData(List<item_menu> newData) {
+        mData.clear();
+        mData.addAll(newData);
+        notifyDataSetChanged();
+    }
 
     public interface OnItemClickListener {
-        public void onItemClick(int position);
+        void onItemClick(int position);
     }
 
     @Override

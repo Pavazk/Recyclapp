@@ -1,22 +1,21 @@
 package com.example.recyclapp.modules.menus;
 
-import android.graphics.drawable.Drawable;
 
 public class item_menu {
-    private String texto;
+    private String text;
     private int img;
 
-    public item_menu(String texto, int img) {
-        this.texto = texto;
+    public item_menu(String text, int img) {
+        this.text = text;
         this.img = img;
     }
 
-    public String getTexto() {
-        return texto;
+    public String getText() {
+        return text;
     }
 
-    public void setTexto(String texto) {
-        this.texto = texto;
+    public void setText(String text) {
+        this.text = text;
     }
 
     public int getImg() {
