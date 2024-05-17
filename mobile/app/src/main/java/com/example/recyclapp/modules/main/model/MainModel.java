@@ -1,5 +1,7 @@
 package com.example.recyclapp.modules.main.model;
 
+import static com.example.recyclapp.common.Utils.SHA256;
+
 import android.widget.Toast;
 
 import com.example.recyclapp.databinding.ActivityMainBinding;
@@ -74,7 +76,6 @@ public class MainModel {
                 @Override
                 public void onResponse(Call<User> call, Response<User> response) {
                     if (response.isSuccessful()) {
-                        presenter.clearFields(binding);
                         presenter.showChangePassword(binding);
                     } else {
                         try {
@@ -105,7 +106,7 @@ public class MainModel {
         String oldPassword = binding.etOldPassword.getText().toString();
         String newPassword = binding.etNewPassword.getText().toString();
         String repeatNewPassword = binding.etRepeatNewPassword.getText().toString();
-        UserUpdate user = new UserUpdate(email, oldPassword, newPassword, repeatNewPassword);
+        UserUpdate user = new UserUpdate(email, oldPassword, SHA256(newPassword), SHA256(repeatNewPassword));
         try {
             APIService service = Utils.getRetrofit(mainView).create(APIService.class);
             Call<User> answerCall = service.updateUser(user);
@@ -149,8 +150,13 @@ public class MainModel {
                 @Override
                 public void onResponse(Call<User> call, Response<User> response) {
                     if (response.isSuccessful()) {
+                        User user = response.body();
+                        if(user != null && user.getPassword() != null && user.getPassword().length() <=8){
+                            presenter.showChangePassword(binding);
+                            return;
+                        }
+                        Utils.Intent(mainView, Home.class);
                         presenter.clearFields(binding);
-                        presenter.showChangePassword(binding);
                     } else {
                         try {
                             presenter.showError(new ObjectMapper().readValue(response.errorBody().string(), ResponseFailure.class), binding);

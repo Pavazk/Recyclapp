@@ -1,6 +1,6 @@
 package com.project.recyclapp.commons.exceptions;
 
-import com.project.recyclapp.users.models.dto.Response;
+import com.project.recyclapp.modules.users.models.dto.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;

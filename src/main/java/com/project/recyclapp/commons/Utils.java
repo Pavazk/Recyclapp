@@ -3,9 +3,9 @@ package com.project.recyclapp.commons;
 import com.project.recyclapp.commons.exceptions.CustomException;
 import com.project.recyclapp.commons.messages.Defines;
 import com.project.recyclapp.commons.messages.ErrorMessage;
-import com.project.recyclapp.users.models.User;
-import com.project.recyclapp.users.models.UserType;
-import com.project.recyclapp.users.repository.UserTypeRepository;
+import com.project.recyclapp.modules.users.models.User;
+import com.project.recyclapp.modules.users.models.UserType;
+import com.project.recyclapp.modules.users.repository.UserTypeRepository;
 
 import javax.mail.Message;
 import javax.mail.Session;
@@ -91,7 +91,7 @@ public class Utils {
     public static void sendEmailCreateUser(User user) {
         try {
             final String email = "yosoypav4@gmail.com";
-            final String password = "bvuj fgir fwht ksqc";
+            final String password = "lzlm msoo kspd yogy";
             // Simple mail transfer protocol
             Properties mProperties = new Properties();
             mProperties.put("mail.smtp.host", "smtp.gmail.com");
@@ -113,6 +113,7 @@ public class Utils {
             mTransport.connect(email, password);
             mTransport.sendMessage(mCorreo, mCorreo.getRecipients(Message.RecipientType.TO));
             mTransport.close();
+            System.out.println("Fue enviado el correo a: "+ user.getEmail());
         } catch (Exception e) {
             e.printStackTrace();
         }

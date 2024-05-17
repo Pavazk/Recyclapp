@@ -1,6 +1,6 @@
 package com.project.recyclapp.models;
 
-import com.project.recyclapp.users.models.User;
+import com.project.recyclapp.modules.users.models.User;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;

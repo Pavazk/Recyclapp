@@ -15,6 +15,10 @@ public enum ErrorMessage {
     USER_TYPE_NO_VALID("Tipo de usuario no valido"),
     //Bins
     BIN_NO_EXISTS("Caneca no existe"),
+    //Material
+    MATERIAL_NO_EXISTS("Material no existe"),
+    //Item
+    ITEM_NO_EXISTS("Producto no existe"),
     //Color
     COLOR_NO_VALID("Color no valido"),
     COLOR_NO_EXISTS("Color no existe");

@@ -34,10 +34,10 @@ public class Home extends AppCompatActivity implements MyAdapter.OnItemClickList
     private void recycler() {
         recyclerView = findViewById(R.id.recyclerview);
         data = new ArrayList<>();
-        data.add(new item_menu("CANECAS", R.drawable.inventario));
-        data.add(new item_menu("PRODUCTOS", R.drawable.inventario));
-        data.add(new item_menu("EVENTOS", R.drawable.inventario));
-        data.add(new item_menu("PERSONAS", R.drawable.inventario));
+        data.add(new item_menu("BINS", R.drawable.inventario));
+        data.add(new item_menu("PRODUCTS", R.drawable.inventario));
+        data.add(new item_menu("EVENTS", R.drawable.inventario));
+        data.add(new item_menu("PERSONS", R.drawable.inventario));
         adapter = new MyAdapter(this, data, this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(this, data.size() > 1 ? 2 : 1));
@@ -50,7 +50,7 @@ public class Home extends AppCompatActivity implements MyAdapter.OnItemClickList
     public void onItemClick(int position) {
         switch (data.get(position).getText()) {
             case "BINS":
-                data.clear();
+                data = new ArrayList<>();
                 data.add(new item_menu("CREATE_BINS", R.drawable.inventario));
                 data.add(new item_menu("READ_BINS", R.drawable.inventario));
                 data.add(new item_menu("UPDATE_BINS", R.drawable.inventario));
@@ -66,7 +66,7 @@ public class Home extends AppCompatActivity implements MyAdapter.OnItemClickList
             case "DELETE_BINS":
                 break;
             case "PRODUCTS":
-                data.clear();
+                data = new ArrayList<>();
                 data.add(new item_menu("CREATE_PRODUCTS", R.drawable.inventario));
                 data.add(new item_menu("READ_PRODUCTS", R.drawable.inventario));
                 data.add(new item_menu("UPDATE_PRODUCTS", R.drawable.inventario));
@@ -82,7 +82,7 @@ public class Home extends AppCompatActivity implements MyAdapter.OnItemClickList
             case "DELETE_PRODUCTS":
                 break;
             case "EVENTS":
-                data.clear();
+                data = new ArrayList<>();
                 data.add(new item_menu("CREATE_EVENTS", R.drawable.inventario));
                 data.add(new item_menu("READ_EVENTS", R.drawable.inventario));
                 data.add(new item_menu("UPDATE_EVENTS", R.drawable.inventario));
@@ -98,7 +98,7 @@ public class Home extends AppCompatActivity implements MyAdapter.OnItemClickList
             case "DELETE_EVENTS":
                 break;
             case "PERSONS":
-                data.clear();
+                data = new ArrayList<>();
                 data.add(new item_menu("CREATE_PERSONS", R.drawable.inventario));
                 data.add(new item_menu("READ_PERSONS", R.drawable.inventario));
                 data.add(new item_menu("UPDATE_PERSONS", R.drawable.inventario));
