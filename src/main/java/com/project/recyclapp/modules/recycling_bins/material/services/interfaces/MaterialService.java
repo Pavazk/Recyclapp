@@ -11,7 +11,7 @@ public interface MaterialService {
 
     Material updateMaterial(Material material);
 
-    Material getMaterialById(Material material);
+    Material getMaterialById(Integer id);
 
     String deleteMaterial(Material material);
 
