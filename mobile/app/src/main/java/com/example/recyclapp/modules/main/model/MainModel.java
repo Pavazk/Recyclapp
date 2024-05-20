@@ -114,8 +114,11 @@ public class MainModel {
                 @Override
                 public void onResponse(Call<User> call, Response<User> response) {
                     if (response.isSuccessful()) {
-                        presenter.clearFields(binding);
+                        User user = response.body();
+                        Utils.save(mainView, Utils.KEY_CODE, user.getCode());
+                        Utils.save(mainView, Utils.KEY_ROLE, user.getUserType().getName());
                         Utils.Intent(mainView, Home.class);
+                        presenter.clearFields(binding);
                     } else {
                         try {
                             presenter.showError(new ObjectMapper().readValue(response.errorBody().string(), ResponseFailure.class), binding);
@@ -155,6 +158,8 @@ public class MainModel {
                             presenter.showChangePassword(binding);
                             return;
                         }
+                        Utils.save(mainView, Utils.KEY_CODE, user.getCode());
+                        Utils.save(mainView, Utils.KEY_ROLE, user.getUserType().getName());
                         Utils.Intent(mainView, Home.class);
                         presenter.clearFields(binding);
                     } else {
@@ -179,6 +184,10 @@ public class MainModel {
             Toast.makeText(mainView, "No se pudo conectar con el servidor", Toast.LENGTH_SHORT).show();
             presenter.showLogin(binding);
         }
+    }
+
+    private void intent2Home(ActivityMainBinding binding){
+
     }
 
     private void saveIp(ActivityMainBinding binding) {

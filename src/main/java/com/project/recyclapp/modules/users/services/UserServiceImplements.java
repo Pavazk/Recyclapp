@@ -130,8 +130,8 @@ public class UserServiceImplements implements UserService {
     }
 
     @Override
-    public List<User> getUserByCode(String code) {
-        return (List<User>) userRepository.findByCodeContaining(code);
+    public User getUserByCode(String code) {
+        return userRepository.findByCodeContaining(code);
     }
 
     public List<User> getAllStudents() {

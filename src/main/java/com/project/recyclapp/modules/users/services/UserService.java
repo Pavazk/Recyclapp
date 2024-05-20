@@ -20,5 +20,5 @@ public interface UserService {
 
     List<User> getAllUsers();
 
-    List<User> getUserByCode(String code);
+    User getUserByCode(String code);
 }

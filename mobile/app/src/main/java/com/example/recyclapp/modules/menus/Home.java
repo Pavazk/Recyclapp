@@ -113,9 +113,6 @@ public class Home extends AppCompatActivity implements MyAdapter.OnItemClickList
                 break;
             case "DELETE_PERSONS":
                 break;
-            default:
-                Utils.ToastFallo(this, Utils.title_toast_fallo, "Hubo un error");
-                break;
         }
     }
 

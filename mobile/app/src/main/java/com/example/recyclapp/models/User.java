@@ -6,6 +6,7 @@ public class User {
     private String name;
     private String identification;
     private String password;
+    private UserType userType;
 
     public User(String email, String code, String name, String identification) {
         this.email = email;
@@ -52,5 +53,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public UserType getUserType() {
+        return userType;
+    }
+
+    public void setUserType(UserType userType) {
+        this.userType = userType;
     }
 }

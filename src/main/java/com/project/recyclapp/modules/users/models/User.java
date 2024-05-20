@@ -1,10 +1,15 @@
 package com.project.recyclapp.modules.users.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.project.recyclapp.modules.events.models.EventsParticipant;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -13,7 +18,8 @@ import lombok.NoArgsConstructor;
 public class User {
     @Id
     @Size(max = 255)
-    @Column(nullable = false)
+    @NotBlank(message = "Por favor ingrese un email")
+    @Email(message = "Por favor ingrese un email valido")
     private String email;
 
     @NotBlank(message = "Por favor ingrese un código")
@@ -34,5 +40,9 @@ public class User {
 
     @Size(max = 64)
     private String password;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user")
+    private List<EventsParticipant> eventsParticipant;
 
 }

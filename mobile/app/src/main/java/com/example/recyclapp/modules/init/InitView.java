@@ -21,6 +21,8 @@ public class InitView extends AppCompatActivity {
         ActivityInitBinding binding = ActivityInitBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         start(binding);
+        Utils.save(this, Utils.KEY_CODE, "");
+        Utils.save(this, Utils.KEY_ROLE, "");
     }
 
     private void start(ActivityInitBinding binding) {

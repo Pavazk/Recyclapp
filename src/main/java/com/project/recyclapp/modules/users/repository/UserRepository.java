@@ -17,5 +17,5 @@ public interface UserRepository extends CrudRepository<User, String> {
     //select * from user where email = "?" and code != "?"
     Optional<User> findByEmailAndCodeNot(String email, String code);
     //todo: buscarle uso a esta funcion
-    List<User> findByCodeContaining(String code);
+    User findByCodeContaining(String code);
 }

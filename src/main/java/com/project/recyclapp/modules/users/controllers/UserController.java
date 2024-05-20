@@ -41,7 +41,7 @@ public class UserController {
     }
 
     @GetMapping("/{code}")
-    public ResponseEntity<List<User>> getUserByCode(@PathVariable @Size(min = 1, max = 6, message = "Por favor ingrese un código valido") String code) {
+    public ResponseEntity<User> getUserByCode(@PathVariable @Size(min = 1, max = 6, message = "Por favor ingrese un código valido") String code) {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(userService.getUserByCode(code));
     }
 }

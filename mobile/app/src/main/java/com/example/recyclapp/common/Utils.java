@@ -23,6 +23,9 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Utils {
+    public static final String KEY_ROLE = "keyRole";
+    public static final String KEY_CODE = "keyCode";
+
     public static String title_toast_exito = "¡Excelente!";
     public static String title_toast_fallo = "¡Oops!";
     public static void Intent(Activity activity, Class<?> claseLlegada) {
