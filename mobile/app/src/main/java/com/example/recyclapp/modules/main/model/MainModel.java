@@ -47,7 +47,7 @@ public class MainModel {
         });
         binding.button.setOnClickListener(view -> {
             presenter.showLoading(binding);
-            switch (binding.tvTitulo.getText().toString()) {
+            /*switch (binding.tvTitulo.getText().toString()) {
                 case "INICIO DE SESIÓN":
                     loginUser(binding);
                     break;
@@ -59,7 +59,8 @@ public class MainModel {
                     break;
                 case "INGRESE LA IP":
                     saveIp(binding);
-            }
+            }*/
+            Utils.Intent(mainView, Home.class);
         });
     }
 

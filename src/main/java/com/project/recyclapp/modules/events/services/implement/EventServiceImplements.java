@@ -62,7 +62,7 @@ public class EventServiceImplements implements EventService {
             event.get().setDescription(registerEvent.getDescription());
         }
         if (!registerEvent.getParticipants().isEmpty()) {
-            eventParticipantsRepository.deleteAllByEvent(event.get());
+            //eventParticipantsRepository.deleteAllByEvent(event.get());
             for (User user : registerEvent.getParticipants()) {
                 EventsParticipant eventsParticipant = new EventsParticipant();
                 eventsParticipant.setEvents(event.get());

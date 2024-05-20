@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@mipmap/backgroung"
+    android:background="@drawable/background"
     tools:context=".modules.main.view.MainView">
 
     <!-- LINEAS HORIZONTALES -->
@@ -118,12 +118,12 @@
     <ImageView
         android:id="@+id/iv_icon"
         android:layout_width="0dp"
-        android:layout_height="100dp"
+        android:layout_height="120dp"
         app:layout_constraintBottom_toTopOf="@+id/lineHorizontalCenterTop2"
         app:layout_constraintEnd_toStartOf="@+id/lineVerticalCenterRight"
         app:layout_constraintStart_toStartOf="@+id/lineVerticalCenterLeft"
         app:layout_constraintTop_toTopOf="@+id/lineHorizontalTop"
-        app:srcCompat="@drawable/recycling" />
+        app:srcCompat="@mipmap/icon" />
 
     <TextView
         android:id="@+id/tv_sub_titulo"
@@ -333,6 +333,7 @@
         android:fontFamily="@font/poppins_light"
         android:gravity="center_vertical"
         android:text="Footer"
+        android:textStyle="italic"
         android:textColor="#666666"
         android:textSize="15sp"
         app:layout_constraintBottom_toTopOf="@+id/lineHorizontalCenterBottom3"
@@ -357,13 +358,14 @@
             android:id="@+id/button"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:backgroundTint="#F9C41E"
+            android:backgroundTint="@color/verde_nicolas"
             android:fontFamily="@font/poppins_semibold"
             android:text="Button"
             android:textColor="#000"
-            android:textSize="16dp"
+            android:textSize="16sp"
+            app:strokeColor="#000"
             android:textStyle="bold"
-            app:cornerRadius="10dp" />
+            app:cornerRadius="10dp"/>
 
     </com.google.android.material.button.MaterialButtonToggleGroup>
 

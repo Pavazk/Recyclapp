@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("user")
+@RequestMapping("event")
 public class EventController {
 
     @Autowired
@@ -36,7 +36,7 @@ public class EventController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(eventService.getEventById(id));
     }
 
-    @GetMapping
+    @GetMapping("/user")
     public ResponseEntity<List<Event>> getEventByUser(@RequestBody User user) {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(eventService.getEventByUser(user));
     }
