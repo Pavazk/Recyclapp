@@ -1,11 +1,11 @@
 package com.example.recyclapp.modules.menus;
 
 
-public class item_menu {
+public class ItemMenu {
     private String text;
     private int img;
 
-    public item_menu(String text, int img) {
+    public ItemMenu(String text, int img) {
         this.text = text;
         this.img = img;
     }

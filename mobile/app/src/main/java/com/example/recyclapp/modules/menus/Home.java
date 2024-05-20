@@ -1,33 +1,34 @@
 package com.example.recyclapp.modules.menus;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
-
-import androidx.recyclerview.widget.RecyclerView;
-
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.example.recyclapp.modules.Inventory.Inventory;
-import com.example.recyclapp.modules.InventoryHistory.InventoryHistory;
-import com.example.recyclapp.common.Utils;
-import com.example.recyclapp.modules.init.InitView;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+
 import com.example.recyclapp.R;
+import com.example.recyclapp.common.Utils;
+import com.example.recyclapp.databinding.ActivityHomeBinding;
+import com.example.recyclapp.modules.bins.BinAddActivity;
+import com.example.recyclapp.modules.bins.BinReadActivity;
+import com.example.recyclapp.modules.init.InitView;
+import com.example.recyclapp.modules.profile.ProfileActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Home extends AppCompatActivity implements MyAdapter.OnItemClickListener {
-    private RecyclerView recyclerView;
+
     private MyAdapter adapter;
-    private List<item_menu> data;
-    
+    private List<ItemMenu> data;
+
     private final String BINS = "Canecas";
     private final String PRODUCTS = "Productos";
     private final String EVENTS = "Eventos";
-    private final String PERSONS = "Personas";
+    private final String PERSONS = "Perfil";
     private final String ADD_PRODUCTS = "Agregar productos";
     private final String UPDATE_PRODUCTS = "Actualizar productos";
     private final String READ_PRODUCTS = "Ver productos";
@@ -37,34 +38,43 @@ public class Home extends AppCompatActivity implements MyAdapter.OnItemClickList
     private final String READ_BINS = "Ver canecas";
     private final String DELETE_BINS = "Eliminar canecas";
     private final String ADD_PERSONS = "Agregar personas";
-    private final String UPDATE_PERSONS = "Actualizar personas";
-    private final String READ_PERSONS = "Ver personas";
-    private final String DELETE_PERSONS = "Eliminar personas";
+    private final String UPDATE_PERSONS = "Actualizar perfil";
+    private final String READ_PERSONS = "Ver perfil";
+    private final String DELETE_PERSONS = "Eliminar perfil";
     private final String ADD_EVENTS = "Agregar eventos";
     private final String UPDATE_EVENTS = "Actualizar eventos";
     private final String READ_EVENTS = "Ver eventos";
     private final String DELETE_EVENTS = "Eliminar eventos";
 
+    ActivityHomeBinding binding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
-        recycler();
+        binding = ActivityHomeBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+        initView(binding);
     }
 
-    private void recycler() {
-        recyclerView = findViewById(R.id.recyclerview);
+    private void initView(ActivityHomeBinding binding) {
         data = new ArrayList<>();
-        data.add(new item_menu(BINS, R.mipmap.bins));
-        data.add(new item_menu(PRODUCTS, R.mipmap.products));
-        data.add(new item_menu(EVENTS, R.mipmap.events));
-        data.add(new item_menu(PERSONS, R.mipmap.persons));
         adapter = new MyAdapter(this, data, this);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, data.size() > 1 ? 2 : 1));
-        recyclerView.setNestedScrollingEnabled(false);
-        recyclerView.setFocusable(false);
-        recyclerView.setHasFixedSize(true);
+        binding.recyclerview.setAdapter(adapter);
+        binding.recyclerview.setLayoutManager(new GridLayoutManager(this, 2));
+        binding.recyclerview.setNestedScrollingEnabled(false);
+        binding.recyclerview.setFocusable(false);
+        binding.recyclerview.setHasFixedSize(true);
+        showHome();
+    }
+
+    private void showHome() {
+        binding.tvTitulo.setText("BIENVENIDO");
+        data = new ArrayList<>();
+        data.add(new ItemMenu(BINS, R.mipmap.bins));
+        data.add(new ItemMenu(PRODUCTS, R.mipmap.products));
+        data.add(new ItemMenu(EVENTS, R.mipmap.events));
+        data.add(new ItemMenu(PERSONS, R.mipmap.persons));
+        adapter.updateData(data);
     }
 
     @Override
@@ -72,26 +82,43 @@ public class Home extends AppCompatActivity implements MyAdapter.OnItemClickList
         switch (data.get(position).getText()) {
             case BINS:
                 data = new ArrayList<>();
-                data.add(new item_menu(ADD_BINS, R.mipmap.icon_add_bins));
-                data.add(new item_menu(UPDATE_BINS, R.mipmap.icon_update_bins));
-                data.add(new item_menu(READ_BINS, R.mipmap.icon_read_bins));
-                data.add(new item_menu(DELETE_BINS, R.mipmap.icon_delete_bins));
+                binding.tvTitulo.setText(BINS.toUpperCase());
+                data.add(new ItemMenu(ADD_BINS, R.mipmap.icon_add_bins));
+                data.add(new ItemMenu(UPDATE_BINS, R.mipmap.icon_update_bins));
+                data.add(new ItemMenu(READ_BINS, R.mipmap.icon_read_bins));
+                data.add(new ItemMenu(DELETE_BINS, R.mipmap.icon_delete_bins));
                 adapter.updateData(data);
                 break;
             case ADD_BINS:
+                if (Utils.havePermission(this)) {
+                    Utils.Intent(this, BinAddActivity.class);
+                } else {
+                    Utils.permissionManager(this);
+                }
                 break;
             case UPDATE_BINS:
+                Intent intent1 = new Intent(this, BinReadActivity.class);
+                intent1.putExtra("case", "UPDATE");
+                startActivity(intent1);
+                finish();
                 break;
             case READ_BINS:
+                startActivity(new Intent(this, BinReadActivity.class));
+                finish();
                 break;
             case DELETE_BINS:
+                Intent intent2 = new Intent(this, BinReadActivity.class);
+                intent2.putExtra("case", "DELETE");
+                startActivity(intent2);
+                finish();
                 break;
             case PRODUCTS:
+                binding.tvTitulo.setText(PRODUCTS.toUpperCase());
                 data = new ArrayList<>();
-                data.add(new item_menu(ADD_PRODUCTS, R.mipmap.icon_add_products));
-                data.add(new item_menu(UPDATE_PRODUCTS, R.mipmap.icon_update_products));
-                data.add(new item_menu(READ_PRODUCTS, R.mipmap.icon_read_products));
-                data.add(new item_menu(DELETE_PRODUCTS, R.mipmap.icon_delete_products));
+                data.add(new ItemMenu(ADD_PRODUCTS, R.mipmap.icon_add_products));
+                data.add(new ItemMenu(UPDATE_PRODUCTS, R.mipmap.icon_update_products));
+                data.add(new ItemMenu(READ_PRODUCTS, R.mipmap.icon_read_products));
+                data.add(new ItemMenu(DELETE_PRODUCTS, R.mipmap.icon_delete_products));
                 adapter.updateData(data);
                 break;
             case ADD_PRODUCTS:
@@ -103,11 +130,12 @@ public class Home extends AppCompatActivity implements MyAdapter.OnItemClickList
             case DELETE_PRODUCTS:
                 break;
             case EVENTS:
+                binding.tvTitulo.setText(EVENTS.toUpperCase());
                 data = new ArrayList<>();
-                data.add(new item_menu(ADD_EVENTS, R.mipmap.icon_add_event));
-                data.add(new item_menu(UPDATE_EVENTS, R.mipmap.icon_update_event));
-                data.add(new item_menu(READ_EVENTS, R.mipmap.icon_read_event));
-                data.add(new item_menu(DELETE_EVENTS, R.mipmap.icon_delete_event));
+                data.add(new ItemMenu(ADD_EVENTS, R.mipmap.icon_add_event));
+                data.add(new ItemMenu(UPDATE_EVENTS, R.mipmap.icon_update_event));
+                data.add(new ItemMenu(READ_EVENTS, R.mipmap.icon_read_event));
+                data.add(new ItemMenu(DELETE_EVENTS, R.mipmap.icon_delete_event));
                 adapter.updateData(data);
                 break;
             case ADD_EVENTS:
@@ -119,27 +147,19 @@ public class Home extends AppCompatActivity implements MyAdapter.OnItemClickList
             case DELETE_EVENTS:
                 break;
             case PERSONS:
-                data = new ArrayList<>();
-                data.add(new item_menu(ADD_PERSONS, R.mipmap.icon_add_persons));
-                data.add(new item_menu(UPDATE_PERSONS, R.mipmap.icon_update_persons));
-                data.add(new item_menu(READ_PERSONS, R.mipmap.icon_read_persons));
-                data.add(new item_menu(DELETE_PERSONS, R.mipmap.icon_delete_persons));
-                adapter.updateData(data);
-                break;
-            case ADD_PERSONS:
-                break;
-            case UPDATE_PERSONS:
-                break;
-            case READ_PERSONS:
-                break;
-            case DELETE_PERSONS:
+                Utils.Intent(this, ProfileActivity.class);
                 break;
         }
     }
 
+    @SuppressLint("MissingSuperCall")
     @Override
     public void onBackPressed() {
-        mostrarDialogo();
+        if("BIENVENIDO".equals(binding.tvTitulo.getText().toString())){
+            mostrarDialogo();
+            return;
+        }
+        showHome();
     }
 
     private void mostrarDialogo() {
@@ -162,4 +182,6 @@ public class Home extends AppCompatActivity implements MyAdapter.OnItemClickList
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
+
 }

@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".modules.bins.BinAddActivity"
+    android:background="@drawable/background">
+
+    <!-- LINEAS HORIZONTALES -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/lineHorizontalTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.05" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/lineHorizontalTop0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.10625" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/lineHorizontalCenterTop1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.1625" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/lineHorizontalCenterTop2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.275" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/lineHorizontalCenterTop2.5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.33125" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/lineHorizontalCenterTop3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="283dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/lineHorizontalCenter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/lineHorizontalCenterBottom1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.6125" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/lineHorizontalCenterBottom2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.725" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/lineHorizontalCenterBottom3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.8375" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/lineHorizontalBottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.95" />
+    <!-- LINEAS VERTICALES -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/lineVerticalLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.1" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/lineVerticalCenterLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.3" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/lineVerticalCenter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/lineVerticalCenterRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.7" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/lineVerticalRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.9" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_bold"
+        android:text="Canecas"
+        android:textColor="#ffffff"
+        android:textSize="28sp"
+        android:gravity="bottom"
+        app:layout_constraintBottom_toTopOf="@+id/lineHorizontalTop"
+        app:layout_constraintEnd_toStartOf="@id/lineVerticalCenterRight"
+        app:layout_constraintStart_toStartOf="@+id/lineVerticalCenterLeft" />
+
+    <ImageView
+        android:id="@+id/iv_back"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        app:layout_constraintBottom_toTopOf="@+id/lineHorizontalTop"
+        app:layout_constraintStart_toStartOf="@+id/lineVerticalLeft"
+        app:srcCompat="@drawable/baseline_arrow_back_ios_24" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/spinner_container"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:textColor="#000"
+        android:layout_height="wrap_content"
+        android:hint="Seleccione un color"
+        app:layout_constraintBottom_toTopOf="@+id/lineHorizontalCenterTop2"
+        app:layout_constraintEnd_toStartOf="@+id/lineVerticalRight"
+        app:layout_constraintStart_toStartOf="@+id/lineVerticalLeft">
+        <Spinner
+            android:id="@+id/spinner"
+            android:textColor="#000"
+            android:layout_width="match_parent"
+
+            style="@style/SpinnerStyle"
+            android:layout_height="wrap_content"
+            android:padding="16dp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/title_latitud"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:fontFamily="@font/poppins_bold"
+        android:gravity="center_vertical|center_horizontal"
+        android:text="Latitud"
+        android:textColor="#000"
+        app:layout_constraintEnd_toStartOf="@+id/lineVerticalCenter"
+        app:layout_constraintStart_toStartOf="@+id/lineVerticalLeft"
+        app:layout_constraintBottom_toTopOf="@+id/lineHorizontalCenterTop3"/>
+
+    <TextView
+        android:id="@+id/title_longitud"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:fontFamily="@font/poppins_bold"
+        android:gravity="center_vertical|center_horizontal"
+        android:textColor="#000"
+        android:text="Longitud"
+        app:layout_constraintEnd_toStartOf="@+id/lineVerticalRight"
+        app:layout_constraintStart_toStartOf="@+id/lineVerticalCenter"
+        app:layout_constraintBottom_toTopOf="@+id/lineHorizontalCenterTop3"/>
+
+    <TextView
+        android:id="@+id/tv_latitud"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:fontFamily="@font/poppins_regular"
+        android:gravity="center_vertical|center_horizontal"
+        android:textColor="#000"
+        android:text="8.0264"
+        app:layout_constraintEnd_toStartOf="@+id/lineVerticalCenter"
+        app:layout_constraintStart_toStartOf="@+id/lineVerticalLeft"
+        app:layout_constraintTop_toTopOf="@+id/lineHorizontalCenterTop3"/>
+
+    <TextView
+        android:id="@+id/tv_longitud"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:fontFamily="@font/poppins_regular"
+        android:gravity="center_vertical|center_horizontal"
+        android:textColor="#000"
+        android:text="8.0264"
+        app:layout_constraintEnd_toStartOf="@+id/lineVerticalRight"
+        app:layout_constraintStart_toStartOf="@+id/lineVerticalCenter"
+        app:layout_constraintTop_toTopOf="@+id/lineHorizontalCenterTop3"/>
+
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/group_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:orientation="horizontal"
+        app:checkedButton="@+id/btn_login"
+        app:layout_constraintTop_toTopOf="@+id/lineHorizontalCenterBottom3"
+        app:layout_constraintBottom_toTopOf="@+id/lineHorizontalBottom"
+        app:layout_constraintEnd_toStartOf="@+id/lineVerticalRight"
+        app:layout_constraintStart_toStartOf="@+id/lineVerticalLeft"
+        app:selectionRequired="true"
+        app:singleSelection="true">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:backgroundTint="@color/verde_nicolas"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="Registrar caneca"
+            android:textColor="#000"
+            android:textSize="16sp"
+            app:strokeColor="#000"
+            android:textStyle="bold"
+            app:cornerRadius="10dp"/>
+
+    </com.google.android.material.button.MaterialButtonToggleGroup>
+
+    <ImageView
+        android:id="@+id/iv_image"
+        android:layout_width="0dp"
+        android:layout_height="120dp"
+        app:layout_constraintBottom_toTopOf="@+id/lineHorizontalCenterBottom2"
+        app:layout_constraintEnd_toStartOf="@+id/lineVerticalCenterRight"
+        app:layout_constraintStart_toStartOf="@+id/lineVerticalCenterLeft"
+        app:layout_constraintTop_toTopOf="@+id/lineHorizontalCenter"
+        app:srcCompat="@mipmap/bins" />
+
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/group_button_update"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:orientation="horizontal"
+        app:checkedButton="@+id/btn_login"
+        app:layout_constraintBottom_toTopOf="@+id/lineHorizontalCenter"
+        app:layout_constraintEnd_toStartOf="@+id/lineVerticalCenterRight"
+        app:layout_constraintStart_toStartOf="@+id/lineVerticalCenterLeft"
+        app:layout_constraintTop_toBottomOf="@+id/tv_latitud"
+        app:selectionRequired="true"
+        app:singleSelection="true">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_update"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:backgroundTint="@color/verde_nicolas"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="Actualizar ubicación"
+            android:textColor="#000"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            app:cornerRadius="10dp"
+            app:strokeColor="#000" />
+
+    </com.google.android.material.button.MaterialButtonToggleGroup>
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/splash"
+        android:layout_width="400dp"
+        android:layout_height="220dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.454"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.499"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/loading" />
+</androidx.constraintlayout.widget.ConstraintLayout>

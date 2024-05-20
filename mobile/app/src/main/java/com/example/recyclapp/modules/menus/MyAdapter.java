@@ -17,12 +17,12 @@ import java.util.List;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
-    private List<item_menu> mData;
+    private List<ItemMenu> mData;
     private Context context;
     private OnItemClickListener mListener;
 
 
-    public MyAdapter(Context context, List<item_menu> data, OnItemClickListener listener) {
+    public MyAdapter(Context context, List<ItemMenu> data, OnItemClickListener listener) {
         this.mData = data;
         this.context = context;
         this.mListener = listener;
@@ -36,7 +36,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, @SuppressLint("RecyclerView") int position) {
-        item_menu item = mData.get(position);
+        ItemMenu item = mData.get(position);
         holder.tv_menu.setText(item.getText());
         Glide.with(holder.img_menu.getContext())
                 .load(item.getImg())
@@ -51,7 +51,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         });
     }
 
-    public void updateData(List<item_menu> newData) {
+    public void updateData(List<ItemMenu> newData) {
         mData.clear();
         mData.addAll(newData);
         notifyDataSetChanged();

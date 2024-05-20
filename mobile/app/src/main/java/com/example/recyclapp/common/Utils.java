@@ -1,15 +1,22 @@
 package com.example.recyclapp.common;
 
+import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.content.Context.MODE_PRIVATE;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.example.recyclapp.R;
 
@@ -113,6 +120,26 @@ public class Utils {
             e.printStackTrace();
         }
         return "";
+    }
+
+    public static final String[] PERMISSIONS = new String[]{ACCESS_COARSE_LOCATION, ACCESS_FINE_LOCATION};
+
+    public static void permissionManager(Activity activity) {
+        if (!havePermission(activity)) {
+            requestPermissions(activity);
+        }
+    }
+
+    private static void requestPermissions(Activity activity) {
+        ActivityCompat.requestPermissions(activity, PERMISSIONS, 1);
+    }
+    public static boolean havePermission(Context context) {
+        for (String permission : PERMISSIONS) {
+            if (ContextCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                return false;
+            }
+        }
+        return true;
     }
 
 }

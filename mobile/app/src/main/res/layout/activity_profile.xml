@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_2"
+    tools:context=".modules.profile.ProfileActivity">
+    <!-- LINEAS HORIZONTALES -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/lineHorizontalTop0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.02" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/lineHorizontalTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.05" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/lineHorizontalCenterTop1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.1625" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/lineHorizontalCenterTop2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.275" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/lineHorizontalCenterTop3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.3875" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/lineHorizontalCenter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/lineHorizontalCenterBottom1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.6125" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/lineHorizontalCenterBottom2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.725" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/lineHorizontalCenterBottom3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.8375" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/lineHorizontalBottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.95" />
+    <!-- LINEAS VERTICALES -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/lineVerticalLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.1" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/lineVerticalCenterLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.3" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/lineVerticalCenter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/lineVerticalCenterRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.7" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/lineVerticalRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.9" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/splash"
+        android:layout_width="400dp"
+        android:layout_height="220dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.454"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.499"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/loading" />
+
+    <ImageView
+        android:id="@+id/iv_back"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        app:layout_constraintTop_toBottomOf="@+id/lineHorizontalTop0"
+        app:layout_constraintStart_toStartOf="@+id/lineVerticalLeft"
+        app:srcCompat="@drawable/baseline_arrow_back_ios_24" />
+
+    <TextView
+        android:id="@+id/tv_titulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_bold"
+        android:text="PERFIL"
+        android:textColor="#ffffff"
+        android:textSize="42sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/lineHorizontalTop" />
+
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/lineHorizontalCenterBottom3"
+        app:layout_constraintEnd_toStartOf="@+id/lineVerticalRight"
+        app:layout_constraintStart_toStartOf="@+id/lineVerticalLeft"
+        app:layout_constraintTop_toTopOf="@+id/lineHorizontalCenterTop2">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tf_code"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:clickable="false"
+            android:fontFamily="@font/poppins_regular"
+            android:textCursorDrawable="@drawable/cursor_style"
+            app:hintTextColor="#8E9094"
+            android:hint="Código estudiantil"
+            style="@style/TextInputLayoutShape">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_code"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:fontFamily="@font/poppins_regular"
+                android:textColor="#8E9094"
+                android:clickable="false"
+                android:inputType="textEmailAddress"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890@."
+                android:textCursorDrawable="@drawable/cursor_style" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tf_name"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:fontFamily="@font/poppins_regular"
+            android:textCursorDrawable="@drawable/cursor_style"
+            app:hintTextColor="#8E9094"
+            android:hint="Nombre"
+            style="@style/TextInputLayoutShape">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_name"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:fontFamily="@font/poppins_regular"
+                android:textColor="#8E9094"
+                android:clickable="false"
+                android:inputType="textEmailAddress"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890@."
+                android:textCursorDrawable="@drawable/cursor_style" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tf_email"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:clickable="false"
+            android:fontFamily="@font/poppins_regular"
+            android:textCursorDrawable="@drawable/cursor_style"
+            app:hintTextColor="#8E9094"
+            android:hint="Correo institucional"
+            style="@style/TextInputLayoutShape">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_email"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:fontFamily="@font/poppins_regular"
+                android:textColor="#8E9094"
+                android:clickable="false"
+                android:inputType="textEmailAddress"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890@."
+                android:textCursorDrawable="@drawable/cursor_style" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tf_identification"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:fontFamily="@font/poppins_regular"
+            android:textCursorDrawable="@drawable/cursor_style"
+            app:hintTextColor="#8E9094"
+            android:hint="Identificación"
+            style="@style/TextInputLayoutShape">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_identification"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:fontFamily="@font/poppins_regular"
+                android:textColor="#8E9094"
+                android:clickable="false"
+                android:inputType="textEmailAddress"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890@."
+                android:textCursorDrawable="@drawable/cursor_style" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tf_type_user"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:fontFamily="@font/poppins_regular"
+            android:textCursorDrawable="@drawable/cursor_style"
+            app:hintTextColor="#8E9094"
+            android:hint="Tipo de usuario"
+            style="@style/TextInputLayoutShape">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_type_user"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:fontFamily="@font/poppins_regular"
+                android:textColor="#8E9094"
+                android:clickable="false"
+                android:inputType="textEmailAddress"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890@."
+                android:textCursorDrawable="@drawable/cursor_style" />
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

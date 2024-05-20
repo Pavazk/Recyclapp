@@ -1,11 +1,26 @@
 package com.example.recyclapp.modules.init;
 
+import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
+import static android.Manifest.permission.READ_PHONE_STATE;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+
+import static com.example.recyclapp.common.Utils.permissionManager;
+
+import android.app.Activity;
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.example.recyclapp.databinding.ActivityInitBinding;
 import com.example.recyclapp.modules.main.view.MainView;
@@ -20,6 +35,7 @@ public class InitView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         ActivityInitBinding binding = ActivityInitBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        permissionManager(this);
         start(binding);
         Utils.save(this, Utils.KEY_CODE, "");
         Utils.save(this, Utils.KEY_ROLE, "");
@@ -57,6 +73,25 @@ public class InitView extends AppCompatActivity {
             return activeNetworkInfo != null && activeNetworkInfo.isConnected();
         }
         return false;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 1) {
+            if (!checkPermissionResult(grantResults)) {
+                Toast.makeText(this, "Por favor acepte los permisos", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private boolean checkPermissionResult(int[] grantResults) {
+        for (int grantResult : grantResults) {
+            if (grantResult == -1) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
