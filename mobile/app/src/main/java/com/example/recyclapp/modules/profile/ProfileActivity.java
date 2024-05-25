@@ -23,17 +23,17 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         ActivityProfileBinding binding = ActivityProfileBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        binding.ivBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        binding.ivBack.setOnClickListener(v -> onBackPressed());
         binding.etCode.setText("191999");
+        binding.etCode.setEnabled(false);
         binding.etEmail.setText("leospinap@ufpso.edu.co");
+        binding.etEmail.setEnabled(false);
         binding.etName.setText("Luis Ospina");
+        binding.etName.setEnabled(false);
         binding.etTypeUser.setText("Super administrador");
+        binding.etTypeUser.setEnabled(false);
         binding.etIdentification.setText("1066864914");
+        binding.etIdentification.setEnabled(false);
     }
 
     @SuppressLint("MissingSuperCall")

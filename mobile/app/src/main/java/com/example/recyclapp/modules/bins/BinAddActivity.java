@@ -51,7 +51,8 @@ public class BinAddActivity extends AppCompatActivity {
         binding.tvLongitud.setVisibility(View.GONE);
         binding.ivImage.setVisibility(View.GONE);
         binding.groupButton.setVisibility(View.GONE);
-        binding.groupButtonUpdate.setVisibility(View.GONE);
+        binding.groupSearchLocation.setVisibility(View.GONE);
+        binding.groupThisLocation.setVisibility(View.GONE);
         //loadColors();
         List<Color> list = new ArrayList<>();
         Color color1 = new Color();
@@ -130,18 +131,14 @@ public class BinAddActivity extends AppCompatActivity {
             }
             binding.splash.setVisibility(View.GONE);
             binding.ivBack.setVisibility(View.VISIBLE);
-            binding.groupButtonUpdate.setVisibility(View.VISIBLE);
-            binding.buttonUpdate.setOnClickListener(v -> {
+            binding.groupSearchLocation.setVisibility(View.VISIBLE);
+            binding.groupThisLocation.setVisibility(View.VISIBLE);
+            binding.groupThisLocation.setOnClickListener(v -> {
                 String[] a = GPS.getInstance().getLocalization(BinAddActivity.this).split("\\|");
                 binding.tvLatitud.setText(a[0]);
                 binding.tvLongitud.setText(a[1]);
             });
-            binding.ivBack.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onBackPressed();
-                }
-            });
+            binding.ivBack.setOnClickListener(v -> onBackPressed());
             binding.title.setVisibility(View.VISIBLE);
             binding.spinnerContainer.setVisibility(View.VISIBLE);
             binding.titleLatitud.setVisibility(View.VISIBLE);
@@ -177,12 +174,7 @@ public class BinAddActivity extends AppCompatActivity {
 
                 }
             });
-            binding.button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(BinAddActivity.this, "Se enviará la información", Toast.LENGTH_SHORT).show();
-                }
-            });
+            binding.button.setOnClickListener(v -> Toast.makeText(BinAddActivity.this, "Se enviará la información", Toast.LENGTH_SHORT).show());
         } catch (Exception e) {
             e.printStackTrace();
             Toast.makeText(BinAddActivity.this, "Algo salió mal!", Toast.LENGTH_SHORT).show();

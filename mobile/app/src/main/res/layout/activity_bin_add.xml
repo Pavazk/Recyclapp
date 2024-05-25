@@ -218,12 +218,12 @@
         android:layout_alignParentLeft="true"
         android:orientation="horizontal"
         app:checkedButton="@+id/btn_login"
+        app:selectionRequired="true"
+        app:singleSelection="true"
         app:layout_constraintTop_toTopOf="@+id/lineHorizontalCenterBottom3"
         app:layout_constraintBottom_toTopOf="@+id/lineHorizontalBottom"
         app:layout_constraintEnd_toStartOf="@+id/lineVerticalRight"
-        app:layout_constraintStart_toStartOf="@+id/lineVerticalLeft"
-        app:selectionRequired="true"
-        app:singleSelection="true">
+        app:layout_constraintStart_toStartOf="@+id/lineVerticalLeft">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button"
@@ -234,7 +234,8 @@
             android:text="Registrar caneca"
             android:textColor="#000"
             android:textSize="16sp"
-            app:strokeColor="#000"
+            app:strokeColor="#FFFFFF"
+            app:strokeWidth="2dp"
             android:textStyle="bold"
             app:cornerRadius="10dp"/>
 
@@ -251,34 +252,64 @@
         app:srcCompat="@mipmap/bins" />
 
     <com.google.android.material.button.MaterialButtonToggleGroup
-        android:id="@+id/group_button_update"
+        android:id="@+id/group_this_location"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:orientation="horizontal"
         app:checkedButton="@+id/btn_login"
         app:layout_constraintBottom_toTopOf="@+id/lineHorizontalCenter"
-        app:layout_constraintEnd_toStartOf="@+id/lineVerticalCenterRight"
-        app:layout_constraintStart_toStartOf="@+id/lineVerticalCenterLeft"
+        app:layout_constraintEnd_toStartOf="@+id/lineVerticalRight"
+        app:layout_constraintStart_toStartOf="@+id/lineVerticalCenter"
         app:layout_constraintTop_toBottomOf="@+id/tv_latitud"
         app:selectionRequired="true"
         app:singleSelection="true">
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/button_update"
+            android:id="@+id/this_location"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:backgroundTint="@color/verde_nicolas"
             android:fontFamily="@font/poppins_semibold"
-            android:text="Actualizar ubicación"
+            android:text="Ubicación actual"
             android:textColor="#000"
             android:textSize="10sp"
             android:textStyle="bold"
             app:cornerRadius="10dp"
-            app:strokeColor="#000" />
+            app:strokeColor="#FFFFFF"
+            app:strokeWidth="2dp"/>
 
     </com.google.android.material.button.MaterialButtonToggleGroup>
 
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/group_search_location"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:orientation="horizontal"
+        app:checkedButton="@+id/btn_login"
+        app:layout_constraintBottom_toTopOf="@+id/lineHorizontalCenter"
+        app:layout_constraintEnd_toStartOf="@+id/lineVerticalCenter"
+        app:layout_constraintStart_toStartOf="@+id/lineVerticalLeft"
+        app:layout_constraintTop_toBottomOf="@+id/tv_latitud"
+        app:selectionRequired="true"
+        app:singleSelection="true">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/search_location"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:backgroundTint="@color/verde_nicolas"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="Buscar ubicación"
+            android:textColor="#000"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            app:cornerRadius="10dp"
+            app:strokeColor="#FFFFFF"
+            app:strokeWidth="2dp" />
+
+    </com.google.android.material.button.MaterialButtonToggleGroup>
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/splash"
         android:layout_width="400dp"
