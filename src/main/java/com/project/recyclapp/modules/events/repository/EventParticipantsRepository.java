@@ -7,5 +7,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface EventParticipantsRepository extends CrudRepository<EventsParticipant, Integer> {
-    //void deleteAllByEvent(Event event);
+
+    void deleteByEvents(Event event);
 }

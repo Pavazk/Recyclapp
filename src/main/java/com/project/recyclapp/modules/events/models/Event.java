@@ -1,6 +1,7 @@
 package com.project.recyclapp.modules.events.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.project.recyclapp.modules.users.models.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -28,6 +29,11 @@ public class Event {
     @NotBlank(message = "Por favor ingrese la descripción")
     @Size(max = 255)
     private String description;
+
+    @NotBlank(message = "Por favor ingrese el owner")
+    @ManyToOne
+    @JoinColumn(referencedColumnName = "email")
+    private User user;
 
     @ManyToOne
     @JoinColumn(referencedColumnName = "id")

@@ -2,9 +2,7 @@ package com.project.recyclapp.modules.events.services.implement;
 
 import com.project.recyclapp.commons.Utils;
 import com.project.recyclapp.commons.exceptions.CustomException;
-import com.project.recyclapp.modules.events.models.Event;
-import com.project.recyclapp.modules.events.models.EventsParticipant;
-import com.project.recyclapp.modules.events.models.RegisterEvent;
+import com.project.recyclapp.modules.events.models.*;
 import com.project.recyclapp.modules.events.repository.CollectionTypeRepository;
 import com.project.recyclapp.modules.events.repository.EventParticipantsRepository;
 import com.project.recyclapp.modules.events.repository.EventRepository;
@@ -39,6 +37,7 @@ public class EventServiceImplements implements EventService {
         event.setDescription(registerEvent.getDescription());
         event.setEventType(registerEvent.getEventType());
         event.setCollectionType(registerEvent.getCollectionType());
+        event.setUser(userRepository.findByEmail(registerEvent.getEmail_owner()).get());
         event = eventRepository.save(event);
         for (User user : registerEvent.getParticipants()) {
             EventsParticipant eventsParticipant = new EventsParticipant();
@@ -62,7 +61,7 @@ public class EventServiceImplements implements EventService {
             event.get().setDescription(registerEvent.getDescription());
         }
         if (!registerEvent.getParticipants().isEmpty()) {
-            //eventParticipantsRepository.deleteAllByEvent(event.get());
+            eventParticipantsRepository.deleteByEvents(event.get());
             for (User user : registerEvent.getParticipants()) {
                 EventsParticipant eventsParticipant = new EventsParticipant();
                 eventsParticipant.setEvents(event.get());
@@ -96,5 +95,15 @@ public class EventServiceImplements implements EventService {
     public String deleteEvent(Event event) {
         eventRepository.delete(event);
         return "Evento eliminado con exito";
+    }
+
+    @Override
+    public List<CollectionType> getAllCollectionType() {
+        return (List<CollectionType>) collectionTypeRepository.findAll();
+    }
+
+    @Override
+    public List<EventType> getAllEventType() {
+        return (List<EventType>) eventTypeRepository.findAll();
     }
 }

@@ -1,6 +1,7 @@
 package com.project.recyclapp.modules.users.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.project.recyclapp.modules.events.models.Event;
 import com.project.recyclapp.modules.events.models.EventsParticipant;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -40,6 +41,10 @@ public class User {
 
     @Size(max = 64)
     private String password;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user")
+    private List<Event> events;
 
     @JsonIgnore
     @OneToMany(mappedBy = "user")

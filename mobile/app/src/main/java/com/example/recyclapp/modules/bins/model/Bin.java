@@ -1,15 +1,13 @@
 package com.example.recyclapp.modules.bins.model;
 
-import java.math.BigDecimal;
-
 public class Bin {
     private Integer id;
 
     private Color color;
 
-    private BigDecimal latitude;
+    private Double latitude;
 
-    private BigDecimal longitude;
+    private Double longitude;
 
     public Integer getId() {
         return id;
@@ -27,19 +25,19 @@ public class Bin {
         this.color = color;
     }
 
-    public BigDecimal getLatitude() {
+    public Double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(BigDecimal latitude) {
+    public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }
 
-    public BigDecimal getLongitude() {
+    public Double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(BigDecimal longitude) {
+    public void setLongitude(Double longitude) {
         this.longitude = longitude;
     }
 
@@ -58,8 +56,8 @@ public class Bin {
         Bin bin = new Bin();
         bin.setId(Integer.parseInt(parts[0]));
         bin.setColor(Color.fromString(parts[1]));
-        bin.setLatitude(new BigDecimal(parts[2]));
-        bin.setLongitude(new BigDecimal(parts[3]));
+        bin.setLatitude(Double.parseDouble(parts[2]));
+        bin.setLongitude(Double.parseDouble(parts[3]));
         return bin;
     }
 }

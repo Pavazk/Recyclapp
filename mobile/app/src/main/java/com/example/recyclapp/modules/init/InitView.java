@@ -20,7 +20,7 @@ import java.util.TimerTask;
 
 public class InitView extends AppCompatActivity {
 
-    public static boolean isOffline = true;
+    public static boolean isOffline = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

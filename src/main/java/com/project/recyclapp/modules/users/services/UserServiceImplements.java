@@ -13,6 +13,7 @@ import com.project.recyclapp.modules.users.repository.UserTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.security.MessageDigest;
 import java.util.List;
 import java.util.Optional;
 
@@ -82,7 +83,11 @@ public class UserServiceImplements implements UserService {
             throw noDataValid();
         }
         Optional<User> user = userRepository.findByEmail(userLogin.getEmail());
-        if(user.isEmpty() || !user.get().getPassword().equals(userLogin.getPassword())){
+        String password = userLogin.getPassword();
+        if(user.get().getPassword().length() > 10) {
+            password = SHA256(password);
+        }
+        if(user.isEmpty() || !user.get().getPassword().equals(password)){
             throw new CustomException("Credenciales incorrectas");
         }
         return user.get();
@@ -139,4 +144,24 @@ public class UserServiceImplements implements UserService {
         userType.setName(Defines.ROLE_STUDENT.getMessage());
         return (List<User>) userRepository.findByUserType(userType);
     }
+    public static String SHA256(String data) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] encodedhash = digest.digest(data.getBytes());
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : encodedhash) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) {
+                    hexString.append('0');
+                }
+                hexString.append(hex);
+            }
+
+            return hexString.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
 }

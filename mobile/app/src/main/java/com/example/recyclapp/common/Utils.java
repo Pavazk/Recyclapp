@@ -28,6 +28,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class Utils {
     public static final String KEY_ROLE = "keyRole";
@@ -93,7 +94,6 @@ public class Utils {
                         ConnectionSpec.MODERN_TLS,
                         ConnectionSpec.COMPATIBLE_TLS))
                 .build();
-
         return new Retrofit.Builder()
                 .baseUrl(IP(activity))
                 .addConverterFactory(GsonConverterFactory.create())

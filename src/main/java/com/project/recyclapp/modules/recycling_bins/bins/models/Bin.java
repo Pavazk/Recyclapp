@@ -21,9 +21,9 @@ public class Bin {
     @JoinColumn(referencedColumnName = "id")
     private Color color;
 
-    private BigDecimal latitude;
+    private Double latitude;
 
-    private BigDecimal longitude;
+    private Double longitude;
 
     @JsonIgnore
     @OneToMany(mappedBy = "bins")

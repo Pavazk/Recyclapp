@@ -2,6 +2,7 @@ package com.example.recyclapp.modules.bins;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -12,10 +13,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.recyclapp.R;
 import com.example.recyclapp.common.Utils;
-import com.example.recyclapp.databinding.ActivityBinAddBinding;
 import com.example.recyclapp.common.interfaces.APIService;
+import com.example.recyclapp.databinding.ActivityBinAddBinding;
 import com.example.recyclapp.modules.bins.model.Bin;
 import com.example.recyclapp.modules.bins.model.Color;
+import com.example.recyclapp.modules.init.InitView;
 import com.example.recyclapp.modules.menus.Home;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -33,6 +35,7 @@ import retrofit2.Response;
 public class BinAddActivity extends AppCompatActivity implements OnMapReadyCallback {
     private ActivityBinAddBinding binding;
     private ArrayAdapter<String> adapter;
+    private List<Color> listColor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +57,11 @@ public class BinAddActivity extends AppCompatActivity implements OnMapReadyCallb
         binding.mapView.setVisibility(View.GONE);
         binding.mapView.onCreate(savedInstanceState);
         binding.mapView.getMapAsync(this);
-        //loadColors();
+        listColor = new ArrayList<>();
+        if (!InitView.isOffline) {
+            loadColors();
+            return;
+        }
         List<Color> list = new ArrayList<>();
         Color color1 = new Color();
         color1.setName("ROJO");
@@ -71,7 +78,7 @@ public class BinAddActivity extends AppCompatActivity implements OnMapReadyCallb
         list.add(color3);
         list.add(color4);
         list.add(color5);
-        loadView(list);
+        loadView();
     }
 
     public void loadColors() {
@@ -82,8 +89,8 @@ public class BinAddActivity extends AppCompatActivity implements OnMapReadyCallb
                 @Override
                 public void onResponse(Call<List<Color>> call, Response<List<Color>> response) {
                     if (response.isSuccessful()) {
-                        List<Color> colors = response.body();
-                        loadView(colors);
+                        listColor = response.body();
+                        loadView();
                     } else {
                         Toast.makeText(BinAddActivity.this, "Algo salió mal!", Toast.LENGTH_SHORT).show();
                         onBackPressed();
@@ -103,11 +110,11 @@ public class BinAddActivity extends AppCompatActivity implements OnMapReadyCallb
         }
     }
 
-    private void loadView(List<Color> colors) {
+    private void loadView() {
         try {
             List<String> data = new ArrayList<>();
-            for (Color color : colors) {
-                data.add(color.getName());
+            for (Color color : listColor) {
+                data.add(color.getName().toUpperCase());
             }
             adapter = new ArrayAdapter<>(BinAddActivity.this, R.layout.spinner_item_layout, data);
             adapter.setDropDownViewResource(R.layout.spinner_item_layout);
@@ -117,8 +124,8 @@ public class BinAddActivity extends AppCompatActivity implements OnMapReadyCallb
                 Bin bin = Bin.fromString(bundle.getString("case"));
                 binding.tvLongitud.setText(String.valueOf(bin.getLongitude()));
                 binding.tvLatitud.setText(String.valueOf(bin.getLatitude()));
-                for (int i = 0; i < colors.size(); i++) {
-                    if (colors.get(i).getName().equals(bin.getColor())) {
+                for (int i = 0; i < listColor.size(); i++) {
+                    if (listColor.get(i).getName().equals(bin.getColor())) {
                         binding.spinner.setSelection(i);
                         break;
                     }
@@ -140,7 +147,7 @@ public class BinAddActivity extends AppCompatActivity implements OnMapReadyCallb
                 binding.groupSearchLocation.setVisibility(View.GONE);
             });
             binding.groupThisLocation.setVisibility(View.VISIBLE);
-            binding.groupThisLocation.setOnClickListener(v -> {
+            binding.thisLocation.setOnClickListener(v -> {
                 String[] a = GPS.getInstance().getLocalization(BinAddActivity.this).split("\\|");
                 binding.tvLatitud.setText(a[0]);
                 binding.tvLongitud.setText(a[1]);
@@ -157,20 +164,20 @@ public class BinAddActivity extends AppCompatActivity implements OnMapReadyCallb
             binding.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    switch (position) {
-                        case 0:
+                    switch (listColor.get(position).getName().toUpperCase()) {
+                        case "ROJO":
                             binding.ivImage.setImageResource(R.mipmap.bin_red);
                             break;
-                        case 1:
+                        case "AZUL":
                             binding.ivImage.setImageResource(R.mipmap.bin_blue);
                             break;
-                        case 2:
+                        case "VERDE":
                             binding.ivImage.setImageResource(R.mipmap.bin_green);
                             break;
-                        case 3:
+                        case "GRIS":
                             binding.ivImage.setImageResource(R.mipmap.bin_gray);
                             break;
-                        case 4:
+                        case "NEGRO":
                             binding.ivImage.setImageResource(R.mipmap.bin_black);
                             break;
                     }
@@ -181,7 +188,56 @@ public class BinAddActivity extends AppCompatActivity implements OnMapReadyCallb
 
                 }
             });
-            binding.button.setOnClickListener(v -> Toast.makeText(BinAddActivity.this, "Se enviará la información", Toast.LENGTH_SHORT).show());
+            binding.button.setOnClickListener(v -> {
+                try {
+                    Bin bin = new Bin();
+                    bin.setColor(listColor.get(binding.spinner.getSelectedItemPosition()));
+                    bin.setLatitude(Double.parseDouble(binding.tvLatitud.getText().toString()));
+                    bin.setLongitude(Double.parseDouble(binding.tvLongitud.getText().toString()));
+                    Log.e("PAVA", binding.tvLatitud.getText().toString() + " -> " + bin.getLatitude());
+                    Log.e("PAVA", binding.tvLongitud.getText().toString() + " -> " + bin.getLongitude());
+                    APIService service = Utils.getRetrofit(BinAddActivity.this).create(APIService.class);
+                    Bundle bundle1 = getIntent().getExtras();
+                    if (bundle1 != null) {
+                        service.updateBin(bin, Bin.fromString(bundle.getString("case")).getId()).enqueue(new Callback<Bin>() {
+                            @Override
+                            public void onResponse(Call<Bin> call, Response<Bin> response) {
+                                if (response.isSuccessful()) {
+                                    Toast.makeText(BinAddActivity.this, "Caneca actualizada con éxito", Toast.LENGTH_SHORT).show();
+                                    onBackPressed();
+                                }
+                                Toast.makeText(BinAddActivity.this, "No se pudo conectar con el servidor", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onFailure(Call<Bin> call, Throwable t) {
+                                Toast.makeText(BinAddActivity.this, "No se pudo conectar con el servidor", Toast.LENGTH_SHORT).show();
+                                onBackPressed();
+                            }
+                        });
+                        return;
+                    }
+                    service.registerBin(bin).enqueue(new Callback<Bin>() {
+                        @Override
+                        public void onResponse(Call<Bin> call, Response<Bin> response) {
+                            if (response.isSuccessful()) {
+                                Toast.makeText(BinAddActivity.this, "Caneca registrada con éxito", Toast.LENGTH_SHORT).show();
+                                onBackPressed();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Bin> call, Throwable t) {
+                            Toast.makeText(BinAddActivity.this, "No se pudo conectar con el servidor", Toast.LENGTH_SHORT).show();
+                            onBackPressed();
+                        }
+                    });
+                } catch (Throwable e) {
+                    e.printStackTrace();
+                    Toast.makeText(BinAddActivity.this, "No se pudo conectar con el servidor", Toast.LENGTH_SHORT).show();
+                    onBackPressed();
+                }
+            });
         } catch (Exception e) {
             e.printStackTrace();
             Toast.makeText(BinAddActivity.this, "Algo salió mal!", Toast.LENGTH_SHORT).show();
@@ -201,16 +257,13 @@ public class BinAddActivity extends AppCompatActivity implements OnMapReadyCallb
         UiSettings uiSettings = googleMap.getUiSettings();
         uiSettings.setZoomGesturesEnabled(false);
         googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-        googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-            @Override
-            public void onMapClick(@NonNull LatLng latLng) {
-                binding.tvLongitud.setText(String.valueOf(latLng.longitude));
-                binding.tvLatitud.setText(String.valueOf(latLng.latitude));
-                binding.mapView.setVisibility(View.GONE);
-                binding.ivImage.setVisibility(View.VISIBLE);
-                binding.groupThisLocation.setVisibility(View.VISIBLE);
-                binding.groupSearchLocation.setVisibility(View.VISIBLE);
-            }
+        googleMap.setOnMapClickListener(latLng -> {
+            binding.tvLongitud.setText(String.valueOf(latLng.longitude));
+            binding.tvLatitud.setText(String.valueOf(latLng.latitude));
+            binding.mapView.setVisibility(View.GONE);
+            binding.ivImage.setVisibility(View.VISIBLE);
+            binding.groupThisLocation.setVisibility(View.VISIBLE);
+            binding.groupSearchLocation.setVisibility(View.VISIBLE);
         });
         String[] location = GPS.getInstance().getLocalization(BinAddActivity.this).split("\\|");
         LatLng latLng = new LatLng(Double.parseDouble(location[0]), Double.parseDouble(location[1]));

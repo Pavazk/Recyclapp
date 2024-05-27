@@ -12,6 +12,7 @@ import com.example.recyclapp.R;
 import com.example.recyclapp.common.Utils;
 import com.example.recyclapp.databinding.ActivityEventBinding;
 import com.example.recyclapp.common.interfaces.APIService;
+import com.example.recyclapp.modules.events.model.RegisterEvent;
 import com.example.recyclapp.modules.main.data.User;
 import com.example.recyclapp.modules.events.adapters.UserAdapter;
 import com.example.recyclapp.modules.events.adapters.UserSelectedAdapter;
@@ -44,7 +45,10 @@ public class EventActivity extends AppCompatActivity {
         initUsers();
         initUserSelected();
         binding.button.setOnClickListener(v -> {
-
+            /*RegisterEvent registerEvent = new RegisterEvent();
+            registerEvent.setName(re);
+            APIService service = Utils.getRetrofit(this).create(APIService.class);
+            service.registerEvent()*/
         });
         binding.ivBack.setOnClickListener(v -> onBackPressed());
     }
@@ -57,7 +61,7 @@ public class EventActivity extends AppCompatActivity {
                 public void onResponse(Call<List<User>> call, Response<List<User>> response) {
                     if (response.isSuccessful()) {
                         for (User user : response.body()) {
-                            if (Utils.restore(EventActivity.this, Utils.KEY_CODE).equals(user.getCode())) {
+                            if (!Utils.restore(EventActivity.this, Utils.KEY_CODE).equals(user.getCode())) {
                                 users.add(user);
                             }
                         }
@@ -84,32 +88,32 @@ public class EventActivity extends AppCompatActivity {
                                                 adapter.setDropDownViewResource(R.layout.spinner_item_layout);
                                                 binding.spinner.setAdapter(adapter);
                                             } else {
-                                                Toast.makeText(EventActivity.this, "Algo falló en el servidor", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(EventActivity.this, "Algo falló en el servidor evento", Toast.LENGTH_SHORT).show();
                                                 return;
                                             }
                                         }
 
                                         @Override
                                         public void onFailure(Call<List<EventType>> call, Throwable t) {
-                                            Toast.makeText(EventActivity.this, "Algo falló en el servidor", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(EventActivity.this, "Algo falló en el servidor coleccion", Toast.LENGTH_SHORT).show();
                                             return;
                                         }
                                     });
                                 } else {
-                                    Toast.makeText(EventActivity.this, "Algo falló en el servidor", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(EventActivity.this, "Algo falló en el servidor coleccion", Toast.LENGTH_SHORT).show();
                                     return;
                                 }
                             }
 
                             @Override
                             public void onFailure(Call<List<CollectionType>> call, Throwable t) {
-                                Toast.makeText(EventActivity.this, "Algo falló en el servidor", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(EventActivity.this, "Algo falló en el servidor usuarios", Toast.LENGTH_SHORT).show();
                                 return;
                             }
                         });
 
                     } else {
-                        Toast.makeText(EventActivity.this, "Algo falló en el servidor", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(EventActivity.this, "Algo falló en el servidor usuarios", Toast.LENGTH_SHORT).show();
                         return;
                     }
                 }

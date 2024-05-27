@@ -58,4 +58,7 @@ public class RegisterEvent {
         this.collectionType = collectionType;
         this.participants = participants;
     }
+
+    public RegisterEvent() {
+    }
 }

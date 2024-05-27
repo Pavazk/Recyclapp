@@ -1,6 +1,8 @@
 package com.project.recyclapp.modules.events.controllers;
 
+import com.project.recyclapp.modules.events.models.CollectionType;
 import com.project.recyclapp.modules.events.models.Event;
+import com.project.recyclapp.modules.events.models.EventType;
 import com.project.recyclapp.modules.events.models.RegisterEvent;
 import com.project.recyclapp.modules.events.services.interfaces.EventService;
 import com.project.recyclapp.modules.users.models.User;
@@ -49,6 +51,16 @@ public class EventController {
     @DeleteMapping
     public ResponseEntity<String> deleteEvent(@RequestBody Event event){
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(eventService.deleteEvent(event));
+    }
+
+    @GetMapping("/collection")
+    public ResponseEntity<List<CollectionType>> getAllCollectionType() {
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(eventService.getAllCollectionType());
+    }
+
+    @GetMapping("/type")
+    public ResponseEntity<List<EventType>> getAllEventType() {
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(eventService.getAllEventType());
     }
 
 }

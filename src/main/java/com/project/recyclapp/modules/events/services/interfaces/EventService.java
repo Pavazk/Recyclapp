@@ -1,6 +1,8 @@
 package com.project.recyclapp.modules.events.services.interfaces;
 
+import com.project.recyclapp.modules.events.models.CollectionType;
 import com.project.recyclapp.modules.events.models.Event;
+import com.project.recyclapp.modules.events.models.EventType;
 import com.project.recyclapp.modules.events.models.RegisterEvent;
 import com.project.recyclapp.modules.users.models.User;
 import org.springframework.stereotype.Service;
@@ -20,4 +22,8 @@ public interface EventService {
     List<Event> getAllEvents();
 
     String deleteEvent(Event event);
+
+    List<CollectionType> getAllCollectionType();
+
+    List<EventType> getAllEventType();
 }

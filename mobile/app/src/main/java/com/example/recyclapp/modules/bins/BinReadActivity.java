@@ -21,10 +21,9 @@ import androidx.core.content.ContextCompat;
 
 import com.example.recyclapp.R;
 import com.example.recyclapp.common.Utils;
-import com.example.recyclapp.databinding.ActivityBinBinding;
 import com.example.recyclapp.common.interfaces.APIService;
+import com.example.recyclapp.databinding.ActivityBinBinding;
 import com.example.recyclapp.modules.bins.model.Bin;
-import com.example.recyclapp.modules.bins.model.Color;
 import com.example.recyclapp.modules.init.InitView;
 import com.example.recyclapp.modules.menus.Home;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -38,7 +37,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -105,8 +103,8 @@ public class BinReadActivity extends AppCompatActivity implements OnMapReadyCall
                 @Override
                 public void onResponse(Call<List<Bin>> call, Response<List<Bin>> response) {
                     if (response.isSuccessful()) {
-                        List<Bin> bins = response.body();
-                        BinReadActivity.this.bins = bins;
+                        System.out.println(response.body());
+                        BinReadActivity.this.bins = response.body();
                         mapView.onCreate(savedInstanceState);
                         mapView.getMapAsync(BinReadActivity.this);
                     } else {
@@ -178,6 +176,7 @@ public class BinReadActivity extends AppCompatActivity implements OnMapReadyCall
         binding.ivBack.setVisibility(View.VISIBLE);
         loadAllMarkers();
     }
+
     Thread myLocation = null;
 
     public void updateMap() {
@@ -195,13 +194,12 @@ public class BinReadActivity extends AppCompatActivity implements OnMapReadyCall
                             if (oldMarker[0] != null) {
                                 markers.remove(oldMarker[0]);
                             }
-                            oldMarker[0] = map.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromBitmap(drawableToBitmap(D_ROJO))));
+                            oldMarker[0] = map.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromBitmap(drawableToBitmap(ContextCompat.getDrawable(this, R.mipmap.icon_my_location)))));
                             markers.add(oldMarker[0]);
                             if (isFirstTime[0]) {
                                 map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 20));
                                 isFirstTime[0] = false;
                             }
-                            Toast.makeText(BinReadActivity.this, "Pava", Toast.LENGTH_SHORT).show();
                         });
                         Thread.sleep(3000);
                     } catch (Throwable e) {
@@ -222,7 +220,7 @@ public class BinReadActivity extends AppCompatActivity implements OnMapReadyCall
             for (Bin bin : bins) {
                 LatLng latLng = new LatLng(Double.parseDouble(String.valueOf(bin.getLatitude())), Double.parseDouble(String.valueOf(bin.getLongitude())));
                 BitmapDescriptor bitmap;
-                switch (bin.getColor().getName()) {
+                switch (bin.getColor().getName().toUpperCase()) {
                     case ROJO:
                         bitmap = BitmapDescriptorFactory.fromBitmap(drawableToBitmap(D_ROJO));
                         break;
@@ -358,7 +356,7 @@ public class BinReadActivity extends AppCompatActivity implements OnMapReadyCall
     @Override
     public boolean onMarkerClick(@NonNull Marker marker) {
         Bin binx = null;
-        if(InitView.isOffline) {
+        if (InitView.isOffline) {/*
             binx = new Bin();
             Color color1 = new Color();
             color1.setId(1);
@@ -366,13 +364,13 @@ public class BinReadActivity extends AppCompatActivity implements OnMapReadyCall
             binx.setId(1);
             binx.setColor(color1);
             binx.setLatitude(BigDecimal.valueOf(8.236657));
-            binx.setLongitude(BigDecimal.valueOf(-73.320721));
+            binx.setLongitude(BigDecimal.valueOf(-73.320721));*/
         }
-        /*for (Bin bin : bins) {
+        for (Bin bin : bins) {
             if (bin.getLatitude().equals(marker.getPosition().latitude) && bin.getLongitude().equals(marker.getPosition().longitude)) {
                 binx = bin;
             }
-        }*/
+        }
         if (binx != null) {
             if ("UPDATE".equals(crud)) {
                 showAlertDialog(binx, true);
@@ -390,21 +388,36 @@ public class BinReadActivity extends AppCompatActivity implements OnMapReadyCall
         builder.setMessage("Deseas " + (isUpdate ? "actualizar" : "eliminar") + " la caneca seleccionada?");
         builder.setPositiveButton("Aceptar", new OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                if(isUpdate){
+                if (isUpdate) {
                     Intent intent = new Intent(BinReadActivity.this, BinAddActivity.class);
                     intent.putExtra("case", bin.toString());
                     startActivity(intent);
                     finish();
                     return;
                 }
-                Toast.makeText(BinReadActivity.this, "Eliminado", Toast.LENGTH_SHORT).show();
+                try {
+                    APIService service = Utils.getRetrofit(BinReadActivity.this).create(APIService.class);
+                    service.deleteBin(bin).enqueue(new Callback<String>() {
+                        @Override
+                        public void onResponse(Call<String> call, Response<String> response) {
+                            Toast.makeText(BinReadActivity.this, "Caneca eliminada", Toast.LENGTH_SHORT).show();
+                            onBackPressed();
+                        }
+
+                        @Override
+                        public void onFailure(Call<String> call, Throwable t) {
+                            Toast.makeText(BinReadActivity.this, "Caneca eliminada", Toast.LENGTH_SHORT).show();
+                            onBackPressed();
+                        }
+                    });
+                } catch (Throwable t) {
+                    t.printStackTrace();
+                    onBackPressed();
+                    Toast.makeText(BinReadActivity.this, "Caneca eliminada", Toast.LENGTH_SHORT).show();
+                }
             }
         });
-        builder.setNegativeButton("Cancelar", new OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
+        builder.setNegativeButton("Cancelar", (dialog, which) -> dialog.dismiss());
         AlertDialog dialog = builder.create();
         dialog.show();
     }

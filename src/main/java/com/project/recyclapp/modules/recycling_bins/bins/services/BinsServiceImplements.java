@@ -33,15 +33,17 @@ public class BinsServiceImplements implements BinsService {
         if (color.isEmpty()) {
             throw new CustomException(ErrorMessage.COLOR_NO_EXISTS.getMessage());
         }
+        System.out.println(bin.getLongitude());
+        System.out.println(bin.getLatitude());
         return binsRepository.save(bin);
     }
 
     @Override
-    public Bin updateBin(Bin bin) {
-        if (bin == null || bin.getId() == null) {
+    public Bin updateBin(Bin bin, Integer id) {
+        if (bin == null) {
             throw Utils.noDataValid();
         }
-        Optional<Bin> oldBin = binsRepository.findById(bin.getId());
+        Optional<Bin> oldBin = binsRepository.findById(id);
         if (oldBin.isEmpty()) {
             throw new CustomException(ErrorMessage.BIN_NO_EXISTS.getMessage());
         }
@@ -63,5 +65,10 @@ public class BinsServiceImplements implements BinsService {
     @Override
     public List<Bin> getAllBins() {
         return (List<Bin>) binsRepository.findAll();
+    }
+
+    @Override
+    public List<Color> getAllColors() {
+        return (List<Color>) colorRepository.findAll();
     }
 }
