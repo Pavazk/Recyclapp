@@ -22,8 +22,10 @@ import androidx.core.content.ContextCompat;
 import com.example.recyclapp.R;
 import com.example.recyclapp.common.Utils;
 import com.example.recyclapp.databinding.ActivityBinBinding;
+import com.example.recyclapp.common.interfaces.APIService;
 import com.example.recyclapp.modules.bins.model.Bin;
 import com.example.recyclapp.modules.bins.model.Color;
+import com.example.recyclapp.modules.init.InitView;
 import com.example.recyclapp.modules.menus.Home;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -39,6 +41,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class BinReadActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
@@ -87,7 +93,12 @@ public class BinReadActivity extends AppCompatActivity implements OnMapReadyCall
     }
 
     public void loadBins(Bundle savedInstanceState) {
-        /*        try {
+        if (InitView.isOffline) {
+            mapView.onCreate(savedInstanceState);
+            mapView.getMapAsync(BinReadActivity.this);
+            return;
+        }
+        try {
             APIService service = Utils.getRetrofit(this).create(APIService.class);
             Call<List<Bin>> answerCall = service.getAllBins();
             answerCall.enqueue(new Callback<List<Bin>>() {
@@ -95,29 +106,33 @@ public class BinReadActivity extends AppCompatActivity implements OnMapReadyCall
                 public void onResponse(Call<List<Bin>> call, Response<List<Bin>> response) {
                     if (response.isSuccessful()) {
                         List<Bin> bins = response.body();
-                        BinActivity.this.bins = bins;*/
-        mapView.onCreate(savedInstanceState);
-        mapView.getMapAsync(BinReadActivity.this);
-/*                    } else {
-                        Toast.makeText(BinActivity.this, "Algo salió mal!", Toast.LENGTH_SHORT).show();
+                        BinReadActivity.this.bins = bins;
+                        mapView.onCreate(savedInstanceState);
+                        mapView.getMapAsync(BinReadActivity.this);
+                    } else {
+                        Toast.makeText(BinReadActivity.this, "Algo salió mal!", Toast.LENGTH_SHORT).show();
                         onBackPressed();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<List<Bin>> call, Throwable t) {
-                    Toast.makeText(BinActivity.this, "No se pudo conectar con el servidor", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(BinReadActivity.this, "No se pudo conectar con el servidor", Toast.LENGTH_SHORT).show();
                     onBackPressed();
                 }
             });
-        } catch (Exception e) {
+        } catch (Throwable e) {
             Toast.makeText(this, "No se pudo conectar con el servidor", Toast.LENGTH_SHORT).show();
             onBackPressed();
-        }*/
+        }
     }
 
     public void onClick() {
         binding.ivBack.setOnClickListener(v -> onBackPressed());
+        binding.todos.setOnClickListener(v -> {
+            deleteMarkers();
+            loadAllMarkers();
+        });
         binding.plastico.setOnClickListener(v -> {
             deleteMarkers();
             loadMarkers(AZUL);
@@ -144,7 +159,7 @@ public class BinReadActivity extends AppCompatActivity implements OnMapReadyCall
     @SuppressLint("MissingSuperCall")
     @Override
     public void onBackPressed() {
-        Utils.Intent(BinReadActivity.this, Home.class);
+        Utils.IntentWFinish(BinReadActivity.this, Home.class);
     }
 
     @Override
@@ -154,17 +169,52 @@ public class BinReadActivity extends AppCompatActivity implements OnMapReadyCall
         UiSettings uiSettings = map.getUiSettings();
         uiSettings.setZoomGesturesEnabled(false);
         map.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-        LatLng camInit = new LatLng(8.236657, -73.320721);
-        Marker marker = map.addMarker(new MarkerOptions().position(camInit).icon(BitmapDescriptorFactory.fromBitmap(drawableToBitmap(D_ROJO))));
-        markers.add(marker);
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(camInit, 20));
         map.setOnMarkerClickListener(this);
+        updateMap();
         binding.splash.setVisibility(View.GONE);
         binding.mapView.setVisibility(View.VISIBLE);
         binding.llData.setVisibility(View.VISIBLE);
         binding.title.setVisibility(View.VISIBLE);
         binding.ivBack.setVisibility(View.VISIBLE);
         loadAllMarkers();
+    }
+    Thread myLocation = null;
+
+    public void updateMap() {
+        try {
+            myLocation = new Thread(() -> {
+                final Marker[] oldMarker = {null};
+                final boolean[] isFirstTime = {true};
+                while (!Thread.currentThread().isInterrupted()) {
+                    try {
+                        runOnUiThread(() -> {
+                            //Obtener ubicacion actual
+                            String[] location = GPS.getInstance().getLocalization(BinReadActivity.this).split("\\|");
+                            LatLng latLng = new LatLng(Double.parseDouble(location[0]), Double.parseDouble(location[1]));
+
+                            if (oldMarker[0] != null) {
+                                markers.remove(oldMarker[0]);
+                            }
+                            oldMarker[0] = map.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromBitmap(drawableToBitmap(D_ROJO))));
+                            markers.add(oldMarker[0]);
+                            if (isFirstTime[0]) {
+                                map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 20));
+                                isFirstTime[0] = false;
+                            }
+                            Toast.makeText(BinReadActivity.this, "Pava", Toast.LENGTH_SHORT).show();
+                        });
+                        Thread.sleep(3000);
+                    } catch (Throwable e) {
+                        e.printStackTrace();
+                        Thread.currentThread().interrupt();
+                    }
+                }
+            });
+            myLocation.start();
+        } catch (Throwable e) {
+            e.printStackTrace();
+
+        }
     }
 
     public void loadAllMarkers() {
@@ -265,8 +315,16 @@ public class BinReadActivity extends AppCompatActivity implements OnMapReadyCall
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (mapView != null) {
-            mapView.onDestroy();
+        try {
+            if (mapView != null) {
+                mapView.onDestroy();
+            }
+            if (myLocation != null) {
+                myLocation.interrupt();
+                myLocation.stop();
+            }
+        } catch (Throwable e) {
+            e.printStackTrace();
         }
     }
 
@@ -299,14 +357,17 @@ public class BinReadActivity extends AppCompatActivity implements OnMapReadyCall
 
     @Override
     public boolean onMarkerClick(@NonNull Marker marker) {
-        Bin binx = new Bin();
-        Color color1 = new Color();
-        color1.setId(1);
-        color1.setName("ROJO");
-        binx.setId(1);
-        binx.setColor(color1);
-        binx.setLatitude(BigDecimal.valueOf(8.236657));
-        binx.setLongitude(BigDecimal.valueOf(-73.320721));
+        Bin binx = null;
+        if(InitView.isOffline) {
+            binx = new Bin();
+            Color color1 = new Color();
+            color1.setId(1);
+            color1.setName("ROJO");
+            binx.setId(1);
+            binx.setColor(color1);
+            binx.setLatitude(BigDecimal.valueOf(8.236657));
+            binx.setLongitude(BigDecimal.valueOf(-73.320721));
+        }
         /*for (Bin bin : bins) {
             if (bin.getLatitude().equals(marker.getPosition().latitude) && bin.getLongitude().equals(marker.getPosition().longitude)) {
                 binx = bin;

@@ -1,35 +1,27 @@
 package com.example.recyclapp.modules.init;
 
-import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
-import static android.Manifest.permission.ACCESS_FINE_LOCATION;
-import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
-import static android.Manifest.permission.READ_PHONE_STATE;
-import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
-
 import static com.example.recyclapp.common.Utils.permissionManager;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.pm.PackageManager;
+import android.annotation.SuppressLint;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
+import com.example.recyclapp.common.Utils;
 import com.example.recyclapp.databinding.ActivityInitBinding;
 import com.example.recyclapp.modules.main.view.MainView;
-import com.example.recyclapp.common.Utils;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class InitView extends AppCompatActivity {
+
+    public static boolean isOffline = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,15 +41,15 @@ public class InitView extends AppCompatActivity {
             @Override
             public void run() {
                 if (isInternetAvailable()) {
-                    Utils.Intent(InitView.this, MainView.class);
+                    Utils.IntentWFinish(InitView.this, MainView.class);
                 } else {
-                    cambiarVista(binding);
+                    changeView(binding);
                 }
             }
         }, 2500);
     }
 
-    private void cambiarVista(ActivityInitBinding binding) {
+    private void changeView(ActivityInitBinding binding) {
         runOnUiThread(() -> {
             binding.splash.setVisibility(View.GONE);
             binding.tvWifi.setVisibility(View.VISIBLE);
@@ -67,12 +59,15 @@ public class InitView extends AppCompatActivity {
     }
 
     private boolean isInternetAvailable() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
-        if (connectivityManager != null) {
-            NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-            return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+        if (isOffline) {
+            return true;
         }
-        return false;
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+        if (connectivityManager == null) {
+            return false;
+        }
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
     @Override
@@ -94,8 +89,8 @@ public class InitView extends AppCompatActivity {
         return true;
     }
 
+    @SuppressLint("MissingSuperCall")
     @Override
     public void onBackPressed() {
-        //super.onBackPressed();
     }
 }

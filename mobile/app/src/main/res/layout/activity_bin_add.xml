@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:map="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
@@ -146,20 +147,20 @@
         android:id="@+id/spinner_container"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
-        android:textColor="#000"
         android:layout_height="wrap_content"
         android:hint="Seleccione un color"
-        app:layout_constraintBottom_toTopOf="@+id/lineHorizontalCenterTop2"
+        android:textColor="#000"
         app:layout_constraintEnd_toStartOf="@+id/lineVerticalRight"
-        app:layout_constraintStart_toStartOf="@+id/lineVerticalLeft">
+        app:layout_constraintStart_toStartOf="@+id/lineVerticalLeft"
+        app:layout_constraintTop_toTopOf="@+id/lineHorizontalCenterTop1">
+
         <Spinner
             android:id="@+id/spinner"
-            android:textColor="#000"
-            android:layout_width="match_parent"
-
             style="@style/SpinnerStyle"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp" />
+            android:padding="16dp"
+            android:textColor="#000" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -173,7 +174,7 @@
         android:textColor="#000"
         app:layout_constraintEnd_toStartOf="@+id/lineVerticalCenter"
         app:layout_constraintStart_toStartOf="@+id/lineVerticalLeft"
-        app:layout_constraintBottom_toTopOf="@+id/lineHorizontalCenterTop3"/>
+        app:layout_constraintTop_toTopOf="@+id/lineHorizontalCenterTop2" />
 
     <TextView
         android:id="@+id/title_longitud"
@@ -181,11 +182,11 @@
         android:layout_height="30dp"
         android:fontFamily="@font/poppins_bold"
         android:gravity="center_vertical|center_horizontal"
-        android:textColor="#000"
         android:text="Longitud"
+        android:textColor="#000"
         app:layout_constraintEnd_toStartOf="@+id/lineVerticalRight"
         app:layout_constraintStart_toStartOf="@+id/lineVerticalCenter"
-        app:layout_constraintBottom_toTopOf="@+id/lineHorizontalCenterTop3"/>
+        app:layout_constraintTop_toTopOf="@+id/lineHorizontalCenterTop2" />
 
     <TextView
         android:id="@+id/tv_latitud"
@@ -193,11 +194,11 @@
         android:layout_height="30dp"
         android:fontFamily="@font/poppins_regular"
         android:gravity="center_vertical|center_horizontal"
-        android:textColor="#000"
         android:text="8.0264"
+        android:textColor="#000"
         app:layout_constraintEnd_toStartOf="@+id/lineVerticalCenter"
         app:layout_constraintStart_toStartOf="@+id/lineVerticalLeft"
-        app:layout_constraintTop_toTopOf="@+id/lineHorizontalCenterTop3"/>
+        app:layout_constraintTop_toBottomOf="@+id/title_latitud" />
 
     <TextView
         android:id="@+id/tv_longitud"
@@ -205,11 +206,11 @@
         android:layout_height="30dp"
         android:fontFamily="@font/poppins_regular"
         android:gravity="center_vertical|center_horizontal"
-        android:textColor="#000"
         android:text="8.0264"
+        android:textColor="#000"
         app:layout_constraintEnd_toStartOf="@+id/lineVerticalRight"
         app:layout_constraintStart_toStartOf="@+id/lineVerticalCenter"
-        app:layout_constraintTop_toTopOf="@+id/lineHorizontalCenterTop3"/>
+        app:layout_constraintTop_toBottomOf="@+id/title_longitud" />
 
     <com.google.android.material.button.MaterialButtonToggleGroup
         android:id="@+id/group_button"
@@ -258,10 +259,9 @@
         android:layout_alignParentLeft="true"
         android:orientation="horizontal"
         app:checkedButton="@+id/btn_login"
-        app:layout_constraintBottom_toTopOf="@+id/lineHorizontalCenter"
         app:layout_constraintEnd_toStartOf="@+id/lineVerticalRight"
         app:layout_constraintStart_toStartOf="@+id/lineVerticalCenter"
-        app:layout_constraintTop_toBottomOf="@+id/tv_latitud"
+        app:layout_constraintTop_toTopOf="@+id/lineHorizontalCenterTop3"
         app:selectionRequired="true"
         app:singleSelection="true">
 
@@ -277,7 +277,7 @@
             android:textStyle="bold"
             app:cornerRadius="10dp"
             app:strokeColor="#FFFFFF"
-            app:strokeWidth="2dp"/>
+            app:strokeWidth="2dp" />
 
     </com.google.android.material.button.MaterialButtonToggleGroup>
 
@@ -287,11 +287,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:orientation="horizontal"
-        app:checkedButton="@+id/btn_login"
-        app:layout_constraintBottom_toTopOf="@+id/lineHorizontalCenter"
         app:layout_constraintEnd_toStartOf="@+id/lineVerticalCenter"
         app:layout_constraintStart_toStartOf="@+id/lineVerticalLeft"
-        app:layout_constraintTop_toBottomOf="@+id/tv_latitud"
+        app:layout_constraintTop_toTopOf="@+id/lineHorizontalCenterTop3"
         app:selectionRequired="true"
         app:singleSelection="true">
 
@@ -324,4 +322,14 @@
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
         app:lottie_rawRes="@raw/loading" />
+
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/mapView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/lineHorizontalCenterBottom3"
+        app:layout_constraintEnd_toStartOf="@+id/lineVerticalRight"
+        app:layout_constraintStart_toStartOf="@+id/lineVerticalLeft"
+        app:layout_constraintTop_toTopOf="@+id/lineHorizontalCenterTop3"
+        map:uiRotateGestures="false" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,16 +1,14 @@
 package com.example.recyclapp.modules.main.presenter;
 
-import android.graphics.Color;
 import android.view.View;
 import android.widget.Toast;
 
-import androidx.core.content.ContextCompat;
-
 import com.example.recyclapp.common.Utils;
 import com.example.recyclapp.databinding.ActivityMainBinding;
-import com.example.recyclapp.models.ResponseFailure;
+import com.example.recyclapp.modules.main.data.ResponseFailure;
 import com.example.recyclapp.modules.main.model.MainModel;
 import com.example.recyclapp.modules.main.view.MainView;
+import com.google.android.material.textfield.TextInputLayout;
 
 public class MainPresenter {
 

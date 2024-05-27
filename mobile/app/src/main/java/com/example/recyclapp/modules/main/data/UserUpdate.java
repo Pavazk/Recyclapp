@@ -1,4 +1,4 @@
-package com.example.recyclapp.models;
+package com.example.recyclapp.modules.main.data;
 
 public class UserUpdate {
     private String email;

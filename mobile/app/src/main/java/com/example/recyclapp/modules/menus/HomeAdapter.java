@@ -1,6 +1,6 @@
 package com.example.recyclapp.modules.menus;
+
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,16 +15,14 @@ import com.example.recyclapp.R;
 
 import java.util.List;
 
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
+public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
     private List<ItemMenu> mData;
-    private Context context;
     private OnItemClickListener mListener;
 
 
-    public MyAdapter(Context context, List<ItemMenu> data, OnItemClickListener listener) {
+    public HomeAdapter(List<ItemMenu> data, OnItemClickListener listener) {
         this.mData = data;
-        this.context = context;
         this.mListener = listener;
     }
 
@@ -41,12 +39,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         Glide.with(holder.img_menu.getContext())
                 .load(item.getImg())
                 .into(holder.img_menu);
-        holder.button1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener != null) {
-                    mListener.onItemClick(position);
-                }
+        holder.button1.setOnClickListener(view -> {
+            if (mListener != null) {
+                mListener.onItemClick(position);
             }
         });
     }
@@ -70,11 +65,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         private TextView tv_menu;
         private ImageView img_menu;
         private ConstraintLayout button1;
+
         public ViewHolder(View itemView) {
             super(itemView);
-            tv_menu=itemView.findViewById(R.id.tv_menu);
-            img_menu=itemView.findViewById(R.id.img_menu);
-            button1=itemView.findViewById(R.id.button1);
+            tv_menu = itemView.findViewById(R.id.tv_menu);
+            img_menu = itemView.findViewById(R.id.img_menu);
+            button1 = itemView.findViewById(R.id.button1);
         }
     }
 }

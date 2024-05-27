@@ -152,7 +152,7 @@
             android:clickable="false"
             android:fontFamily="@font/poppins_regular"
             android:textCursorDrawable="@drawable/cursor_style"
-            app:hintTextColor="#8E9094"
+            app:hintTextColor="#000"
             android:hint="Código estudiantil"
             style="@style/TextInputLayoutShape">
             <com.google.android.material.textfield.TextInputEditText
@@ -160,7 +160,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:fontFamily="@font/poppins_regular"
-                android:textColor="#8E9094"
+                android:textColor="#000"
                 android:clickable="false"
                 android:inputType="textEmailAddress"
                 android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890@."
@@ -173,7 +173,7 @@
             android:layout_height="70dp"
             android:fontFamily="@font/poppins_regular"
             android:textCursorDrawable="@drawable/cursor_style"
-            app:hintTextColor="#8E9094"
+            app:hintTextColor="#000"
             android:hint="Nombre"
             style="@style/TextInputLayoutShape">
             <com.google.android.material.textfield.TextInputEditText
@@ -181,7 +181,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:fontFamily="@font/poppins_regular"
-                android:textColor="#8E9094"
+                android:textColor="#000"
                 android:clickable="false"
                 android:inputType="textEmailAddress"
                 android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890@."
@@ -195,7 +195,7 @@
             android:clickable="false"
             android:fontFamily="@font/poppins_regular"
             android:textCursorDrawable="@drawable/cursor_style"
-            app:hintTextColor="#8E9094"
+            app:hintTextColor="#000"
             android:hint="Correo institucional"
             style="@style/TextInputLayoutShape">
             <com.google.android.material.textfield.TextInputEditText
@@ -203,7 +203,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:fontFamily="@font/poppins_regular"
-                android:textColor="#8E9094"
+                android:textColor="#000"
                 android:clickable="false"
                 android:inputType="textEmailAddress"
                 android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890@."
@@ -216,7 +216,7 @@
             android:layout_height="70dp"
             android:fontFamily="@font/poppins_regular"
             android:textCursorDrawable="@drawable/cursor_style"
-            app:hintTextColor="#8E9094"
+            app:hintTextColor="#000"
             android:hint="Identificación"
             style="@style/TextInputLayoutShape">
             <com.google.android.material.textfield.TextInputEditText
@@ -224,7 +224,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:fontFamily="@font/poppins_regular"
-                android:textColor="#8E9094"
+                android:textColor="#000"
                 android:clickable="false"
                 android:inputType="textEmailAddress"
                 android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890@."
@@ -237,7 +237,7 @@
             android:layout_height="70dp"
             android:fontFamily="@font/poppins_regular"
             android:textCursorDrawable="@drawable/cursor_style"
-            app:hintTextColor="#8E9094"
+            app:hintTextColor="#000"
             android:hint="Tipo de usuario"
             style="@style/TextInputLayoutShape">
             <com.google.android.material.textfield.TextInputEditText
@@ -245,7 +245,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:fontFamily="@font/poppins_regular"
-                android:textColor="#8E9094"
+                android:textColor="#000"
                 android:clickable="false"
                 android:inputType="textEmailAddress"
                 android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890@."

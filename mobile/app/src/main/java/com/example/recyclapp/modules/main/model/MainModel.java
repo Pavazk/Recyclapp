@@ -5,19 +5,18 @@ import static com.example.recyclapp.common.Utils.SHA256;
 import android.widget.Toast;
 
 import com.example.recyclapp.databinding.ActivityMainBinding;
-import com.example.recyclapp.interfaces.APIService;
-import com.example.recyclapp.models.ResponseFailure;
+import com.example.recyclapp.common.interfaces.APIService;
+import com.example.recyclapp.modules.main.data.ResponseFailure;
+import com.example.recyclapp.modules.init.InitView;
 import com.example.recyclapp.modules.menus.Home;
-import com.example.recyclapp.models.User;
-import com.example.recyclapp.models.UserLogin;
-import com.example.recyclapp.models.UserUpdate;
+import com.example.recyclapp.modules.main.data.User;
+import com.example.recyclapp.modules.main.data.UserLogin;
+import com.example.recyclapp.modules.main.data.UserUpdate;
 import com.example.recyclapp.modules.main.presenter.MainPresenter;
 import com.example.recyclapp.modules.main.view.MainView;
 import com.example.recyclapp.common.Utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.io.IOException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -47,7 +46,13 @@ public class MainModel {
         });
         binding.button.setOnClickListener(view -> {
             presenter.showLoading(binding);
-            /*switch (binding.tvTitulo.getText().toString()) {
+            if (InitView.isOffline) {
+                Utils.save(mainView, "email", "leospinap@ufpso.edu.co");
+                Utils.save(mainView, "password", "123456");
+                Utils.IntentWFinish(mainView, Home.class);
+                return;
+            }
+            switch (binding.tvTitulo.getText().toString()) {
                 case "INICIO DE SESIÓN":
                     loginUser(binding);
                     break;
@@ -59,8 +64,7 @@ public class MainModel {
                     break;
                 case "INGRESE LA IP":
                     saveIp(binding);
-            }*/
-            Utils.Intent(mainView, Home.class);
+            }
         });
     }
 
@@ -118,7 +122,9 @@ public class MainModel {
                         User user = response.body();
                         Utils.save(mainView, Utils.KEY_CODE, user.getCode());
                         Utils.save(mainView, Utils.KEY_ROLE, user.getUserType().getName());
-                        Utils.Intent(mainView, Home.class);
+                        Utils.save(mainView, "email", user.getEmail());
+                        Utils.save(mainView, "password", user.getPassword());
+                        Utils.IntentWFinish(mainView, Home.class);
                         presenter.clearFields(binding);
                     } else {
                         try {
@@ -161,7 +167,9 @@ public class MainModel {
                         }
                         Utils.save(mainView, Utils.KEY_CODE, user.getCode());
                         Utils.save(mainView, Utils.KEY_ROLE, user.getUserType().getName());
-                        Utils.Intent(mainView, Home.class);
+                        Utils.save(mainView, "email", user.getEmail());
+                        Utils.save(mainView, "password", user.getPassword());
+                        Utils.IntentWFinish(mainView, Home.class);
                         presenter.clearFields(binding);
                     } else {
                         try {

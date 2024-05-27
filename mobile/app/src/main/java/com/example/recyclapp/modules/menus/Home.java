@@ -1,9 +1,9 @@
 package com.example.recyclapp.modules.menus;
 
 import android.annotation.SuppressLint;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,36 +14,33 @@ import com.example.recyclapp.common.Utils;
 import com.example.recyclapp.databinding.ActivityHomeBinding;
 import com.example.recyclapp.modules.bins.BinAddActivity;
 import com.example.recyclapp.modules.bins.BinReadActivity;
+import com.example.recyclapp.modules.events.EventActivity;
+import com.example.recyclapp.modules.events.EventReadActivity;
 import com.example.recyclapp.modules.init.InitView;
 import com.example.recyclapp.modules.profile.ProfileActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Home extends AppCompatActivity implements MyAdapter.OnItemClickListener {
+public class Home extends AppCompatActivity implements HomeAdapter.OnItemClickListener {
 
-    private MyAdapter adapter;
+    private HomeAdapter adapter;
     private List<ItemMenu> data;
 
     private final String BINS = "Canecas";
     private final String PRODUCTS = "Productos";
     private final String EVENTS = "Eventos";
     private final String PERSONS = "Perfil";
-    private final String ADD_PRODUCTS = "Agregar productos";
-    private final String UPDATE_PRODUCTS = "Actualizar productos";
-    private final String READ_PRODUCTS = "Ver productos";
-    private final String DELETE_PRODUCTS = "Eliminar productos";
+    private final String WATCH_EVENTS = "Ver eventos";
     private final String ADD_BINS = "Agregar canecas";
     private final String UPDATE_BINS = "Actualizar canecas";
     private final String READ_BINS = "Ver canecas";
     private final String DELETE_BINS = "Eliminar canecas";
-    private final String ADD_PERSONS = "Agregar personas";
-    private final String UPDATE_PERSONS = "Actualizar perfil";
-    private final String READ_PERSONS = "Ver perfil";
-    private final String DELETE_PERSONS = "Eliminar perfil";
     private final String ADD_EVENTS = "Agregar eventos";
     private final String UPDATE_EVENTS = "Actualizar eventos";
     private final String READ_EVENTS = "Ver eventos";
+    private final String READ_MY_EVENTS = "Mis eventos";
+    private final String READ_OTHER_EVENTS = "Otros eventos";
     private final String DELETE_EVENTS = "Eliminar eventos";
 
     ActivityHomeBinding binding;
@@ -58,16 +55,20 @@ public class Home extends AppCompatActivity implements MyAdapter.OnItemClickList
 
     private void initView(ActivityHomeBinding binding) {
         data = new ArrayList<>();
-        adapter = new MyAdapter(this, data, this);
+        adapter = new HomeAdapter(data, this);
         binding.recyclerview.setAdapter(adapter);
         binding.recyclerview.setLayoutManager(new GridLayoutManager(this, 2));
         binding.recyclerview.setNestedScrollingEnabled(false);
         binding.recyclerview.setFocusable(false);
         binding.recyclerview.setHasFixedSize(true);
+        binding.ivBack.setOnClickListener(view ->{
+            showHome();
+        });
         showHome();
     }
 
     private void showHome() {
+        binding.ivBack.setVisibility(View.GONE);
         binding.tvTitulo.setText("BIENVENIDO");
         data = new ArrayList<>();
         data.add(new ItemMenu(BINS, R.mipmap.bins));
@@ -81,6 +82,7 @@ public class Home extends AppCompatActivity implements MyAdapter.OnItemClickList
     public void onItemClick(int position) {
         switch (data.get(position).getText()) {
             case BINS:
+                binding.ivBack.setVisibility(View.VISIBLE);
                 data = new ArrayList<>();
                 binding.tvTitulo.setText(BINS.toUpperCase());
                 data.add(new ItemMenu(ADD_BINS, R.mipmap.icon_add_bins));
@@ -91,7 +93,7 @@ public class Home extends AppCompatActivity implements MyAdapter.OnItemClickList
                 break;
             case ADD_BINS:
                 if (Utils.havePermission(this)) {
-                    Utils.Intent(this, BinAddActivity.class);
+                    Utils.IntentWFinish(this, BinAddActivity.class);
                 } else {
                     Utils.permissionManager(this);
                 }
@@ -113,23 +115,10 @@ public class Home extends AppCompatActivity implements MyAdapter.OnItemClickList
                 finish();
                 break;
             case PRODUCTS:
-                binding.tvTitulo.setText(PRODUCTS.toUpperCase());
-                data = new ArrayList<>();
-                data.add(new ItemMenu(ADD_PRODUCTS, R.mipmap.icon_add_products));
-                data.add(new ItemMenu(UPDATE_PRODUCTS, R.mipmap.icon_update_products));
-                data.add(new ItemMenu(READ_PRODUCTS, R.mipmap.icon_read_products));
-                data.add(new ItemMenu(DELETE_PRODUCTS, R.mipmap.icon_delete_products));
-                adapter.updateData(data);
-                break;
-            case ADD_PRODUCTS:
-                break;
-            case UPDATE_PRODUCTS:
-                break;
-            case READ_PRODUCTS:
-                break;
-            case DELETE_PRODUCTS:
+                //todo: hacer productos
                 break;
             case EVENTS:
+                binding.ivBack.setVisibility(View.VISIBLE);
                 binding.tvTitulo.setText(EVENTS.toUpperCase());
                 data = new ArrayList<>();
                 data.add(new ItemMenu(ADD_EVENTS, R.mipmap.icon_add_event));
@@ -139,15 +128,28 @@ public class Home extends AppCompatActivity implements MyAdapter.OnItemClickList
                 adapter.updateData(data);
                 break;
             case ADD_EVENTS:
+                Utils.IntentWFinish(this, EventActivity.class);
                 break;
             case UPDATE_EVENTS:
                 break;
             case READ_EVENTS:
+                binding.ivBack.setVisibility(View.VISIBLE);
+                binding.tvTitulo.setText(WATCH_EVENTS.toUpperCase());
+                data = new ArrayList<>();
+                data.add(new ItemMenu(READ_MY_EVENTS, R.mipmap.icon_update_persons));
+                data.add(new ItemMenu(READ_OTHER_EVENTS, R.mipmap.icon_delete_persons));
+                adapter.updateData(data);
                 break;
             case DELETE_EVENTS:
                 break;
             case PERSONS:
-                Utils.Intent(this, ProfileActivity.class);
+                Utils.IntentWFinish(this, ProfileActivity.class);
+                break;
+            case READ_MY_EVENTS:
+                Utils.IntentWFinish(this, EventReadActivity.class);
+                break;
+            case READ_OTHER_EVENTS:
+                Utils.IntentWFinish(this, EventReadActivity.class);
                 break;
         }
     }
@@ -156,32 +158,23 @@ public class Home extends AppCompatActivity implements MyAdapter.OnItemClickList
     @Override
     public void onBackPressed() {
         if("BIENVENIDO".equals(binding.tvTitulo.getText().toString())){
-            mostrarDialogo();
+            showDialog();
             return;
         }
         showHome();
     }
 
-    private void mostrarDialogo() {
+    private void showDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogStyleLight);
         builder.setTitle("IMPORTANTE");
         builder.setMessage("¿Deseas cerrar sesión?");
-        builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Utils.Intent(Home.this, InitView.class);
-                dialog.dismiss();
-            }
+        builder.setPositiveButton("Aceptar", (dialog, which) -> {
+            Utils.IntentWFinish(Home.this, InitView.class);
+            dialog.dismiss();
         });
-        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
+        builder.setNegativeButton("Cancelar", (dialog, which) -> dialog.dismiss());
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-
 
 }

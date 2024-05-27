@@ -1,19 +1,13 @@
 package com.example.recyclapp.modules.profile;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.view.View;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
-import com.example.recyclapp.R;
 import com.example.recyclapp.common.Utils;
 import com.example.recyclapp.databinding.ActivityProfileBinding;
-import com.example.recyclapp.modules.bins.BinAddActivity;
 import com.example.recyclapp.modules.menus.Home;
 
 public class ProfileActivity extends AppCompatActivity {
@@ -39,6 +33,6 @@ public class ProfileActivity extends AppCompatActivity {
     @SuppressLint("MissingSuperCall")
     @Override
     public void onBackPressed() {
-        Utils.Intent(ProfileActivity.this, Home.class);
+        Utils.IntentWFinish(ProfileActivity.this, Home.class);
     }
 }

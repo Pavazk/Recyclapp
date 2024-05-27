@@ -7,23 +7,21 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.recyclapp.R;
 import com.example.recyclapp.common.Utils;
 import com.example.recyclapp.databinding.ActivityBinAddBinding;
-import com.example.recyclapp.interfaces.APIService;
-import com.example.recyclapp.models.ResponseFailure;
-import com.example.recyclapp.models.User;
+import com.example.recyclapp.common.interfaces.APIService;
 import com.example.recyclapp.modules.bins.model.Bin;
 import com.example.recyclapp.modules.bins.model.Color;
 import com.example.recyclapp.modules.menus.Home;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.android.gms.location.FusedOrientationProviderClient;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.UiSettings;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,9 +30,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class BinAddActivity extends AppCompatActivity {
+public class BinAddActivity extends AppCompatActivity implements OnMapReadyCallback {
     private ActivityBinAddBinding binding;
-    ArrayAdapter<String> adapter;
+    private ArrayAdapter<String> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +51,9 @@ public class BinAddActivity extends AppCompatActivity {
         binding.groupButton.setVisibility(View.GONE);
         binding.groupSearchLocation.setVisibility(View.GONE);
         binding.groupThisLocation.setVisibility(View.GONE);
+        binding.mapView.setVisibility(View.GONE);
+        binding.mapView.onCreate(savedInstanceState);
+        binding.mapView.getMapAsync(this);
         //loadColors();
         List<Color> list = new ArrayList<>();
         Color color1 = new Color();
@@ -132,6 +133,12 @@ public class BinAddActivity extends AppCompatActivity {
             binding.splash.setVisibility(View.GONE);
             binding.ivBack.setVisibility(View.VISIBLE);
             binding.groupSearchLocation.setVisibility(View.VISIBLE);
+            binding.searchLocation.setOnClickListener(v -> {
+                binding.mapView.setVisibility(View.VISIBLE);
+                binding.ivImage.setVisibility(View.GONE);
+                binding.groupThisLocation.setVisibility(View.GONE);
+                binding.groupSearchLocation.setVisibility(View.GONE);
+            });
             binding.groupThisLocation.setVisibility(View.VISIBLE);
             binding.groupThisLocation.setOnClickListener(v -> {
                 String[] a = GPS.getInstance().getLocalization(BinAddActivity.this).split("\\|");
@@ -185,6 +192,28 @@ public class BinAddActivity extends AppCompatActivity {
     @SuppressLint("MissingSuperCall")
     @Override
     public void onBackPressed() {
-        Utils.Intent(BinAddActivity.this, Home.class);
+        Utils.IntentWFinish(BinAddActivity.this, Home.class);
+    }
+
+
+    @Override
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+        UiSettings uiSettings = googleMap.getUiSettings();
+        uiSettings.setZoomGesturesEnabled(false);
+        googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+        googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(@NonNull LatLng latLng) {
+                binding.tvLongitud.setText(String.valueOf(latLng.longitude));
+                binding.tvLatitud.setText(String.valueOf(latLng.latitude));
+                binding.mapView.setVisibility(View.GONE);
+                binding.ivImage.setVisibility(View.VISIBLE);
+                binding.groupThisLocation.setVisibility(View.VISIBLE);
+                binding.groupSearchLocation.setVisibility(View.VISIBLE);
+            }
+        });
+        String[] location = GPS.getInstance().getLocalization(BinAddActivity.this).split("\\|");
+        LatLng latLng = new LatLng(Double.parseDouble(location[0]), Double.parseDouble(location[1]));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 20));
     }
 }

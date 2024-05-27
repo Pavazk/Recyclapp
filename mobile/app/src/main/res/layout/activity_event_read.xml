@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:map="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
-    tools:context=".modules.bins.BinReadActivity">
-
+    tools:context=".modules.events.EventReadActivity">
     <!-- LINEAS HORIZONTALES -->
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/lineHorizontalTop"
@@ -50,8 +48,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.3875" />
+        app:layout_constraintGuide_percent="0.36935705" />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/lineHorizontalCenterTop4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.42" />
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/lineHorizontalCenter"
         android:layout_width="wrap_content"
@@ -127,7 +131,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_bold"
-        android:text="Canecas"
+        android:text="EVENTOS"
         android:textColor="#ffffff"
         android:textSize="28sp"
         android:gravity="bottom"
@@ -156,144 +160,15 @@
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
         app:lottie_rawRes="@raw/loading" />
-    <ScrollView
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/list_events"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/lineHorizontalCenterTop2.5"
+        android:scrollbars="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/lineHorizontalCenterBottom3"
         app:layout_constraintEnd_toStartOf="@+id/lineVerticalRight"
         app:layout_constraintStart_toStartOf="@+id/lineVerticalLeft"
-        app:layout_constraintTop_toTopOf="@+id/lineHorizontalTop0">
-
-        <LinearLayout
-            android:id="@+id/ll_data"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <LinearLayout
-                android:id="@+id/todos"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@mipmap/pin_rainbow" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:fontFamily="@font/poppins_bold"
-                    android:gravity="center_vertical"
-                    android:text="TODOS" />
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/papel_carton"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@mipmap/pin_gray" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:fontFamily="@font/poppins_bold"
-                    android:gravity="center_vertical"
-                    android:text="PAPEL CARTON" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/plastico"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@mipmap/pin_blue" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:fontFamily="@font/poppins_bold"
-                    android:gravity="center_vertical"
-                    android:text="PLASTICO" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/ordinario"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@mipmap/pin_green" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:fontFamily="@font/poppins_bold"
-                    android:gravity="center_vertical"
-                    android:text="ORDINARIO NO RECICLABLE" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/residuos"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@mipmap/pin_red" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:fontFamily="@font/poppins_bold"
-                    android:gravity="center_vertical"
-                    android:text="RESIDUOS PELIGROSOS" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/otros"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@mipmap/pin_black" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:fontFamily="@font/poppins_bold"
-                    android:gravity="center_vertical"
-                    android:text="OTROS" />
-            </LinearLayout>
-        </LinearLayout>
-
-    </ScrollView>
-
-
-    <com.google.android.gms.maps.MapView
-        android:id="@+id/mapView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/lineHorizontalBottom"
-        app:layout_constraintEnd_toStartOf="@+id/lineVerticalRight"
-        app:layout_constraintStart_toStartOf="@+id/lineVerticalLeft"
-        app:layout_constraintTop_toTopOf="@+id/lineHorizontalCenterTop3"
-        map:uiRotateGestures="false" />
+        app:layout_constraintTop_toTopOf="@+id/lineHorizontalCenterTop1" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -35,6 +35,11 @@ public class Utils {
 
     public static String title_toast_exito = "¡Excelente!";
     public static String title_toast_fallo = "¡Oops!";
+
+    public static void IntentWFinish(Activity activity, Class<?> claseLlegada) {
+        activity.startActivity(new Intent(activity, claseLlegada));
+        activity.finish();
+    }
     public static void Intent(Activity activity, Class<?> claseLlegada) {
         activity.startActivity(new Intent(activity, claseLlegada));
         activity.finish();

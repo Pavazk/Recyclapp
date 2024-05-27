@@ -249,6 +249,8 @@
             android:id="@+id/tf_old_password"
             android:layout_width="match_parent"
             android:layout_height="60dp"
+            app:endIconMode="password_toggle"
+            android:inputType="textPassword"
             android:fontFamily="@font/poppins_regular"
             android:textCursorDrawable="@drawable/cursor_style"
             app:hintTextColor="#8E9094"
@@ -261,7 +263,7 @@
                 android:fontFamily="@font/poppins_regular"
                 android:textColor="#8E9094"
                 android:inputType="textPassword"
-                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%&amp;"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%&amp;*"
                 android:textCursorDrawable="@drawable/cursor_style" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -269,6 +271,8 @@
             android:id="@+id/tf_new_password"
             android:layout_width="match_parent"
             android:layout_height="60dp"
+            app:endIconMode="password_toggle"
+            android:inputType="textPassword"
             android:fontFamily="@font/poppins_regular"
             android:textCursorDrawable="@drawable/cursor_style"
             app:hintTextColor="#8E9094"
@@ -281,7 +285,7 @@
                 android:fontFamily="@font/poppins_regular"
                 android:textColor="#8E9094"
                 android:inputType="textPassword"
-                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%&amp;"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%&amp;*"
                 android:textCursorDrawable="@drawable/cursor_style" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -292,6 +296,8 @@
             android:fontFamily="@font/poppins_regular"
             android:textCursorDrawable="@drawable/cursor_style"
             app:hintTextColor="#8E9094"
+            android:inputType="textPassword"
+            app:endIconMode="password_toggle"
             style="@style/TextInputLayoutShape">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -301,7 +307,7 @@
                 android:fontFamily="@font/poppins_regular"
                 android:textColor="#8E9094"
                 android:inputType="textPassword"
-                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%&amp;"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%&amp;*"
                 android:textCursorDrawable="@drawable/cursor_style" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -363,7 +369,8 @@
             android:text="Button"
             android:textColor="#000"
             android:textSize="16sp"
-            app:strokeColor="#000"
+            app:strokeColor="#FFFFFF"
+            app:strokeWidth="2dp"
             android:textStyle="bold"
             app:cornerRadius="10dp"/>
 
