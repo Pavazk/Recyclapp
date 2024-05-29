@@ -10,15 +10,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.recyclapp.R;
 import com.example.recyclapp.common.Utils;
-import com.example.recyclapp.databinding.ActivityEventBinding;
 import com.example.recyclapp.common.interfaces.APIService;
-import com.example.recyclapp.modules.events.model.RegisterEvent;
-import com.example.recyclapp.modules.main.data.User;
+import com.example.recyclapp.databinding.ActivityEventBinding;
 import com.example.recyclapp.modules.events.adapters.UserAdapter;
 import com.example.recyclapp.modules.events.adapters.UserSelectedAdapter;
 import com.example.recyclapp.modules.events.model.CollectionType;
+import com.example.recyclapp.modules.events.model.Event;
 import com.example.recyclapp.modules.events.model.EventType;
+import com.example.recyclapp.modules.events.model.RegisterEvent;
 import com.example.recyclapp.modules.init.InitView;
+import com.example.recyclapp.modules.main.data.User;
 import com.example.recyclapp.modules.menus.Home;
 
 import java.util.ArrayList;
@@ -45,16 +46,42 @@ public class EventActivity extends AppCompatActivity {
         initUsers();
         initUserSelected();
         binding.button.setOnClickListener(v -> {
-            /*RegisterEvent registerEvent = new RegisterEvent();
-            registerEvent.setName(re);
+            RegisterEvent registerEvent = new RegisterEvent();
+            registerEvent.setName(binding.etTitulo.getText().toString());
+            registerEvent.setDescription(binding.etDescripcion.getText().toString());
+            registerEvent.setCode_owner(Utils.restore(this, Utils.KEY_CODE));
+            registerEvent.setEventType(listType.get(binding.spinner.getSelectedItemPosition()));
+            registerEvent.setCollectionType(listCollection.get(binding.spinner2.getSelectedItemPosition()));
+            registerEvent.setParticipants(usersSelected);
             APIService service = Utils.getRetrofit(this).create(APIService.class);
-            service.registerEvent()*/
+            service.registerEvent(registerEvent).enqueue(new Callback<Event>() {
+                @Override
+                public void onResponse(Call<Event> call, Response<Event> response) {
+                    if (response.isSuccessful()) {
+                        Toast.makeText(EventActivity.this, "Evento registrado", Toast.LENGTH_SHORT).show();
+                        onBackPressed();
+                    } else {
+                        Toast.makeText(EventActivity.this, "Algo falló", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Event> call, Throwable t) {
+                    Toast.makeText(EventActivity.this, "Algo falló", Toast.LENGTH_SHORT).show();
+                    onBackPressed();
+                }
+            });
         });
         binding.ivBack.setOnClickListener(v -> onBackPressed());
     }
 
+    List<CollectionType> listCollection;
+    List<EventType> listType;
+
     private void loadUsers() {
         try {
+            listCollection = new ArrayList<>();
+            listType = new ArrayList<>();
             APIService service = Utils.getRetrofit(this).create(APIService.class);
             service.getAllUsers().enqueue(new Callback<List<User>>() {
                 @Override
@@ -69,8 +96,9 @@ public class EventActivity extends AppCompatActivity {
                             @Override
                             public void onResponse(Call<List<CollectionType>> call, Response<List<CollectionType>> response) {
                                 if (response.isSuccessful()) {
+                                    listCollection = response.body();
                                     List<String> data = new ArrayList<>();
-                                    for (CollectionType collectionType : response.body()) {
+                                    for (CollectionType collectionType : listCollection) {
                                         data.add(collectionType.getName());
                                     }
                                     ArrayAdapter<String> adapter = new ArrayAdapter<>(EventActivity.this, R.layout.spinner_item_layout, data);
@@ -80,48 +108,59 @@ public class EventActivity extends AppCompatActivity {
                                         @Override
                                         public void onResponse(Call<List<EventType>> call, Response<List<EventType>> response) {
                                             if (response.isSuccessful()) {
+                                                listType = response.body();
                                                 List<String> data = new ArrayList<>();
-                                                for (EventType eventType : response.body()) {
+                                                for (EventType eventType : listType) {
                                                     data.add(eventType.getName());
                                                 }
                                                 ArrayAdapter<String> adapter = new ArrayAdapter<>(EventActivity.this, R.layout.spinner_item_layout, data);
                                                 adapter.setDropDownViewResource(R.layout.spinner_item_layout);
                                                 binding.spinner.setAdapter(adapter);
+
+                                                userAdapter = new UserAdapter(users, position -> {
+                                                    User user = users.get(position);
+                                                    users.remove(position);
+                                                    usersSelected.add(user);
+                                                    userAdapter.notifyDataSetChanged();
+                                                    userSelectedAdapter.notifyDataSetChanged();
+                                                });
+                                                binding.listUsers.setAdapter(userAdapter);
+                                                binding.listUsers.setLayoutManager(new LinearLayoutManager(EventActivity.this));
                                             } else {
                                                 Toast.makeText(EventActivity.this, "Algo falló en el servidor evento", Toast.LENGTH_SHORT).show();
-                                                return;
+                                                onBackPressed();
                                             }
                                         }
 
                                         @Override
                                         public void onFailure(Call<List<EventType>> call, Throwable t) {
                                             Toast.makeText(EventActivity.this, "Algo falló en el servidor coleccion", Toast.LENGTH_SHORT).show();
-                                            return;
+                                            onBackPressed();
                                         }
                                     });
                                 } else {
                                     Toast.makeText(EventActivity.this, "Algo falló en el servidor coleccion", Toast.LENGTH_SHORT).show();
-                                    return;
+                                    onBackPressed();
                                 }
                             }
 
                             @Override
                             public void onFailure(Call<List<CollectionType>> call, Throwable t) {
                                 Toast.makeText(EventActivity.this, "Algo falló en el servidor usuarios", Toast.LENGTH_SHORT).show();
-                                return;
+                                onBackPressed();
                             }
                         });
 
                     } else {
                         Toast.makeText(EventActivity.this, "Algo falló en el servidor usuarios", Toast.LENGTH_SHORT).show();
-                        return;
+                        onBackPressed();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<List<User>> call, Throwable t) {
                     Toast.makeText(EventActivity.this, "Algo falló en el servidor", Toast.LENGTH_SHORT).show();
-                    return;
+                    onBackPressed();
                 }
             });
         } catch (Exception e) {
@@ -156,15 +195,7 @@ public class EventActivity extends AppCompatActivity {
         } else {
             loadUsers();
         }
-        userAdapter = new UserAdapter(users, position -> {
-            User user = users.get(position);
-            users.remove(position);
-            usersSelected.add(user);
-            userAdapter.notifyDataSetChanged();
-            userSelectedAdapter.notifyDataSetChanged();
-        });
-        binding.listUsers.setAdapter(userAdapter);
-        binding.listUsers.setLayoutManager(new LinearLayoutManager(this));
+
     }
 
     @SuppressLint("MissingSuperCall")

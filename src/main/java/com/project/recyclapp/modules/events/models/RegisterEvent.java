@@ -12,7 +12,7 @@ public class RegisterEvent {
     private String name;
     private String description;
     private EventType eventType;
-    private String email_owner;
+    private String code_owner;
     private CollectionType collectionType;
     private List<User> participants;
 }

@@ -30,7 +30,6 @@ public class Event {
     @Size(max = 255)
     private String description;
 
-    @NotBlank(message = "Por favor ingrese el owner")
     @ManyToOne
     @JoinColumn(referencedColumnName = "email")
     private User user;

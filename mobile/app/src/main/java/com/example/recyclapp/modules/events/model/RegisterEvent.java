@@ -8,6 +8,7 @@ public class RegisterEvent {
     private String name;
     private String description;
     private EventType eventType;
+    private String code_owner;
     private CollectionType collectionType;
     private List<User> participants;
 
@@ -49,6 +50,14 @@ public class RegisterEvent {
 
     public void setParticipants(List<User> participants) {
         this.participants = participants;
+    }
+
+    public String getCode_owner() {
+        return code_owner;
+    }
+
+    public void setCode_owner(String code_owner) {
+        this.code_owner = code_owner;
     }
 
     public RegisterEvent(String name, String description, EventType eventType, CollectionType collectionType, List<User> participants) {

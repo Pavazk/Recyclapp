@@ -37,7 +37,7 @@ public class EventServiceImplements implements EventService {
         event.setDescription(registerEvent.getDescription());
         event.setEventType(registerEvent.getEventType());
         event.setCollectionType(registerEvent.getCollectionType());
-        event.setUser(userRepository.findByEmail(registerEvent.getEmail_owner()).get());
+        event.setUser(userRepository.findByCode(registerEvent.getCode_owner()).get());
         event = eventRepository.save(event);
         for (User user : registerEvent.getParticipants()) {
             EventsParticipant eventsParticipant = new EventsParticipant();

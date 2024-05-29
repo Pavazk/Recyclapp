@@ -14,7 +14,6 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
-import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -38,7 +37,10 @@ public interface APIService {
 
 
 
-    @GET("event/register")
+    @GET("event")
+    Call<List<Event>> getAllEvents();
+
+    @POST("event/register")
     Call<Event> registerEvent(@Body RegisterEvent event);
 
     @GET("event/type")

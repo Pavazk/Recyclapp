@@ -10,15 +10,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.recyclapp.R;
-import com.example.recyclapp.modules.events.model.RegisterEvent;
+import com.example.recyclapp.modules.events.model.Event;
 
 import java.util.List;
 
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> {
-    private List<RegisterEvent> mData;
+    private List<Event> mData;
     private OnItemClickListener mListener;
 
-    public EventAdapter(List<RegisterEvent> mData, OnItemClickListener mListener) {
+    public EventAdapter(List<Event> mData, OnItemClickListener mListener) {
         this.mData = mData;
         this.mListener = mListener;
     }
@@ -32,7 +32,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        RegisterEvent event = mData.get(position);
+        Event event = mData.get(position);
         holder.title.setText(event.getName());
         holder.description.setText(event.getDescription());
         holder.linearLayout.setOnClickListener(v -> {
@@ -44,10 +44,10 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
 
     @Override
     public int getItemCount() {
-        return 0;
+        return mData.size();
     }
 
-    public void updateData(List<RegisterEvent> newData) {
+    public void updateData(List<Event> newData) {
         mData.clear();
         mData.addAll(newData);
         notifyDataSetChanged();
