@@ -13,6 +13,7 @@ import com.project.recyclapp.modules.users.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,7 +38,7 @@ public class EventServiceImplements implements EventService {
         event.setDescription(registerEvent.getDescription());
         event.setEventType(registerEvent.getEventType());
         event.setCollectionType(registerEvent.getCollectionType());
-        event.setUser(userRepository.findByCode(registerEvent.getCode_owner()).get());
+        event.setOwner(userRepository.findByCode(registerEvent.getCode_owner()).get());
         event = eventRepository.save(event);
         for (User user : registerEvent.getParticipants()) {
             EventsParticipant eventsParticipant = new EventsParticipant();
@@ -80,10 +81,35 @@ public class EventServiceImplements implements EventService {
         }
         return event.get();
     }
-    
+
+    @Override
+    public RegisterEvent getRegisterEvent(Integer id) {
+        RegisterEvent registerEvent = new RegisterEvent();
+        Optional<Event> event = eventRepository.findById(id);
+        if (event.isEmpty()) {
+            throw new CustomException("Evento no existe");
+        }
+        registerEvent.setName(event.get().getName());
+        registerEvent.setDescription(event.get().getDescription());
+        registerEvent.setEventType(event.get().getEventType());
+        registerEvent.setCollectionType(event.get().getCollectionType());
+        registerEvent.setCode_owner(event.get().getOwner().getCode());
+        List<User> participants = new ArrayList<>();
+        for (EventsParticipant eventsParticipant : eventParticipantsRepository.findAllByEvents(event.get())) {
+            participants.add(eventsParticipant.getUser());
+        }
+        registerEvent.setParticipants(participants);
+        return registerEvent;
+    }
+
     @Override
     public List<Event> getEventByUser(User user) {
         return eventRepository.findAllEventByUser(user);
+    }
+
+    @Override
+    public List<Event> getEventByOwner(User user) {
+        return eventRepository.findAllEventByOwner(user);
     }
 
     @Override

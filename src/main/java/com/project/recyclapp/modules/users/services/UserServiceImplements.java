@@ -79,15 +79,15 @@ public class UserServiceImplements implements UserService {
         if(userLogin == null){
             throw noDataValid();
         }
-        if(isNullOrEmptyWithTrim(userLogin.getEmail()) || isNullOrEmptyWithTrim(userLogin.getPassword())){
+        Optional<User> user = userRepository.findByEmail(userLogin.getEmail());
+        if(isNullOrEmptyWithTrim(userLogin.getEmail()) || isNullOrEmptyWithTrim(userLogin.getPassword()) || user.isEmpty()){
             throw noDataValid();
         }
-        Optional<User> user = userRepository.findByEmail(userLogin.getEmail());
         String password = userLogin.getPassword();
         if(user.get().getPassword().length() > 10) {
             password = SHA256(password);
         }
-        if(user.isEmpty() || !user.get().getPassword().equals(password)){
+        if(!user.get().getPassword().equals(password)){
             throw new CustomException("Credenciales incorrectas");
         }
         return user.get();

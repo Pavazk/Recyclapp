@@ -14,4 +14,6 @@ public interface EventRepository extends CrudRepository<Event, Integer> {
 
     @Query("select e from Event e join e.eventsParticipants p where p.user = : user")
     List<Event> findAllEventByUser(@Param("user") User user);
+
+    List<Event> findAllEventByOwner(User owner);
 }

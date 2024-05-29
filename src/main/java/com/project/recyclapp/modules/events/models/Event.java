@@ -32,7 +32,7 @@ public class Event {
 
     @ManyToOne
     @JoinColumn(referencedColumnName = "email")
-    private User user;
+    private User owner;
 
     @ManyToOne
     @JoinColumn(referencedColumnName = "id")

@@ -38,9 +38,19 @@ public class EventController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(eventService.getEventById(id));
     }
 
+    @GetMapping("/registerevent/{id}")
+    public ResponseEntity<RegisterEvent> getRegisterEventById(@PathVariable Integer id) {
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(eventService.getRegisterEvent(id));
+    }
+
     @GetMapping("/user")
     public ResponseEntity<List<Event>> getEventByUser(@RequestBody User user) {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(eventService.getEventByUser(user));
+    }
+
+    @GetMapping("/owner")
+    public ResponseEntity<List<Event>> getEventByOwner(@RequestBody User user) {
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(eventService.getEventByOwner(user));
     }
 
     @GetMapping
@@ -48,7 +58,7 @@ public class EventController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(eventService.getAllEvents());
     }
 
-    @DeleteMapping
+    @PostMapping("/delete")
     public ResponseEntity<String> deleteEvent(@RequestBody Event event){
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(eventService.deleteEvent(event));
     }

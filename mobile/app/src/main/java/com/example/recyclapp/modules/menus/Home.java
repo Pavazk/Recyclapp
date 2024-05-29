@@ -131,6 +131,10 @@ public class Home extends AppCompatActivity implements HomeAdapter.OnItemClickLi
                 Utils.IntentWFinish(this, EventActivity.class);
                 break;
             case UPDATE_EVENTS:
+                Intent intent6 = new Intent(this, EventReadActivity.class);
+                intent6.putExtra("case", "UPDATE_EVENTS");
+                startActivity(intent6);
+                finish();
                 break;
             case READ_EVENTS:
                 binding.ivBack.setVisibility(View.VISIBLE);
@@ -141,15 +145,25 @@ public class Home extends AppCompatActivity implements HomeAdapter.OnItemClickLi
                 adapter.updateData(data);
                 break;
             case DELETE_EVENTS:
+                Intent intent5 = new Intent(this, EventReadActivity.class);
+                intent5.putExtra("case", "DELETE_EVENTS");
+                startActivity(intent5);
+                finish();
                 break;
             case PERSONS:
                 Utils.IntentWFinish(this, ProfileActivity.class);
                 break;
             case READ_MY_EVENTS:
-                Utils.IntentWFinish(this, EventReadActivity.class);
+                Intent intent3 = new Intent(this, EventReadActivity.class);
+                intent3.putExtra("case", "READ_MY_EVENTS");
+                startActivity(intent3);
+                finish();
                 break;
             case READ_OTHER_EVENTS:
-                Utils.IntentWFinish(this, EventReadActivity.class);
+                Intent intent4 = new Intent(this, EventReadActivity.class);
+                intent4.putExtra("case", "READ_OTHER_EVENTS");
+                startActivity(intent4);
+                finish();
                 break;
         }
     }

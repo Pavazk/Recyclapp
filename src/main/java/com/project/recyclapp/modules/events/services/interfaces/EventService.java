@@ -17,7 +17,11 @@ public interface EventService {
 
     Event getEventById(Integer id);
 
+    RegisterEvent getRegisterEvent(Integer id);
+
     List<Event> getEventByUser(User user);
+
+    List<Event> getEventByOwner(User user);
 
     List<Event> getAllEvents();
 
