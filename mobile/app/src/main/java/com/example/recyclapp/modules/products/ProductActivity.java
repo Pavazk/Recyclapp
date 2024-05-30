@@ -157,6 +157,17 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
                             bins.add(bin);
                         }
                     }
+                    if(bins == null || bins.isEmpty()){
+                        bins = new ArrayList<>();
+                        for (Bin bin : response.body()) {
+                            if (bin.getColor().getName().equals("NEGRO")) {
+                                bins.add(bin);
+                            }
+                        }
+                        if(bins != null && !bins.isEmpty()){
+                            Toast.makeText(ProductActivity.this, "No hay caneca específica para este producto", Toast.LENGTH_SHORT).show();)
+                        }
+                    }
                     Bin bin = encontrarCanecaCercana(bins);
                     drawMarker(bin);
                     drawPolyline(mylocation.getPosition(), new LatLng(bin.getLatitude(), bin.getLongitude()));
