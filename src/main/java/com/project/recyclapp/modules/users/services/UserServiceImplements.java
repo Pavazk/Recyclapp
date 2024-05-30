@@ -1,5 +1,6 @@
 package com.project.recyclapp.modules.users.services;
 
+import com.project.recyclapp.commons.EmailManager;
 import com.project.recyclapp.commons.Utils;
 import com.project.recyclapp.commons.exceptions.CustomException;
 import com.project.recyclapp.commons.messages.Defines;
@@ -42,7 +43,7 @@ public class UserServiceImplements implements UserService {
         user.setPassword(Utils.generatePassword());
         User userCreated = userRepository.save(user);
         new Thread(() ->
-                Utils.sendEmailCreateUser(userCreated)).start();
+                EmailManager.sendEmailCreateUser(userCreated)).start();
         return userCreated;
     }
 

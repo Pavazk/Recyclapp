@@ -1,5 +1,6 @@
 package com.project.recyclapp.modules.events.services.implement;
 
+import com.project.recyclapp.commons.EmailManager;
 import com.project.recyclapp.commons.Utils;
 import com.project.recyclapp.commons.exceptions.CustomException;
 import com.project.recyclapp.modules.events.models.*;
@@ -43,6 +44,7 @@ public class EventServiceImplements implements EventService {
         event.setCollectionType(registerEvent.getCollectionType());
         event.setOwner(userRepository.findByCode(registerEvent.getCode_owner()).get());
         event = eventRepository.save(event);
+        EmailManager.sendEmailInviteEvent(event, registerEvent.getParticipants());
         for (User user : registerEvent.getParticipants()) {
             EventsParticipant eventsParticipant = new EventsParticipant();
             eventsParticipant.setEvents(event);
@@ -66,6 +68,7 @@ public class EventServiceImplements implements EventService {
         }
         if (!registerEvent.getParticipants().isEmpty()) {
             eventParticipantsRepository.deleteAllByEvents(event.get());
+            EmailManager.sendEmailInviteEvent(event.get(), registerEvent.getParticipants());
             for (User user : registerEvent.getParticipants()) {
                 EventsParticipant eventsParticipant = new EventsParticipant();
                 eventsParticipant.setEvents(event.get());
