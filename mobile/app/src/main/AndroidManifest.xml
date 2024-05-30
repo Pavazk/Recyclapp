@@ -19,6 +19,9 @@
         android:theme="@style/Theme.Isana"
         tools:targetApi="31">
         <activity
+            android:name=".modules.products.ProductActivity"
+            android:exported="false" />
+        <activity
             android:name=".modules.events.EventReadActivity"
             android:exported="false" />
         <activity

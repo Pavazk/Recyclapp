@@ -1,12 +1,11 @@
 package com.project.recyclapp.modules.recycling_bins.bins.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.project.recyclapp.modules.recycling_bins.material.models.Material;
+import com.project.recyclapp.modules.recycling_bins.items.models.Item;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Data
@@ -24,8 +23,4 @@ public class Bin {
     private Double latitude;
 
     private Double longitude;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "bins")
-    private List<Material> materials;
 }

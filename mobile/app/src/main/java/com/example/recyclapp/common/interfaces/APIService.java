@@ -9,6 +9,7 @@ import com.example.recyclapp.modules.bins.model.Bin;
 import com.example.recyclapp.modules.bins.model.Color;
 import com.example.recyclapp.modules.events.model.CollectionType;
 import com.example.recyclapp.modules.events.model.EventType;
+import com.example.recyclapp.modules.products.model.Item;
 
 import java.util.List;
 
@@ -75,5 +76,8 @@ public interface APIService {
 
     @POST("bins/delete")
     Call<String> deleteBin(@Body Bin bin);
+
+    @GET("item")
+    Call<List<Item>> getAllItems();
 
 }

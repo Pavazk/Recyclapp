@@ -106,7 +106,11 @@ public class BinReadActivity extends AppCompatActivity implements OnMapReadyCall
                 @Override
                 public void onResponse(Call<List<Bin>> call, Response<List<Bin>> response) {
                     if (response.isSuccessful()) {
-                        System.out.println(response.body());
+                        if(response.body().isEmpty()){
+                            Toast.makeText(BinReadActivity.this, "No hay canecas disponibles", Toast.LENGTH_SHORT).show();
+                            onBackPressed();
+                            return;
+                        }
                         BinReadActivity.this.bins = response.body();
                         mapView.onCreate(savedInstanceState);
                         mapView.getMapAsync(BinReadActivity.this);

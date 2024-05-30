@@ -123,7 +123,7 @@ public class MainModel {
                         Utils.save(mainView, Utils.KEY_CODE, user.getCode());
                         Utils.save(mainView, Utils.KEY_ROLE, user.getUserType().getName());
                         Utils.save(mainView, "email", user.getEmail());
-                        Utils.save(mainView, "password", oldPassword);
+                        Utils.save(mainView, "password", newPassword);
                         Utils.IntentWFinish(mainView, Home.class);
                         presenter.clearFields(binding);
                     } else {

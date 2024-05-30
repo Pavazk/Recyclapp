@@ -7,15 +7,6 @@ import java.util.List;
 
 @Service
 public interface ItemService {
-
-    Item registerItem(Item item);
-
-    Item updateItem(Item item);
-
-    Item getItemById(Integer id);
-
-    String deleteItem(Item item);
-
     List<Item> getAllItems();
 
 }

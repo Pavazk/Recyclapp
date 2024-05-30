@@ -17,6 +17,7 @@ import com.example.recyclapp.modules.bins.BinReadActivity;
 import com.example.recyclapp.modules.events.EventActivity;
 import com.example.recyclapp.modules.events.EventReadActivity;
 import com.example.recyclapp.modules.init.InitView;
+import com.example.recyclapp.modules.products.ProductActivity;
 import com.example.recyclapp.modules.profile.ProfileActivity;
 
 import java.util.ArrayList;
@@ -116,7 +117,7 @@ public class Home extends AppCompatActivity implements HomeAdapter.OnItemClickLi
                 finish();
                 break;
             case PRODUCTS:
-                //todo: hacer productos
+                Utils.IntentWFinish(this, ProductActivity.class);
                 break;
             case EVENTS:
                 binding.ivBack.setVisibility(View.VISIBLE);

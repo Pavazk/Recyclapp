@@ -57,6 +57,11 @@ public class EventReadActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
                     if (response.isSuccessful()) {
+                        if(response.body().isEmpty()){
+                            Toast.makeText(EventReadActivity.this, "No hay eventos", Toast.LENGTH_SHORT).show();
+                            onBackPressed();
+                            return;
+                        }
                         listEvents = response.body();
                         eventAdapter.updateData(listEvents);
                     } else {
@@ -75,6 +80,12 @@ public class EventReadActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
                 if (response.isSuccessful()) {
+
+                    if(response.body().isEmpty()){
+                        Toast.makeText(EventReadActivity.this, "No hay eventos", Toast.LENGTH_SHORT).show();
+                        onBackPressed();
+                        return;
+                    }
                     listEvents = response.body();
                     eventAdapter.updateData(listEvents);
                 } else {
