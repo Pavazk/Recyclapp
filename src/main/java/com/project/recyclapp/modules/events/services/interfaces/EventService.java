@@ -19,9 +19,9 @@ public interface EventService {
 
     RegisterEvent getRegisterEvent(Integer id);
 
-    List<Event> getEventByUser(User user);
+    List<Event> getEventByUser(String code);
 
-    List<Event> getEventByOwner(User user);
+    List<Event> getEventByOwner(String code);
 
     List<Event> getAllEvents();
 

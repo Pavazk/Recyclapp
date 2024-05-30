@@ -37,17 +37,20 @@ public interface APIService {
 
 
 
-    @GET("registerevent/{id}")
-    Call<RegisterEvent> getRegisterEvent();
+    @GET("event/registerevent/{id}")
+    Call<RegisterEvent> getRegisterEvent(@Path("id") Integer id);
 
     @POST("event/delete")
     Call<String> deleteEvent(@Body Event event);
 
-    @GET("event/user")
-    Call<List<Event>> getAllEventsByUser(@Body User user);
+    @POST("event/update/{id}")
+    Call<Event> updateEvent(@Body RegisterEvent event, @Path("id") Integer id);
 
-    @GET("event/owner")
-    Call<List<Event>> getAllEventsByOwner(@Body User user);
+    @GET("event/user/{code}")
+    Call<List<Event>> getAllEventsByUser(@Path("code") String code);
+
+    @GET("event/owner/{code}")
+    Call<List<Event>> getAllEventsByOwner(@Path("code") String code);
 
     @POST("event/register")
     Call<Event> registerEvent(@Body RegisterEvent event);

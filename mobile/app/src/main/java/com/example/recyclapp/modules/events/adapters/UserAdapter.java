@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.recyclapp.R;
 import com.example.recyclapp.modules.main.data.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
@@ -50,7 +51,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     }
 
     public void updateData(List<User> newData) {
-        mData.clear();
+        mData = new ArrayList<>();
         mData.addAll(newData);
         notifyDataSetChanged();
     }

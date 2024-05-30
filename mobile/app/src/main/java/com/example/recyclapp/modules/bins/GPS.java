@@ -8,8 +8,17 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Looper;
 
 import androidx.annotation.NonNull;
+
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
 
 import java.util.List;
 
@@ -78,6 +87,24 @@ public class GPS implements LocationListener {
         }
 
         return response;
+    }
+
+    @SuppressLint("MissingPermission")
+    public void getLocationByGoogleService(Context context, LocationCallback locationCallback) {
+        try {
+            if (GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context) == 0) {
+                final LocationRequest locationRequest = new LocationRequest();
+                locationRequest.setInterval(Long.MAX_VALUE);
+                locationRequest.setFastestInterval(Long.MAX_VALUE);
+                locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+                LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
+                builder.addLocationRequest(locationRequest);
+                final FusedLocationProviderClient requestLocationUpdates = LocationServices.getFusedLocationProviderClient(context);
+                requestLocationUpdates.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
+            }
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
     }
 
     @Override

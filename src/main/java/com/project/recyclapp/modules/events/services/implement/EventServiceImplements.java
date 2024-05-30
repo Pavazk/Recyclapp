@@ -10,14 +10,17 @@ import com.project.recyclapp.modules.events.repository.EventTypeRepository;
 import com.project.recyclapp.modules.events.services.interfaces.EventService;
 import com.project.recyclapp.modules.users.models.User;
 import com.project.recyclapp.modules.users.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class EventServiceImplements implements EventService {
 
     @Autowired
@@ -62,7 +65,7 @@ public class EventServiceImplements implements EventService {
             event.get().setDescription(registerEvent.getDescription());
         }
         if (!registerEvent.getParticipants().isEmpty()) {
-            eventParticipantsRepository.deleteByEvents(event.get());
+            eventParticipantsRepository.deleteAllByEvents(event.get());
             for (User user : registerEvent.getParticipants()) {
                 EventsParticipant eventsParticipant = new EventsParticipant();
                 eventsParticipant.setEvents(event.get());
@@ -103,13 +106,19 @@ public class EventServiceImplements implements EventService {
     }
 
     @Override
-    public List<Event> getEventByUser(User user) {
-        return eventRepository.findAllEventByUser(user);
+    public List<Event> getEventByUser(String code) {
+        List<EventsParticipant> participants = eventParticipantsRepository.findAllByUser(userRepository.findByCode(code).get());
+        return participants.stream().map(EventsParticipant::getEvents).collect(Collectors.toList());
+
     }
 
     @Override
-    public List<Event> getEventByOwner(User user) {
-        return eventRepository.findAllEventByOwner(user);
+    public List<Event> getEventByOwner(String code) {
+        Optional<User> user = userRepository.findByCode(code);
+        if(user.isEmpty()){
+            throw new CustomException("Usuario no encontrado");
+        }
+        return eventRepository.findAllEventByOwner(user.get());
     }
 
     @Override

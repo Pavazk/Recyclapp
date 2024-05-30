@@ -1,7 +1,7 @@
 package com.example.recyclapp.modules.events;
 
 import android.annotation.SuppressLint;
-import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -14,7 +14,6 @@ import com.example.recyclapp.common.interfaces.APIService;
 import com.example.recyclapp.databinding.ActivityEventReadBinding;
 import com.example.recyclapp.modules.events.adapters.EventAdapter;
 import com.example.recyclapp.modules.events.model.Event;
-import com.example.recyclapp.modules.main.data.User;
 import com.example.recyclapp.modules.menus.Home;
 
 import java.util.ArrayList;
@@ -53,53 +52,38 @@ public class EventReadActivity extends AppCompatActivity {
         binding.listEvents.setAdapter(eventAdapter);
         binding.listEvents.setLayoutManager(new LinearLayoutManager(EventReadActivity.this, LinearLayoutManager.VERTICAL, false));
         APIService service = Utils.getRetrofit(this).create(APIService.class);
-        service.getUserByCode(Utils.restore(this, Utils.KEY_CODE)).enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                if (response.isSuccessful()) {
-                    if ("READ_OTHER_EVENTS".equals(bundle)) {
-                        service.getAllEventsByUser(response.body()).enqueue(new Callback<List<Event>>() {
-                            @Override
-                            public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
-                                if (response.isSuccessful()) {
-                                    listEvents = response.body();
-                                    eventAdapter.updateData(listEvents);
-                                } else {
-                                    Toast.makeText(EventReadActivity.this, "Algo salió mal", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-
-                            @Override
-                            public void onFailure(Call<List<Event>> call, Throwable t) {
-                                Toast.makeText(EventReadActivity.this, "Algo salió mal", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+        if ("READ_OTHER_EVENTS".equals(bundle)){
+            service.getAllEventsByUser(Utils.restore(this, Utils.KEY_CODE)).enqueue(new Callback<List<Event>>() {
+                @Override
+                public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
+                    if (response.isSuccessful()) {
+                        listEvents = response.body();
+                        eventAdapter.updateData(listEvents);
                     } else {
-                        service.getAllEventsByOwner(response.body()).enqueue(new Callback<List<Event>>() {
-                            @Override
-                            public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
-                                if (response.isSuccessful()) {
-                                    listEvents = response.body();
-                                    eventAdapter.updateData(listEvents);
-                                } else {
-                                    Toast.makeText(EventReadActivity.this, "Algo salió mal", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-
-                            @Override
-                            public void onFailure(Call<List<Event>> call, Throwable t) {
-                                Toast.makeText(EventReadActivity.this, "Algo salió mal", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                        Toast.makeText(EventReadActivity.this, "Algo salió mal", Toast.LENGTH_SHORT).show();
                     }
+                }
 
+                @Override
+                public void onFailure(Call<List<Event>> call, Throwable t) {
+                    Toast.makeText(EventReadActivity.this, "Algo salió mal", Toast.LENGTH_SHORT).show();
+                }
+            });
+            return;
+        }
+        service.getAllEventsByOwner(Utils.restore(this, Utils.KEY_CODE)).enqueue(new Callback<List<Event>>() {
+            @Override
+            public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
+                if (response.isSuccessful()) {
+                    listEvents = response.body();
+                    eventAdapter.updateData(listEvents);
                 } else {
                     Toast.makeText(EventReadActivity.this, "Algo salió mal", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<User> call, Throwable t) {
+            public void onFailure(Call<List<Event>> call, Throwable t) {
                 Toast.makeText(EventReadActivity.this, "Algo salió mal", Toast.LENGTH_SHORT).show();
             }
         });
@@ -111,7 +95,9 @@ public class EventReadActivity extends AppCompatActivity {
         builder.setMessage("Deseas " + (isUpdate ? "actualizar" : "eliminar") + " el evento seleccionado?");
         builder.setPositiveButton("Aceptar", (dialog, which) -> {
             if (isUpdate) {
-                Toast.makeText(EventReadActivity.this, "Actualizar evento", Toast.LENGTH_SHORT).show();
+                Intent intent4 = new Intent(this, EventActivity.class);
+                intent4.putExtra("case", event.getId());
+                startActivity(intent4);
                 finish();
                 return;
             }

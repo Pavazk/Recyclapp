@@ -80,6 +80,7 @@ public class Home extends AppCompatActivity implements HomeAdapter.OnItemClickLi
 
     @Override
     public void onItemClick(int position) {
+        System.gc();
         switch (data.get(position).getText()) {
             case BINS:
                 binding.ivBack.setVisibility(View.VISIBLE);

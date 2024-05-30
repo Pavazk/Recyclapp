@@ -26,6 +26,8 @@ import com.example.recyclapp.databinding.ActivityBinBinding;
 import com.example.recyclapp.modules.bins.model.Bin;
 import com.example.recyclapp.modules.init.InitView;
 import com.example.recyclapp.modules.menus.Home;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -62,6 +64,7 @@ public class BinReadActivity extends AppCompatActivity implements OnMapReadyCall
     private Drawable D_AZUL;
     private Drawable D_GRIS;
     private Drawable D_NEGRO;
+
     private String crud;
 
     @Override
@@ -168,51 +171,30 @@ public class BinReadActivity extends AppCompatActivity implements OnMapReadyCall
         uiSettings.setZoomGesturesEnabled(false);
         map.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
         map.setOnMarkerClickListener(this);
-        updateMap();
-        binding.splash.setVisibility(View.GONE);
-        binding.mapView.setVisibility(View.VISIBLE);
-        binding.llData.setVisibility(View.VISIBLE);
-        binding.title.setVisibility(View.VISIBLE);
-        binding.ivBack.setVisibility(View.VISIBLE);
-        loadAllMarkers();
-    }
-
-    Thread myLocation = null;
-
-    public void updateMap() {
-        try {
-            myLocation = new Thread(() -> {
-                final Marker[] oldMarker = {null};
-                final boolean[] isFirstTime = {true};
-                while (!Thread.currentThread().isInterrupted()) {
-                    try {
-                        runOnUiThread(() -> {
-                            //Obtener ubicacion actual
-                            String[] location = GPS.getInstance().getLocalization(BinReadActivity.this).split("\\|");
-                            LatLng latLng = new LatLng(Double.parseDouble(location[0]), Double.parseDouble(location[1]));
-
-                            if (oldMarker[0] != null) {
-                                markers.remove(oldMarker[0]);
-                            }
-                            oldMarker[0] = map.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromBitmap(drawableToBitmap(ContextCompat.getDrawable(this, R.mipmap.icon_my_location)))));
-                            markers.add(oldMarker[0]);
-                            if (isFirstTime[0]) {
-                                map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 20));
-                                isFirstTime[0] = false;
-                            }
-                        });
-                        Thread.sleep(3000);
-                    } catch (Throwable e) {
-                        e.printStackTrace();
-                        Thread.currentThread().interrupt();
-                    }
+        /*updateMap();*/
+        //Obtener ubicacion actual
+        GPS.getInstance().getLocationByGoogleService(this, new LocationCallback() {
+            @Override
+            public void onLocationResult(@NonNull LocationResult locationResult) {
+                LatLng latLng;
+                binding.splash.setVisibility(View.GONE);
+                binding.mapView.setVisibility(View.VISIBLE);
+                binding.llData.setVisibility(View.VISIBLE);
+                binding.title.setVisibility(View.VISIBLE);
+                binding.ivBack.setVisibility(View.VISIBLE);
+                try {
+                    latLng = new LatLng(locationResult.getLastLocation().getLatitude(), locationResult.getLastLocation().getLongitude());
+                } catch (Throwable e) {
+                    e.printStackTrace();
+                    Toast.makeText(BinReadActivity.this, "No se pudo obtener una ubicación precisa", Toast.LENGTH_SHORT).show();
+                    String[] location = GPS.getInstance().getLocalization(BinReadActivity.this).split("\\|");
+                    latLng = new LatLng(Double.parseDouble(location[0]), Double.parseDouble(location[1]));
                 }
-            });
-            myLocation.start();
-        } catch (Throwable e) {
-            e.printStackTrace();
-
-        }
+                map.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromBitmap(drawableToBitmap(ContextCompat.getDrawable(BinReadActivity.this, R.mipmap.icon_my_location)))));
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 20));
+            }
+        });
+        loadAllMarkers();
     }
 
     public void loadAllMarkers() {
@@ -248,7 +230,7 @@ public class BinReadActivity extends AppCompatActivity implements OnMapReadyCall
                 if (color.equals(bin.getColor().getName())) {
                     LatLng latLng = new LatLng(Double.parseDouble(String.valueOf(bin.getLatitude())), Double.parseDouble(String.valueOf(bin.getLongitude())));
                     BitmapDescriptor bitmap;
-                    switch (color) {
+                    switch (color.toUpperCase()) {
                         case ROJO:
                             bitmap = BitmapDescriptorFactory.fromBitmap(drawableToBitmap(D_ROJO));
                             break;
@@ -295,14 +277,6 @@ public class BinReadActivity extends AppCompatActivity implements OnMapReadyCall
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        if (mapView != null) {
-            mapView.onResume();
-        }
-    }
-
-    @Override
     protected void onPause() {
         super.onPause();
         if (mapView != null) {
@@ -317,12 +291,16 @@ public class BinReadActivity extends AppCompatActivity implements OnMapReadyCall
             if (mapView != null) {
                 mapView.onDestroy();
             }
-            if (myLocation != null) {
-                myLocation.interrupt();
-                myLocation.stop();
-            }
         } catch (Throwable e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mapView != null) {
+            mapView.onResume();
         }
     }
 

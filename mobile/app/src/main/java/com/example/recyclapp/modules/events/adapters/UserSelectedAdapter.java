@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.recyclapp.R;
 import com.example.recyclapp.modules.main.data.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserSelectedAdapter extends RecyclerView.Adapter<UserSelectedAdapter.ViewHolder> {
@@ -48,7 +49,7 @@ public class UserSelectedAdapter extends RecyclerView.Adapter<UserSelectedAdapte
     }
 
     public void updateData(List<User> newData) {
-        mData.clear();
+        mData = new ArrayList<>();
         mData.addAll(newData);
         notifyDataSetChanged();
     }

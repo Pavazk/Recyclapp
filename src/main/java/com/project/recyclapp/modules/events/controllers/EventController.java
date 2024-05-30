@@ -29,7 +29,7 @@ public class EventController {
     }
 
     @PostMapping("/update/{id}")
-    public ResponseEntity<Event> updateUser(@RequestBody @Valid RegisterEvent event, @PathVariable Integer id) {
+    public ResponseEntity<Event> updateEvent(@RequestBody @Valid RegisterEvent event, @PathVariable Integer id) {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(eventService.updateEvent(event,id));
     }
 
@@ -43,14 +43,14 @@ public class EventController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(eventService.getRegisterEvent(id));
     }
 
-    @GetMapping("/user")
-    public ResponseEntity<List<Event>> getEventByUser(@RequestBody User user) {
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(eventService.getEventByUser(user));
+    @GetMapping("/user/{code}")
+    public ResponseEntity<List<Event>> getEventByUser(@PathVariable String code) {
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(eventService.getEventByUser(code));
     }
 
-    @GetMapping("/owner")
-    public ResponseEntity<List<Event>> getEventByOwner(@RequestBody User user) {
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(eventService.getEventByOwner(user));
+    @GetMapping("/owner/{code}")
+    public ResponseEntity<List<Event>> getEventByOwner(@PathVariable String code) {
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(eventService.getEventByOwner(code));
     }
 
     @GetMapping

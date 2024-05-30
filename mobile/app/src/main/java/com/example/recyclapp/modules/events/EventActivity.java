@@ -54,6 +54,27 @@ public class EventActivity extends AppCompatActivity {
             registerEvent.setCollectionType(listCollection.get(binding.spinner2.getSelectedItemPosition()));
             registerEvent.setParticipants(usersSelected);
             APIService service = Utils.getRetrofit(this).create(APIService.class);
+            Bundle extras = getIntent().getExtras();
+            if (extras != null && extras.containsKey("case")) {
+                service.updateEvent(registerEvent, extras.getInt("case")).enqueue(new Callback<Event>() {
+                    @Override
+                    public void onResponse(Call<Event> call, Response<Event> response) {
+                        if (response.isSuccessful()) {
+                            Toast.makeText(EventActivity.this, "Evento actualizado", Toast.LENGTH_SHORT).show();
+                            onBackPressed();
+                        } else {
+                            Toast.makeText(EventActivity.this, "Algo falló", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Event> call, Throwable t) {
+                        Toast.makeText(EventActivity.this, "Algo falló", Toast.LENGTH_SHORT).show();
+                        onBackPressed();
+                    }
+                });
+                return;
+            }
             service.registerEvent(registerEvent).enqueue(new Callback<Event>() {
                 @Override
                 public void onResponse(Call<Event> call, Response<Event> response) {
@@ -118,14 +139,16 @@ public class EventActivity extends AppCompatActivity {
                                                 binding.spinner.setAdapter(adapter);
 
                                                 userAdapter = new UserAdapter(users, position -> {
+                                                    System.out.println("CLICK USER ADAPTER");
                                                     User user = users.get(position);
                                                     users.remove(position);
                                                     usersSelected.add(user);
-                                                    userAdapter.notifyDataSetChanged();
-                                                    userSelectedAdapter.notifyDataSetChanged();
+                                                    userAdapter.updateData(users);
+                                                    userSelectedAdapter.updateData(usersSelected);
                                                 });
                                                 binding.listUsers.setAdapter(userAdapter);
-                                                binding.listUsers.setLayoutManager(new LinearLayoutManager(EventActivity.this));
+                                                binding.listUsers.setLayoutManager(new LinearLayoutManager(EventActivity.this, LinearLayoutManager.VERTICAL, false));
+                                                validateUpdate();
                                             } else {
                                                 Toast.makeText(EventActivity.this, "Algo falló en el servidor evento", Toast.LENGTH_SHORT).show();
                                                 onBackPressed();
@@ -168,17 +191,56 @@ public class EventActivity extends AppCompatActivity {
         }
     }
 
-    private void initUserSelected() {
-        usersSelected = new ArrayList<>();
-        userSelectedAdapter = new UserSelectedAdapter(usersSelected, position -> {
-            User user = usersSelected.get(position);
-            usersSelected.remove(position);
-            users.add(user);
-            userAdapter.notifyDataSetChanged();
-            userSelectedAdapter.notifyDataSetChanged();
-        });
-        binding.usersSelected.setAdapter(userSelectedAdapter);
-        binding.usersSelected.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+    public void validateUpdate() {
+        Bundle extras = getIntent().getExtras();
+        if (extras != null && extras.containsKey("case")) {
+            APIService service = Utils.getRetrofit(this).create(APIService.class);
+            service.getRegisterEvent(extras.getInt("case")).enqueue(new Callback<RegisterEvent>() {
+                @Override
+                public void onResponse(Call<RegisterEvent> call, Response<RegisterEvent> response) {
+                    if (response.isSuccessful()) {
+                        RegisterEvent registerEvent = response.body();
+                        binding.title.setText("Actualizar evento");
+                        binding.button.setText("Actualizar");
+                        binding.etTitulo.setText(registerEvent.getName());
+                        binding.etDescripcion.setText(registerEvent.getDescription());
+                        for (int i = 0; i < listType.size(); i++) {
+                            if (listType.get(i).getName().equals(registerEvent.getEventType().getName())) {
+                                binding.spinner.setSelection(i);
+                                break;
+                            }
+                        }
+                        for (int i = 0; i < listCollection.size(); i++) {
+                            if (listCollection.get(i).getName().equals(registerEvent.getCollectionType().getName())) {
+                                binding.spinner2.setSelection(i);
+                                break;
+                            }
+                        }
+                        List<User> temp = new ArrayList<>();
+                        for (User user : usersSelected) {
+                            if(!users.contains(user)){
+                                temp.add(user);
+                            }
+                        }
+
+                        userSelectedAdapter.updateData(registerEvent.getParticipants());
+                        usersSelected = registerEvent.getParticipants();
+
+                        userAdapter.updateData(temp);
+                        users = temp;
+                        return;
+                    }
+                    Toast.makeText(EventActivity.this, "Algo falló", Toast.LENGTH_SHORT).show();
+                    onBackPressed();
+                }
+
+                @Override
+                public void onFailure(Call<RegisterEvent> call, Throwable t) {
+                    Toast.makeText(EventActivity.this, "Algo falló", Toast.LENGTH_SHORT).show();
+                    onBackPressed();
+                }
+            });
+        }
     }
 
     private void initUsers() {
@@ -195,7 +257,20 @@ public class EventActivity extends AppCompatActivity {
         } else {
             loadUsers();
         }
+    }
 
+    private void initUserSelected() {
+        usersSelected = new ArrayList<>();
+        userSelectedAdapter = new UserSelectedAdapter(usersSelected, position -> {
+            System.out.println("CLICK USER SELECTED ADAPTER");
+            User user = usersSelected.get(position);
+            usersSelected.remove(position);
+            users.add(user);
+            userAdapter.updateData(users);
+            userSelectedAdapter.updateData(usersSelected);
+        });
+        binding.usersSelected.setAdapter(userSelectedAdapter);
+        binding.usersSelected.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
     }
 
     @SuppressLint("MissingSuperCall")
