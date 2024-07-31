@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="focused_color">#fcc</color>
+    <color name="hovered_color">#cfc</color>
+    <color name="default_color">#ccf</color>
+    <color name="verde_nicolas">#3ACA6C</color>
+</resources>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="focused_top_padding">4dp</dimen>
+    <dimen name="hovered_top_padding">4dp</dimen>
+    <dimen name="default_top_padding">8dp</dimen>
+</resources>
